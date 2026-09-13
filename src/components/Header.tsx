@@ -39,13 +39,9 @@ const navLinks = [
   { label: "Team", path: "/team" },
 ];
 
-const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [contactOpen, setContactOpen] = useState(false);
+const useHeaderChrome = (isOpen: boolean, pathname: string) => {
   const [scrolled, setScrolled] = useState(false);
-  const [expandedDropdown, setExpandedDropdown] = useState<string | null>(null);
   const chromeRef = useRef<HTMLDivElement>(null);
-  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(getScrollTop() > 50);
@@ -53,7 +49,6 @@ const Header = () => {
     return onScrollRoot(handleScroll);
   }, []);
 
-  // Publish chrome height so the scroll region starts exactly under the header / white bar
   useEffect(() => {
     const el = chromeRef.current;
     if (!el) return;
@@ -64,7 +59,6 @@ const Header = () => {
     };
 
     publishHeight();
-    // Re-measure after layout/fonts
     const t = window.setTimeout(publishHeight, 50);
     const ro = new ResizeObserver(publishHeight);
     ro.observe(el);
@@ -74,7 +68,17 @@ const Header = () => {
       ro.disconnect();
       window.removeEventListener("resize", publishHeight);
     };
-  }, [scrolled, isOpen, location.pathname]);
+  }, [scrolled, isOpen, pathname]);
+
+  return { chromeRef, scrolled };
+};
+
+const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
+  const [expandedDropdown, setExpandedDropdown] = useState<string | null>(null);
+  const location = useLocation();
+  const { chromeRef, scrolled } = useHeaderChrome(isOpen, location.pathname);
 
   const isActiveLink = (path: string, hasDropdown?: boolean) =>
     hasDropdown
@@ -166,7 +170,7 @@ const Header = () => {
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="lg:hidden bg-[var(--laya-header)] shadow-2xl border-b border-white/30 overflow-hidden backdrop-blur-sm"
+                  className="lg:hidden bg-[var(--laya-header)] shadow-2xl border-b border-white/30 overflow-y-auto max-h-[calc(100dvh-4rem)] backdrop-blur-sm"
                 >
                   <div className="px-6 py-6 space-y-2">
                     {navLinks.map((link) => (

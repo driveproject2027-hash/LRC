@@ -1,8 +1,8 @@
 import axios from "axios";
 import { referenceProgramImages, referenceStoryImages } from "@/assets/referenceAssets";
 
-// WordPress REST API base URL - update this when connecting to your WordPress backend
-const WP_API_BASE = import.meta.env.VITE_WP_API_URL || "https://your-wordpress-site.com/wp-json/wp/v2";
+// WordPress REST API base URL can be configured by the deployment environment.
+const WP_API_BASE = import.meta.env.VITE_WP_API_URL || "";
 
 const api = axios.create({
   baseURL: WP_API_BASE,
@@ -73,6 +73,13 @@ export interface Testimonial {
   name: string;
   role: string;
   photo?: string;
+}
+
+export interface ContactSubmission {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
 }
 
 // Mock data from laya.org.in
@@ -225,6 +232,10 @@ export const mockTestimonials: Testimonial[] = [
 ];
 
 // API functions
+export const submitContactMessage = async (submission: ContactSubmission): Promise<void> => {
+  await api.post("/contact", submission);
+};
+
 export const getPrograms = async (): Promise<Program[]> => mockPrograms;
 export const getStories = async (): Promise<Story[]> => mockStories;
 export const getTeam = async (): Promise<TeamMember[]> => mockTeam;

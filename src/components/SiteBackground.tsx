@@ -2,30 +2,30 @@ const BG_LEFT = "#48A9F5";
 const BG_RIGHT = "#7152D2";
 
 /**
- * Exact LAYA logo yin-yang fill (unchanged curve math):
- *   R = H/2, r = R/2
- *   Top semicircle bulges RIGHT; bottom semicircle bulges LEFT
- *   Bottom apex at (CX - r, CY + r)
+ * Letter-S divider from reference glyph directions:
+ *   top-left entry → top bowl swings right → diagonal UR→LL →
+ *   bottom-left apex → bottom bowl swings right → bottom-right exit
  *
- * Wide 3:1 viewBox + full-bleed SVG so fills reach viewport edges
- * (no square side seams / hard gradient split).
+ * Wide 3:1 viewBox + full-bleed SVG so fills reach viewport edges.
  */
 const H = 887;
 const W = 2661; // 3:1 — height-fill on normal/wide screens
 const CX = W / 2;
-const CY = H / 2;
-const R = H / 2;
-const r = R / 2;
+const amp = H / 3;
 
-const BOTTOM_APEX_X = CX - r;
-const BOTTOM_APEX_Y = CY + r;
+const P0 = { x: CX - amp * 0.2, y: 0 };
+const P1 = { x: CX + amp * 0.55, y: H * 0.22 };
+const P2 = { x: CX - amp * 0.08, y: H * 0.5 };
+const P3 = { x: CX - amp * 0.55, y: H * 0.78 };
+const P4 = { x: CX + amp * 0.2, y: H };
 
 const BLUE_PATH = [
   `M 0 0`,
-  `L ${CX} 0`,
-  `A ${r} ${r} 0 0 1 ${CX} ${CY}`,
-  `A ${r} ${r} 0 0 0 ${BOTTOM_APEX_X} ${BOTTOM_APEX_Y}`,
-  `A ${r} ${r} 0 0 0 ${CX} ${H}`,
+  `L ${P0.x} ${P0.y}`,
+  `C ${P0.x + amp * 0.55} 0, ${P1.x} ${P1.y - H * 0.08}, ${P1.x} ${P1.y}`,
+  `C ${P1.x} ${P1.y + H * 0.12}, ${P2.x + amp * 0.25} ${P2.y - H * 0.08}, ${P2.x} ${P2.y}`,
+  `C ${P2.x - amp * 0.25} ${P2.y + H * 0.08}, ${P3.x} ${P3.y - H * 0.12}, ${P3.x} ${P3.y}`,
+  `C ${P3.x} ${P3.y + H * 0.08}, ${P4.x - amp * 0.55} ${H}, ${P4.x} ${P4.y}`,
   `L 0 ${H}`,
   `Z`,
 ].join(" ");

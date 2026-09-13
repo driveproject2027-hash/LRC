@@ -39,8 +39,9 @@ const About = lazy(() => import("./pages/About"));
 const AboutCategory = lazy(() => import("./pages/AboutCategory"));
 const Programs = lazy(() => import("./pages/Programs"));
 const WhatWeDoCategory = lazy(() => import("./pages/WhatWeDoCategory"));
-const Publications = lazy(() => import("./pages/Stories"));
-const Donate = lazy(() => import("./pages/Timeline"));
+const Publications = lazy(() => import("./pages/Publications"));
+const Donate = lazy(() => import("./pages/Donate"));
+const Impact = lazy(() => import("./pages/Impact"));
 const Gallery = lazy(() => import("./pages/Gallery"));
 const Team = lazy(() => import("./pages/Team"));
 const Contact = lazy(() => import("./pages/Contact"));
@@ -97,6 +98,7 @@ const AnimatedRoutes = () => {
         <Route path="/what-we-do/climate-crisis-sustainable-development" element={<PageTransition><WhatWeDoCategory /></PageTransition>} />
         <Route path="/publications" element={<PageTransition><Publications /></PageTransition>} />
         <Route path="/donate" element={<PageTransition><Donate /></PageTransition>} />
+        <Route path="/impact" element={<PageTransition><Impact /></PageTransition>} />
         <Route path="/gallery" element={<PageTransition><Gallery /></PageTransition>} />
         <Route path="/team" element={<PageTransition><Team /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />

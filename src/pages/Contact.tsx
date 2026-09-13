@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContactForm } from "@/hooks/use-contact-form";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { MapPin, Phone, Mail, Send } from "lucide-react";
@@ -7,12 +7,13 @@ import MainLayout from "@/layouts/MainLayout";
 import PageHero from "@/components/PageHero";
 
 const Contact = () => {
-  const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
+  const { formData, updateField, submit, isSubmitting, submitError } = useContactForm();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Thank you for your message! We will get back to you soon.");
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    if (await submit()) {
+      alert("Thank you for your message! We will get back to you soon.");
+    }
   };
 
   return (
@@ -76,6 +77,7 @@ const Contact = () => {
                 className="space-y-4"
               >
                 <h2 className="font-heading text-2xl font-bold text-foreground mb-2">Send a Message</h2>
+                {submitError && <p className="text-sm text-destructive" role="alert">{submitError}</p>}
                 <div>
                   <label htmlFor="name" className="block text-sm font-body text-foreground mb-1.5">Name</label>
                   <input
@@ -83,7 +85,7 @@ const Contact = () => {
                     type="text"
                     required
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) => updateField("name", e.target.value)}
                     className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                   />
                 </div>
@@ -94,7 +96,7 @@ const Contact = () => {
                     type="email"
                     required
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) => updateField("email", e.target.value)}
                     className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                   />
                 </div>
@@ -105,7 +107,7 @@ const Contact = () => {
                     type="text"
                     required
                     value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    onChange={(e) => updateField("subject", e.target.value)}
                     className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                   />
                 </div>
@@ -116,12 +118,12 @@ const Contact = () => {
                     required
                     rows={5}
                     value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    onChange={(e) => updateField("message", e.target.value)}
                     className="w-full px-4 py-3 rounded-lg border border-input bg-background text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring resize-none"
                   />
                 </div>
-                <Button type="submit" className="w-full sm:w-auto">
-                  <Send className="h-4 w-4" /> Send Message
+                <Button type="submit" className="w-full sm:w-auto" disabled={isSubmitting}>
+                  <Send className="h-4 w-4" /> {isSubmitting ? "Sending..." : "Send Message"}
                 </Button>
               </motion.form>
             </div>

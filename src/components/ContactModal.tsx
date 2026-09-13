@@ -1,21 +1,21 @@
-import { useState } from "react";
+import { useContactForm } from "@/hooks/use-contact-form";
 import { MapPin, Phone, Mail, Send, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-
 interface ContactModalProps {
   open: boolean;
   onClose: () => void;
 }
 
 const ContactModal = ({ open, onClose }: ContactModalProps) => {
-  const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
+  const { formData, updateField, submit, isSubmitting, submitError } = useContactForm();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Thank you for your message! We will get back to you soon.");
-    setFormData({ name: "", email: "", subject: "", message: "" });
-    onClose();
+    if (await submit()) {
+      alert("Thank you for your message! We will get back to you soon.");
+      onClose();
+    }
   };
 
   return (
@@ -90,13 +90,14 @@ const ContactModal = ({ open, onClose }: ContactModalProps) => {
 
               {/* Form */}
               <form onSubmit={handleSubmit} className="md:col-span-3 space-y-3">
+                {submitError && <p className="text-sm text-destructive" role="alert">{submitError}</p>}
                 <div>
                   <label className="text-xs font-body font-medium text-foreground block mb-1">Name</label>
                   <input
                     type="text"
                     required
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) => updateField("name", e.target.value)}
                     className="w-full px-3 py-2.5 rounded-lg border border-input bg-background text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                     placeholder="Your name"
                   />
@@ -107,7 +108,7 @@ const ContactModal = ({ open, onClose }: ContactModalProps) => {
                     type="email"
                     required
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) => updateField("email", e.target.value)}
                     className="w-full px-3 py-2.5 rounded-lg border border-input bg-background text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                     placeholder="your@email.com"
                   />
@@ -118,7 +119,7 @@ const ContactModal = ({ open, onClose }: ContactModalProps) => {
                     type="text"
                     required
                     value={formData.subject}
-                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    onChange={(e) => updateField("subject", e.target.value)}
                     className="w-full px-3 py-2.5 rounded-lg border border-input bg-background text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                     placeholder="Subject"
                   />
@@ -129,13 +130,13 @@ const ContactModal = ({ open, onClose }: ContactModalProps) => {
                     required
                     rows={3}
                     value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    onChange={(e) => updateField("message", e.target.value)}
                     className="w-full px-3 py-2.5 rounded-lg border border-input bg-background text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring resize-none"
                     placeholder="Your message..."
                   />
                 </div>
-                <Button type="submit" variant="nature" size="lg" className="w-full">
-                  Send Message <Send className="h-4 w-4" />
+                <Button type="submit" variant="nature" size="lg" className="w-full" disabled={isSubmitting}>
+                  {isSubmitting ? "Sending..." : "Send Message"} <Send className="h-4 w-4" />
                 </Button>
               </form>
             </div>
