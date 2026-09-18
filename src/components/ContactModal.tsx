@@ -38,10 +38,10 @@ const ContactModal = ({ open, onClose }: ContactModalProps) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 30 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto bg-background rounded-2xl shadow-2xl border border-border"
+            className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto bg-background rounded shadow-2xl border border-border"
           >
             {/* Header */}
-            <div className="sticky top-0 z-10 bg-primary rounded-t-2xl px-6 py-5 flex items-center justify-between">
+            <div className="sticky top-0 z-10 bg-primary px-6 py-5 flex items-center justify-between">
               <div>
                 <h2 className="font-heading text-xl font-bold text-primary-foreground">Contact Us</h2>
                 <p className="text-sm text-primary-foreground/70 font-body">We'd love to hear from you</p>
@@ -58,7 +58,7 @@ const ContactModal = ({ open, onClose }: ContactModalProps) => {
               {/* Contact Info */}
               <div className="md:col-span-2 space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center shrink-0">
                     <MapPin className="h-4 w-4 text-primary" />
                   </div>
                   <div>
@@ -69,7 +69,7 @@ const ContactModal = ({ open, onClose }: ContactModalProps) => {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center shrink-0">
                     <Phone className="h-4 w-4 text-primary" />
                   </div>
                   <div>
@@ -78,7 +78,7 @@ const ContactModal = ({ open, onClose }: ContactModalProps) => {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center shrink-0">
                     <Mail className="h-4 w-4 text-primary" />
                   </div>
                   <div>
@@ -98,7 +98,7 @@ const ContactModal = ({ open, onClose }: ContactModalProps) => {
                     required
                     value={formData.name}
                     onChange={(e) => updateField("name", e.target.value)}
-                    className="w-full px-3 py-2.5 rounded-lg border border-input bg-background text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                    className="w-full px-3 py-2.5 rounded border border-input bg-background text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                     placeholder="Your name"
                   />
                 </div>
@@ -109,7 +109,7 @@ const ContactModal = ({ open, onClose }: ContactModalProps) => {
                     required
                     value={formData.email}
                     onChange={(e) => updateField("email", e.target.value)}
-                    className="w-full px-3 py-2.5 rounded-lg border border-input bg-background text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                    className="w-full px-3 py-2.5 rounded border border-input bg-background text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                     placeholder="your@email.com"
                   />
                 </div>
@@ -120,7 +120,7 @@ const ContactModal = ({ open, onClose }: ContactModalProps) => {
                     required
                     value={formData.subject}
                     onChange={(e) => updateField("subject", e.target.value)}
-                    className="w-full px-3 py-2.5 rounded-lg border border-input bg-background text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                    className="w-full px-3 py-2.5 rounded border border-input bg-background text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                     placeholder="Subject"
                   />
                 </div>
@@ -131,7 +131,7 @@ const ContactModal = ({ open, onClose }: ContactModalProps) => {
                     rows={3}
                     value={formData.message}
                     onChange={(e) => updateField("message", e.target.value)}
-                    className="w-full px-3 py-2.5 rounded-lg border border-input bg-background text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring resize-none"
+                    className="w-full px-3 py-2.5 rounded border border-input bg-background text-foreground font-body text-sm focus:outline-none focus:ring-2 focus:ring-ring resize-none"
                     placeholder="Your message..."
                   />
                 </div>

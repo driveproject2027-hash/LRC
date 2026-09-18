@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
@@ -9,7 +9,6 @@ import { AnimatePresence } from "framer-motion";
 import PageTransition from "@/components/PageTransition";
 import Loader from "@/components/Loader";
 import SiteBackground from "@/components/SiteBackground";
-import layaLogo from "@/assets/laya-logo.png";
 import { scrollPageToTop } from "@/lib/scrollRoot";
 
 const RouteScrollToTop = () => {
@@ -40,6 +39,7 @@ const AboutCategory = lazy(() => import("./pages/AboutCategory"));
 const Programs = lazy(() => import("./pages/Programs"));
 const WhatWeDoCategory = lazy(() => import("./pages/WhatWeDoCategory"));
 const Publications = lazy(() => import("./pages/Publications"));
+const Stories = lazy(() => import("./pages/Stories"));
 const Donate = lazy(() => import("./pages/Donate"));
 const Impact = lazy(() => import("./pages/Impact"));
 const Gallery = lazy(() => import("./pages/Gallery"));
@@ -51,34 +51,14 @@ const queryClient = new QueryClient();
 
 const AnimatedRoutes = () => {
   const location = useLocation();
-  const [routeLoading, setRouteLoading] = useState(false);
 
-  useEffect(() => {
-    setRouteLoading(true);
-    const timer = setTimeout(() => {
-      setRouteLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, [location]);
+  // NOTE: Previously a fixed 800ms full-screen loading overlay was shown on
+  // every route change, which made the SPA feel slow even on fast networks.
+  // Pages are already lazy-loaded with a real Suspense fallback below, so the
+  // artificial delay was removed — navigation now feels instant.
 
   return (
     <>
-      {routeLoading && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white/60 backdrop-blur-lg">
-          <div className="text-center">
-            <img
-              src={layaLogo}
-              alt="LAYA Logo"
-              className="h-16 w-16 rounded-full object-cover animate-pulse-logo mb-3"
-            />
-            <div className="flex justify-center gap-1 text-2xl text-primary font-bold">
-              <span className="animate-bounce" style={{ animationDelay: '0s' }}>.</span>
-              <span className="animate-bounce" style={{ animationDelay: '0.15s' }}>.</span>
-              <span className="animate-bounce" style={{ animationDelay: '0.3s' }}>.</span>
-            </div>
-          </div>
-        </div>
-      )}
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Index /></PageTransition>} />
@@ -97,6 +77,7 @@ const AnimatedRoutes = () => {
         <Route path="/what-we-do/lifelong-learning" element={<PageTransition><WhatWeDoCategory /></PageTransition>} />
         <Route path="/what-we-do/climate-crisis-sustainable-development" element={<PageTransition><WhatWeDoCategory /></PageTransition>} />
         <Route path="/publications" element={<PageTransition><Publications /></PageTransition>} />
+        <Route path="/stories" element={<PageTransition><Stories /></PageTransition>} />
         <Route path="/donate" element={<PageTransition><Donate /></PageTransition>} />
         <Route path="/impact" element={<PageTransition><Impact /></PageTransition>} />
         <Route path="/gallery" element={<PageTransition><Gallery /></PageTransition>} />

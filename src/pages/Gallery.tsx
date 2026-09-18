@@ -89,13 +89,13 @@ const Gallery = () => {
                           <p className="text-sm text-muted-foreground font-body leading-relaxed max-w-md">
                             Documented through LAYA&apos;s field engagement with Adivasi communities.
                           </p>
-                          <p className="mt-6 text-xs font-heading font-semibold uppercase tracking-[0.18em] text-[var(--laya-purple)] opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                          <p className="mt-6 text-xs font-heading font-semibold uppercase tracking-[0.18em] text-[var(--laya-purple)] opacity-100 translate-y-0 lg:opacity-0 lg:translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
                             View photograph →
                           </p>
                         </div>
 
                         <div className={`lg:col-span-7 ${reverse ? "lg:order-1" : "lg:order-2"}`}>
-                          <div className="relative overflow-hidden rounded-xl md:rounded-2xl bg-muted shadow-[0_20px_50px_-28px_rgba(30,20,60,0.45)]">
+                          <div className="relative overflow-hidden rounded md:rounded bg-muted shadow-[0_20px_50px_-28px_rgba(30,20,60,0.45)]">
                             <motion.div
                               initial={{ scale: 1.06 }}
                               whileInView={{ scale: 1 }}
@@ -142,7 +142,7 @@ const Gallery = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 16 }}
                 transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="relative grid w-full max-w-6xl overflow-hidden rounded-2xl bg-white shadow-2xl md:grid-cols-[1.4fr_0.8fr]"
+                className="relative grid w-full max-w-6xl overflow-hidden rounded bg-white shadow-2xl md:grid-cols-[1.4fr_0.8fr]"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="relative bg-[#111] min-h-[42vh] md:min-h-[70vh] flex items-center justify-center">
@@ -196,7 +196,7 @@ const Gallery = () => {
                         key={`${thumb.title}-thumb-${i}`}
                         type="button"
                         onClick={() => setActiveIndex(i)}
-                        className={`h-12 w-12 overflow-hidden rounded-md border transition-all ${
+                        className={`h-12 w-12 overflow-hidden rounded border transition-all ${
                           i === activeIndex
                             ? "border-[var(--laya-purple)] ring-2 ring-[var(--laya-purple)]/30"
                             : "border-border opacity-70 hover:opacity-100"

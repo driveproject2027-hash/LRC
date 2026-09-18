@@ -91,7 +91,7 @@ const About = () => {
                 role="article"
                 aria-label="Vision card"
               >
-                <div className="w-16 h-16 bg-[var(--laya-purple)] rounded-2xl flex items-center justify-center mb-6">
+                <div className="w-16 h-16 bg-[var(--laya-purple)] rounded flex items-center justify-center mb-6">
                   <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -115,7 +115,7 @@ const About = () => {
                 role="article"
                 aria-label="Mission card"
               >
-                <div className="w-16 h-16 bg-[var(--laya-cyan)] rounded-2xl flex items-center justify-center mb-6">
+                <div className="w-16 h-16 bg-[var(--laya-cyan)] rounded flex items-center justify-center mb-6">
                   <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
@@ -136,7 +136,7 @@ const About = () => {
                 role="article"
                 aria-label="Goals card"
               >
-                <div className="w-16 h-16 bg-[var(--laya-purple)] rounded-2xl flex items-center justify-center mb-6">
+                <div className="w-16 h-16 bg-[var(--laya-purple)] rounded flex items-center justify-center mb-6">
                   <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                   </svg>
@@ -174,7 +174,7 @@ const About = () => {
                   src={referenceProgramImages[3]}
                   alt="LAYA community work"
                   loading="lazy"
-                  className="rounded-3xl shadow-2xl w-full"
+                  className="rounded shadow-2xl w-full"
                 />
               </motion.div>
               <motion.div

@@ -78,7 +78,7 @@ const HeroSection = () => {
             <div className="flex flex-col xs:flex-row sm:flex-row gap-3 mb-2 lg:mb-8 w-full sm:w-auto">
               <Button
                 size="lg"
-                className="w-full sm:w-auto bg-white text-[var(--laya-purple)] hover:bg-white/90 rounded-xl font-semibold px-7"
+                className="w-full sm:w-auto bg-white text-[var(--laya-purple)] hover:bg-white/90 rounded font-semibold px-7"
                 asChild
               >
                 <Link to="/about">
@@ -88,7 +88,7 @@ const HeroSection = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full sm:w-auto border-2 border-white/70 bg-transparent text-white hover:bg-white/10 rounded-xl px-7"
+                className="w-full sm:w-auto border-2 border-white/70 bg-transparent text-white hover:bg-white/10 rounded px-7"
                 asChild
               >
                 <Link to="/programs">What We Do</Link>
@@ -118,7 +118,7 @@ const HeroSection = () => {
             className="order-2 w-full"
           >
             <Link to="/about" className="group block">
-              <div className="relative overflow-hidden rounded-2xl sm:rounded-[1.75rem] border-[3px] sm:border-4 border-white/90 shadow-2xl">
+              <div className="relative overflow-hidden rounded sm:rounded border-[3px] sm:border-4 border-white/90 shadow-2xl">
                 <img
                   src={homeHeroImage}
                   alt="Training programme on Social Entitlements"
@@ -143,7 +143,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.15 }}
-            className="order-3 lg:hidden grid grid-cols-3 gap-2 rounded-2xl border border-white/25 bg-white/10 p-3 backdrop-blur-sm"
+            className="order-3 lg:hidden grid grid-cols-3 gap-2 rounded border border-white/25 bg-white/10 p-3 backdrop-blur-sm"
           >
             {heroHighlights.map((item) => (
               <div key={item.label} className="text-center px-1">
@@ -180,13 +180,13 @@ const AboutPreview = () => (
               marginalized despite living in resource-rich areas.
             </p>
             <p className="text-white/85 font-body text-base md:text-lg leading-relaxed mb-8">
-              For over 37 years, LAYA has worked alongside indigenous communities on land rights,
+              For over 39 years, LAYA has worked alongside indigenous communities on land rights,
               governance, livelihoods, education, and cultural preservation — rooted in the belief that
               Adivasi wisdom holds keys to sustainable development.
             </p>
             <Button
               size="lg"
-              className="bg-white text-[var(--laya-purple)] hover:bg-white/90 rounded-xl font-semibold"
+              className="bg-white text-[var(--laya-purple)] hover:bg-white/90 rounded font-semibold"
               asChild
             >
               <Link to="/about">
@@ -202,9 +202,9 @@ const AboutPreview = () => (
               loading="lazy"
               width={1280}
               height={864}
-              className="w-full rounded-[1.75rem] border-4 border-white/90 shadow-2xl object-cover aspect-[4/3]"
+              className="w-full rounded border-4 border-white/90 shadow-2xl object-cover aspect-[4/3]"
             />
-            <div className="absolute left-4 bottom-4 rounded-2xl border border-white/30 bg-[rgba(255,255,255,0.14)] px-4 py-3 backdrop-blur-md">
+            <div className="absolute left-4 bottom-4 rounded border border-white/30 bg-[rgba(255,255,255,0.14)] px-4 py-3 backdrop-blur-md">
               <p className="text-xs font-heading uppercase tracking-[0.18em] text-white/80">Resource Center</p>
               <p className="mt-1 font-heading text-lg font-semibold text-white">Serving Adivasi communities since 1985</p>
             </div>
@@ -300,7 +300,7 @@ const ImpactSection = () => (
         </motion.div>
         <div className="grid grid-cols-2 gap-4 md:gap-6">
           {mockImpactMetrics.map((metric, i) => (
-            <div key={metric.id} className="rounded-[1.5rem] border border-white/20 bg-white/10">
+            <div key={metric.id} className="rounded border border-white/20 bg-white/10">
               <ImpactCounter metric={metric} index={i} />
             </div>
           ))}
@@ -333,14 +333,13 @@ const PublicationsSection = () => (
         </div>
       </motion.div>
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)]">
-        <motion.a
-          href="/publications"
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="group overflow-hidden rounded-[1.75rem] border border-border bg-card shadow-md transition-all duration-300 hover:border-[var(--laya-cyan)] hover:shadow-xl"
+          className="group overflow-hidden rounded border border-border bg-card shadow-md transition-all duration-300 hover:border-[var(--laya-cyan)] hover:shadow-xl"
         >
-          <div className="grid md:grid-cols-[1.05fr_0.95fr] items-stretch">
+          <Link to="/publications" className="grid md:grid-cols-[1.05fr_0.95fr] items-stretch">
             <div className="overflow-hidden">
               <img
                 src={publicationCards[0].image}
@@ -360,19 +359,19 @@ const PublicationsSection = () => (
                 <ArrowRight className="h-4 w-4" />
               </div>
             </div>
-          </div>
-        </motion.a>
+          </Link>
+        </motion.div>
         <div className="grid gap-6">
           {publicationCards.slice(1).map((publication, i) => (
-            <motion.a
+            <motion.div
               key={publication.title}
-              href="/publications"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="group grid overflow-hidden rounded-2xl border border-border bg-card shadow-md transition-all duration-300 hover:border-[var(--laya-cyan)] hover:shadow-xl sm:grid-cols-[160px_minmax(0,1fr)]"
+              className="group grid overflow-hidden rounded border border-border bg-card shadow-md transition-all duration-300 hover:border-[var(--laya-cyan)] hover:shadow-xl sm:grid-cols-[160px_minmax(0,1fr)]"
             >
+              <Link to="/publications" className="contents">
               <div className="overflow-hidden">
                 <img
                   src={publication.image}
@@ -389,7 +388,8 @@ const PublicationsSection = () => (
                   <ArrowRight className="h-4 w-4" />
                 </div>
               </div>
-            </motion.a>
+              </Link>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -412,7 +412,7 @@ const DonateSection = () => (
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button
             size="lg"
-            className="bg-white text-[var(--laya-purple)] hover:bg-white/90 px-10 rounded-xl font-semibold"
+            className="bg-white text-[var(--laya-purple)] hover:bg-white/90 px-10 rounded font-semibold"
             asChild
           >
             <Link to="/donate">Donate Now</Link>
@@ -420,7 +420,7 @@ const DonateSection = () => (
           <Button
             size="lg"
             variant="outline"
-            className="border-2 border-white/70 bg-transparent text-white hover:bg-white/10 px-10 rounded-xl"
+            className="border-2 border-white/70 bg-transparent text-white hover:bg-white/10 px-10 rounded"
             asChild
           >
             <Link to="/publications">Browse Publications</Link>
@@ -438,7 +438,7 @@ const Index = () => {
         <title>The LAYA Chronicle | Resource Center for Adivasis</title>
         <meta
           name="description"
-          content="LAYA – Resource Center for Adivasis. 37+ years of working with indigenous communities in the Eastern Ghats. Discover programs, stories, and impact."
+          content="LAYA – Resource Center for Adivasis. 39+ years of working with indigenous communities in the Eastern Ghats. Discover programs, stories, and impact."
         />
         <meta property="og:title" content="The LAYA Chronicle" />
         <meta

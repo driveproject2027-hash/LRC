@@ -77,7 +77,7 @@ const PageHero = ({
             transition={{ duration: 0.7, delay: 0.1 }}
             className="relative"
           >
-            <div className="relative rounded-[2rem] overflow-hidden border-4 border-white/90 shadow-2xl aspect-[4/3]">
+            <div className="relative rounded overflow-hidden border-4 border-white/90 shadow-2xl aspect-[4/3]">
               <img
                 src={image}
                 alt={imageAlt}

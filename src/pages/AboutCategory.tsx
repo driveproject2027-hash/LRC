@@ -575,9 +575,9 @@ const AboutCategory = () => {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.06 }}
-                      className="rounded-xl border border-border bg-card p-4 md:p-5 text-center shadow-sm hover:shadow-md hover:border-primary/25 transition-all duration-300"
+                      className="rounded border border-border bg-card p-4 md:p-5 text-center shadow-sm hover:shadow-md hover:border-primary/25 transition-all duration-300"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                      <div className="w-9 h-9 rounded bg-primary/10 flex items-center justify-center mx-auto mb-3">
                         <stat.icon className="h-4 w-4 text-primary" />
                       </div>
                       <p className="font-heading text-xl md:text-2xl font-bold text-foreground">{stat.value}</p>
@@ -619,7 +619,7 @@ const AboutCategory = () => {
                           }`}
                         >
                           <article
-                            className={`rounded-xl border border-border bg-card p-5 md:p-6 shadow-sm hover:shadow-md transition-all duration-300 border-l-4 ${timelineAccents[index % timelineAccents.length]}`}
+                            className={`rounded border border-border bg-card p-5 md:p-6 shadow-sm hover:shadow-md transition-all duration-300 border-l-4 ${timelineAccents[index % timelineAccents.length]}`}
                           >
                             <div className="flex flex-wrap items-center gap-2 mb-3">
                               <span className="px-3 py-1 rounded-full text-xs font-semibold font-body bg-primary text-primary-foreground">
@@ -671,9 +671,9 @@ const AboutCategory = () => {
                           whileInView={{ opacity: 1, y: 0 }}
                           viewport={{ once: true }}
                           transition={{ delay: index * 0.07 }}
-                          className="group rounded-xl border border-border bg-card p-6 hover:shadow-lg hover:border-primary/30 hover:-translate-y-0.5 transition-all duration-300"
+                          className="group rounded border border-border bg-card p-6 hover:shadow-lg hover:border-primary/30 hover:-translate-y-0.5 transition-all duration-300"
                         >
-                          <div className="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/15 transition-colors">
+                          <div className="w-11 h-11 rounded bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/15 transition-colors">
                             <Icon className="h-5 w-5 text-primary" />
                           </div>
                           <h3 className="font-heading text-base font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
@@ -696,9 +696,9 @@ const AboutCategory = () => {
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    className="rounded-2xl border border-border bg-card p-7 md:p-8 shadow-sm hover:shadow-md transition-shadow"
+                    className="rounded border border-border bg-card p-7 md:p-8 shadow-sm hover:shadow-md transition-shadow"
                   >
-                    <div className="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center mb-5">
+                    <div className="w-11 h-11 rounded bg-primary/10 flex items-center justify-center mb-5">
                       <Target className="h-5 w-5 text-primary" />
                     </div>
                     <h3 className="font-heading text-xl font-bold text-foreground mb-3">
@@ -723,9 +723,9 @@ const AboutCategory = () => {
                     initial={{ opacity: 0, x: 20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    className="rounded-2xl border border-primary/25 bg-primary/5 p-7 md:p-8 shadow-sm hover:shadow-md transition-shadow"
+                    className="rounded border border-primary/25 bg-primary/5 p-7 md:p-8 shadow-sm hover:shadow-md transition-shadow"
                   >
-                    <div className="w-11 h-11 rounded-lg bg-primary/15 flex items-center justify-center mb-5">
+                    <div className="w-11 h-11 rounded bg-primary/15 flex items-center justify-center mb-5">
                       <Sparkles className="h-5 w-5 text-primary" />
                     </div>
                     <h3 className="font-heading text-xl font-bold text-foreground mb-3">
@@ -799,9 +799,9 @@ const AboutCategory = () => {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.06 }}
-                      className="rounded-xl border border-border bg-card p-4 md:p-5 text-center shadow-sm hover:shadow-md hover:border-primary/25 transition-all duration-300"
+                      className="rounded border border-border bg-card p-4 md:p-5 text-center shadow-sm hover:shadow-md hover:border-primary/25 transition-all duration-300"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                      <div className="w-9 h-9 rounded bg-primary/10 flex items-center justify-center mx-auto mb-3">
                         <stat.icon className="h-4 w-4 text-primary" />
                       </div>
                       <p className="font-heading text-xl md:text-2xl font-bold text-foreground">{stat.value}</p>
@@ -826,11 +826,11 @@ const AboutCategory = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: sectionIndex * 0.08 }}
-                        className="rounded-2xl border border-border bg-card overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                        className="rounded border border-border bg-card overflow-hidden shadow-sm hover:shadow-md transition-shadow"
                       >
                         <div className="bg-primary px-6 py-5 md:px-8">
                           <div className="flex items-center gap-4">
-                            <div className="w-11 h-11 rounded-xl bg-primary-foreground/15 flex items-center justify-center shrink-0">
+                            <div className="w-11 h-11 rounded bg-primary-foreground/15 flex items-center justify-center shrink-0">
                               <Icon className="h-5 w-5 text-primary-foreground" />
                             </div>
                             <div>
@@ -854,9 +854,9 @@ const AboutCategory = () => {
                               {section.bullets?.map((bullet, i) => (
                                 <div
                                   key={bullet}
-                                  className="flex items-start gap-3 p-4 rounded-xl border border-border bg-muted/40 hover:bg-muted/70 transition-colors"
+                                  className="flex items-start gap-3 p-4 rounded border border-border bg-muted/40 hover:bg-muted/70 transition-colors"
                                 >
-                                  <div className="w-8 h-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center shrink-0 text-sm font-bold font-heading">
+                                  <div className="w-8 h-8 rounded bg-primary text-primary-foreground flex items-center justify-center shrink-0 text-sm font-bold font-heading">
                                     {i + 1}
                                   </div>
                                   <p className="text-sm text-foreground font-body leading-relaxed">{bullet}</p>
@@ -868,7 +868,7 @@ const AboutCategory = () => {
                               {section.bullets?.map((bullet) => (
                                 <li
                                   key={bullet}
-                                  className="flex items-start gap-2.5 p-3 rounded-lg border border-border bg-background"
+                                  className="flex items-start gap-2.5 p-3 rounded border border-border bg-background"
                                 >
                                   <Check className="h-4 w-4 text-primary mt-0.5 shrink-0" />
                                   <span className="text-sm text-foreground font-body leading-relaxed">{bullet}</span>
@@ -892,9 +892,9 @@ const AboutCategory = () => {
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
-                      className="flex items-start gap-4 rounded-2xl border border-primary/20 bg-primary/5 p-6 md:p-8"
+                      className="flex items-start gap-4 rounded border border-primary/20 bg-primary/5 p-6 md:p-8"
                     >
-                      <div className="w-11 h-11 rounded-lg bg-primary/15 flex items-center justify-center shrink-0">
+                      <div className="w-11 h-11 rounded bg-primary/15 flex items-center justify-center shrink-0">
                         <Target className="h-5 w-5 text-primary" />
                       </div>
                       <div>
@@ -959,9 +959,9 @@ const AboutCategory = () => {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.06 }}
-                      className="rounded-xl border border-border bg-card p-4 md:p-5 text-center shadow-sm"
+                      className="rounded border border-border bg-card p-4 md:p-5 text-center shadow-sm"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                      <div className="w-9 h-9 rounded bg-primary/10 flex items-center justify-center mx-auto mb-3">
                         <stat.icon className="h-4 w-4 text-primary" />
                       </div>
                       <p className="font-heading text-xl md:text-2xl font-bold text-foreground">{stat.value}</p>
@@ -990,12 +990,12 @@ const AboutCategory = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: index * 0.06 }}
-                        className="group flex flex-col rounded-xl border border-border bg-card p-6 hover:shadow-lg hover:border-primary/30 hover:-translate-y-0.5 transition-all duration-300"
+                        className="group flex flex-col rounded border border-border bg-card p-6 hover:shadow-lg hover:border-primary/30 hover:-translate-y-0.5 transition-all duration-300"
                       >
                         <span className="inline-flex w-fit items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold font-body mb-4">
                           FY {report.year}
                         </span>
-                        <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors">
+                        <div className="w-12 h-12 rounded bg-muted flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors">
                           <FileText className="h-6 w-6 text-primary" />
                         </div>
                         <h3 className="font-heading text-base font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">
@@ -1024,9 +1024,9 @@ const AboutCategory = () => {
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
-                      className="flex items-start gap-4 rounded-2xl border border-primary/20 bg-primary/5 p-6 md:p-8"
+                      className="flex items-start gap-4 rounded border border-primary/20 bg-primary/5 p-6 md:p-8"
                     >
-                      <div className="w-11 h-11 rounded-lg bg-primary/15 flex items-center justify-center shrink-0">
+                      <div className="w-11 h-11 rounded bg-primary/15 flex items-center justify-center shrink-0">
                         <ShieldCheck className="h-5 w-5 text-primary" />
                       </div>
                       <div>
@@ -1074,10 +1074,10 @@ const AboutCategory = () => {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-sm"
+                  className="rounded border border-border bg-card p-6 md:p-8 shadow-sm"
                 >
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <div className="w-11 h-11 rounded bg-primary/10 flex items-center justify-center">
                       <ShieldCheck className="h-5 w-5 text-primary" />
                     </div>
                     <h2 className="font-heading text-xl font-bold text-foreground">FCRA Registration</h2>
@@ -1115,10 +1115,10 @@ const AboutCategory = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.08 }}
-                  className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-sm"
+                  className="rounded border border-border bg-card p-6 md:p-8 shadow-sm"
                 >
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <div className="w-11 h-11 rounded bg-primary/10 flex items-center justify-center">
                       <Landmark className="h-5 w-5 text-primary" />
                     </div>
                     <h2 className="font-heading text-xl font-bold text-foreground">FCRA Bank</h2>
@@ -1163,10 +1163,10 @@ const AboutCategory = () => {
               >
                 <Link
                   to="/about/financial-reports"
-                  className="group flex items-center justify-between gap-4 rounded-2xl border border-primary/25 bg-primary p-5 md:p-6 hover:bg-primary/90 transition-colors"
+                  className="group flex items-center justify-between gap-4 rounded border border-primary/25 bg-primary p-5 md:p-6 hover:bg-primary/90 transition-colors"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-11 h-11 rounded-lg bg-primary-foreground/15 flex items-center justify-center shrink-0">
+                    <div className="w-11 h-11 rounded bg-primary-foreground/15 flex items-center justify-center shrink-0">
                       <FileText className="h-5 w-5 text-primary-foreground" />
                     </div>
                     <div>
@@ -1208,7 +1208,7 @@ const AboutCategory = () => {
                         {yearData.quarters.map((quarter) => (
                           <details
                             key={quarter.name}
-                            className="group rounded-xl border border-border bg-card overflow-hidden shadow-sm"
+                            className="group rounded border border-border bg-card overflow-hidden shadow-sm"
                           >
                             <summary className="flex items-center justify-between gap-4 cursor-pointer list-none px-5 py-4 bg-muted/40 hover:bg-muted/70 transition-colors [&::-webkit-details-marker]:hidden">
                               <div>
@@ -1276,7 +1276,7 @@ const AboutCategory = () => {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className="bg-slate-50 border border-slate-200 rounded-2xl p-8 md:p-10"
+                  className="bg-slate-50 border border-slate-200 rounded p-8 md:p-10"
                 >
                   <h2 className="font-heading text-2xl md:text-3xl font-bold text-slate-900 mb-4">Governance Structure</h2>
                   <p className="text-base text-gray-700 font-body leading-relaxed">
@@ -1307,7 +1307,7 @@ const AboutCategory = () => {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: index * 0.05 }}
-                      className="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md transition-shadow text-center"
+                      className="bg-white border border-gray-200 rounded p-5 hover:shadow-md transition-shadow text-center"
                     >
                       {/* Profile Image Placeholder */}
                       <div className="w-20 h-20 bg-slate-100 rounded-full mx-auto mb-4 flex items-center justify-center">
@@ -1337,11 +1337,11 @@ const AboutCategory = () => {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: index * 0.08 }}
-                      className="bg-white rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 overflow-hidden group"
+                      className="bg-white rounded shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 overflow-hidden group"
                     >
                       {/* Logo Placeholder */}
                       <div className="h-32 bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center border-b border-gray-100">
-                        <div className="w-20 h-20 bg-white rounded-2xl shadow-md flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <div className="w-20 h-20 bg-white rounded shadow-md flex items-center justify-center group-hover:scale-110 transition-transform">
                           <span className="text-2xl font-bold text-blue-600">
                             {partner.name.split(' ').map(word => word[0]).join('').substring(0, 2).toUpperCase()}
                           </span>
@@ -1395,9 +1395,9 @@ const AboutCategory = () => {
                       initial={{ opacity: 0, y: 16 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.1 + i * 0.05 }}
-                      className="rounded-xl border border-border bg-card p-4 md:p-5 text-center shadow-sm"
+                      className="rounded border border-border bg-card p-4 md:p-5 text-center shadow-sm"
                     >
-                      <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                      <div className="w-9 h-9 rounded bg-primary/10 flex items-center justify-center mx-auto mb-3">
                         <stat.icon className="h-4 w-4 text-primary" />
                       </div>
                       <p className="font-heading text-xl md:text-2xl font-bold text-foreground">{stat.value}</p>
@@ -1423,7 +1423,7 @@ const AboutCategory = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: index * 0.08 }}
-                        className={`group relative rounded-2xl border bg-card overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 ${
+                        className={`group relative rounded border bg-card overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 ${
                           loc.type === "Headquarters"
                             ? "border-primary/30 md:col-span-2"
                             : "border-border hover:border-primary/25"
@@ -1436,7 +1436,7 @@ const AboutCategory = () => {
                           <div className="flex items-start justify-between gap-4 mb-4">
                             <div className="flex items-start gap-4">
                               <div
-                                className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
+                                className={`w-12 h-12 rounded flex items-center justify-center shrink-0 ${
                                   loc.type === "Headquarters" ? "bg-primary/15" : "bg-muted"
                                 }`}
                               >
@@ -1461,7 +1461,7 @@ const AboutCategory = () => {
                                 </h3>
                               </div>
                             </div>
-                            <span className="shrink-0 px-2.5 py-1 rounded-md bg-muted text-xs font-mono font-medium text-muted-foreground border border-border">
+                            <span className="shrink-0 px-2.5 py-1 rounded bg-muted text-xs font-mono font-medium text-muted-foreground border border-border">
                               {loc.pincode}
                             </span>
                           </div>
@@ -1511,7 +1511,7 @@ const AboutCategory = () => {
                       page.points?.map((point) => (
                         <div
                           key={point}
-                          className="flex items-start gap-3 rounded-xl border border-primary/20 bg-primary/5 p-4"
+                          className="flex items-start gap-3 rounded border border-primary/20 bg-primary/5 p-4"
                         >
                           <Mountain className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                           <p className="text-sm text-foreground font-body leading-relaxed">{point}</p>
@@ -1525,7 +1525,7 @@ const AboutCategory = () => {
                     viewport={{ once: true }}
                     className="relative"
                   >
-                    <div className="rounded-2xl overflow-hidden shadow-xl border border-border aspect-[4/3]">
+                    <div className="rounded overflow-hidden shadow-xl border border-border aspect-[4/3]">
                       <img
                         src={referenceGalleryImages[4].src}
                         alt="Eastern Ghats landscape where LAYA works"
@@ -1542,7 +1542,7 @@ const AboutCategory = () => {
                         </p>
                       </div>
                     </div>
-                    <div className="absolute -z-10 -bottom-4 -right-4 w-2/3 h-2/3 rounded-2xl bg-primary/10" />
+                    <div className="absolute -z-10 -bottom-4 -right-4 w-2/3 h-2/3 rounded bg-primary/10" />
                   </motion.div>
                 </div>
               </div>
@@ -1583,14 +1583,14 @@ const AboutCategory = () => {
               </motion.p>
               <div className="mt-8 space-y-6">
                 {"sections" in page && page.sections?.map((section) => (
-                  <article key={`${page.title}-${section.heading ?? section.paragraph ?? "section"}`} className="rounded-lg border border-border bg-card p-6">
+                  <article key={`${page.title}-${section.heading ?? section.paragraph ?? "section"}`} className="rounded border border-border bg-card p-6">
                     {section.heading && <h2 className="font-heading text-xl md:text-2xl text-foreground mb-3">{section.heading}</h2>}
                     {section.image && (
                       <img
                         src={section.image}
                         alt={section.heading ?? page.title}
                         loading="lazy"
-                        className="mb-4 h-48 w-full rounded-lg object-cover"
+                        className="mb-4 h-48 w-full rounded object-cover"
                       />
                     )}
                     {section.paragraph && <p className="text-foreground/90 font-body text-base md:text-lg leading-relaxed">{section.paragraph}</p>}
@@ -1609,7 +1609,7 @@ const AboutCategory = () => {
               </div>
               <div className="mt-8 grid gap-4">
                 {"points" in page && page.points?.map((point) => (
-                  <article key={point} className="rounded-lg border border-border bg-card p-5">
+                  <article key={point} className="rounded border border-border bg-card p-5">
                     <p className="text-foreground font-body text-base md:text-lg leading-relaxed break-words">{point}</p>
                   </article>
                 ))}

@@ -48,7 +48,7 @@ const Impact = () => (
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="p-6 rounded-xl border border-border bg-card"
+                className="p-6 rounded border border-border bg-card"
                 role="article"
                 aria-label={`${item.title}: ${item.desc}`}
               >

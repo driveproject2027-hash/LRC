@@ -216,9 +216,9 @@ const WhatWeDoCategory = () => {
               viewport={{ once: true }}
               className="mb-20"
             >
-              <div className="laya-panel-solid rounded-3xl shadow-xl p-8 md:p-12 border border-[#5BC0DE]/20">
+              <div className="laya-panel-solid rounded shadow-xl p-8 md:p-12 border border-[#5BC0DE]/20">
                 <div className="flex items-start gap-4 mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#5BC0DE] to-[#4aa3c0] rounded-2xl flex items-center justify-center shrink-0">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#5BC0DE] to-[#4aa3c0] rounded flex items-center justify-center shrink-0">
                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -240,7 +240,7 @@ const WhatWeDoCategory = () => {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: index * 0.12, duration: 0.6 }}
-                      className="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-[#5BC0DE]/20"
+                      className="bg-white rounded shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-[#5BC0DE]/20"
                     >
                       {section.heading && (
                         <div className="bg-gradient-to-r from-[#5BC0DE] to-[#4aa3c0] px-8 py-6">
@@ -251,7 +251,7 @@ const WhatWeDoCategory = () => {
                       )}
                       <div className="p-8 md:p-12">
                         {section.image && (
-                          <div className="relative mb-8 group overflow-hidden rounded-2xl">
+                          <div className="relative mb-8 group overflow-hidden rounded">
                             <img
                               src={section.image}
                               alt={section.heading ?? page.title}
@@ -270,7 +270,7 @@ const WhatWeDoCategory = () => {
                           <ul className="space-y-4">
                             {section.bullets.map((item, i) => (
                               <li key={i} className="flex gap-4 text-gray-700 font-body text-lg leading-relaxed items-start">
-                                <div className="w-8 h-8 bg-gradient-to-br from-[#5BC0DE] to-[#4aa3c0] rounded-xl flex items-center justify-center shrink-0 mt-0.5">
+                                <div className="w-8 h-8 bg-gradient-to-br from-[#5BC0DE] to-[#4aa3c0] rounded flex items-center justify-center shrink-0 mt-0.5">
                                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                   </svg>
@@ -293,7 +293,7 @@ const WhatWeDoCategory = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: index * 0.12, duration: 0.6 }}
-                        className="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-[#5BC0DE]/20"
+                        className="bg-white rounded shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-[#5BC0DE]/20"
                       >
                         {section.heading && (
                           <div className="bg-gradient-to-r from-[#5BC0DE] to-[#4aa3c0] px-8 py-6">
@@ -304,7 +304,7 @@ const WhatWeDoCategory = () => {
                         )}
                         <div className="p-8 md:p-12">
                           {section.image && (
-                            <div className="relative mb-8 group overflow-hidden rounded-2xl">
+                            <div className="relative mb-8 group overflow-hidden rounded">
                               <img
                                 src={section.image}
                                 alt={section.heading ?? page.title}
@@ -323,7 +323,7 @@ const WhatWeDoCategory = () => {
                             <ul className="space-y-4">
                               {section.bullets.map((item, i) => (
                                 <li key={i} className="flex gap-4 text-gray-700 font-body text-lg leading-relaxed items-start">
-                                  <div className="w-8 h-8 bg-gradient-to-br from-[#5BC0DE] to-[#4aa3c0] rounded-xl flex items-center justify-center shrink-0 mt-0.5">
+                                  <div className="w-8 h-8 bg-gradient-to-br from-[#5BC0DE] to-[#4aa3c0] rounded flex items-center justify-center shrink-0 mt-0.5">
                                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
@@ -348,7 +348,7 @@ const WhatWeDoCategory = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.12, duration: 0.6 }}
-                    className="bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-[#5BC0DE]/20"
+                    className="bg-white rounded shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-[#5BC0DE]/20"
                   >
                     {section.heading && (
                       <div className="bg-gradient-to-r from-[#5BC0DE] to-[#4aa3c0] px-8 py-6">
@@ -359,7 +359,7 @@ const WhatWeDoCategory = () => {
                     )}
                     <div className="p-8 md:p-12">
                       {section.image && (
-                        <div className="relative mb-8 group overflow-hidden rounded-2xl">
+                        <div className="relative mb-8 group overflow-hidden rounded">
                           <img
                             src={section.image}
                             alt={section.heading ?? page.title}
@@ -378,7 +378,7 @@ const WhatWeDoCategory = () => {
                         <ul className="space-y-4">
                           {section.bullets.map((item, i) => (
                             <li key={i} className="flex gap-4 text-gray-700 font-body text-lg leading-relaxed items-start">
-                              <div className="w-8 h-8 bg-gradient-to-br from-[#5BC0DE] to-[#4aa3c0] rounded-xl flex items-center justify-center shrink-0 mt-0.5">
+                              <div className="w-8 h-8 bg-gradient-to-br from-[#5BC0DE] to-[#4aa3c0] rounded flex items-center justify-center shrink-0 mt-0.5">
                                 <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
@@ -413,7 +413,7 @@ const WhatWeDoCategory = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.1 }}
-                        className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 hover:bg-white/20 transition-all"
+                        className="bg-white/10 backdrop-blur-sm border border-white/20 rounded p-6 hover:bg-white/20 transition-all"
                       >
                         <p className="text-white font-body text-base leading-relaxed">{item}</p>
                       </motion.div>

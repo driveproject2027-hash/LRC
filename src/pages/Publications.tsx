@@ -377,7 +377,7 @@ const Publications = () => {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-center py-16 px-6 rounded-2xl border border-dashed border-border bg-card"
+                className="text-center py-16 px-6 rounded border border-dashed border-border bg-card"
               >
                 <FileText className="h-12 w-12 text-muted-foreground/50 mx-auto mb-4" />
                 <h3 className="font-heading text-lg font-semibold text-foreground mb-2">No publications found</h3>
@@ -403,7 +403,7 @@ const Publications = () => {
                           ? { href: item.link, target: "_blank", rel: "noreferrer" }
                           : {})}
                         aria-label={`${item.title}. ${item.description}`}
-                        className={`group flex h-full flex-col rounded-xl border border-border bg-card overflow-hidden transition-all duration-300 ${
+                        className={`group flex h-full flex-col rounded border border-border bg-card overflow-hidden transition-all duration-300 ${
                           available
                             ? "hover:shadow-xl hover:border-primary/30 hover:-translate-y-1 cursor-pointer"
                             : "opacity-80"

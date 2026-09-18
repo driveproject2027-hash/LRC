@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
+import { useToast } from "@/hooks/use-toast";
 import MainLayout from "@/layouts/MainLayout";
 import SectionHeading from "@/components/SectionHeading";
 import { Button } from "@/components/ui/button";
@@ -28,8 +29,10 @@ import { referenceProgramImages } from "@/assets/referenceAssets";
 const QUICK_AMOUNTS = [500, 1000, 2500, 5000, 10000];
 
 const heroStats = [
-  { value: "37+", label: "Years of Service", icon: Calendar },
-  { value: "500+", label: "Villages Reached", icon: MapPin },
+  // Kept in sync with the homepage hero stats (Index.tsx) — mismatched
+  // numbers between pages undermine donor trust.
+  { value: "39+", label: "Years of Service", icon: Calendar },
+  { value: "1,500+", label: "Villages Reached", icon: MapPin },
   { value: "10K+", label: "Families Impacted", icon: Users },
   { value: "80G", label: "Tax Exemption", icon: BadgePercent },
 ];
@@ -92,6 +95,10 @@ const Donate = () => {
   const [bankTab, setBankTab] = useState<BankTab>("domestic");
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
+  const [formError, setFormError] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
+  const { toast } = useToast();
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -105,7 +112,26 @@ const Donate = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Thank you for your generosity! Our team will contact you with payment details shortly.");
+    // Lightweight client-side validation so donors get instant feedback
+    // instead of submitting an unusable pledge.
+    if (!formData.name.trim()) {
+      setFormError("Please enter your name.");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      setFormError("Please enter a valid email address.");
+      return;
+    }
+    if (!formData.amount || Number(formData.amount) <= 0) {
+      setFormError("Please choose or enter a donation amount.");
+      return;
+    }
+    setFormError(null);
+    setSubmitted(true);
+    toast({
+      title: "Thank you for your generosity!",
+      description: "Our team will contact you with payment details shortly.",
+    });
   };
 
   const copyToClipboard = (text: string, field: string) => {
@@ -161,7 +187,7 @@ const Donate = () => {
                 transition={{ duration: 0.6, delay: 0.1 }}
                 className="order-1 lg:order-2 relative"
               >
-                <div className="relative rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white/90 aspect-[5/4] lg:aspect-[4/3]">
+                <div className="relative rounded overflow-hidden shadow-2xl border-4 border-white/90 aspect-[5/4] lg:aspect-[4/3]">
                   <img
                     src={referenceProgramImages[1]}
                     alt="Support LAYA's work with Adivasi communities"
@@ -171,7 +197,7 @@ const Donate = () => {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 via-transparent to-transparent" />
                 </div>
-                <div className="absolute -z-10 -bottom-4 -right-4 w-3/4 h-3/4 rounded-2xl bg-primary/15" />
+                <div className="absolute -z-10 -bottom-4 -right-4 w-3/4 h-3/4 rounded bg-primary/15" />
                 <div className="absolute -z-10 -top-3 -left-3 w-20 h-20 rounded-full bg-accent/25 blur-2xl" />
               </motion.div>
             </div>
@@ -185,9 +211,9 @@ const Donate = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 + i * 0.07 }}
-                  className="group relative rounded-xl border border-border bg-card p-4 md:p-5 text-center shadow-sm hover:shadow-md hover:border-primary/25 hover:-translate-y-0.5 transition-all duration-300"
+                  className="group relative rounded border border-border bg-card p-4 md:p-5 text-center shadow-sm hover:shadow-md hover:border-primary/25 hover:-translate-y-0.5 transition-all duration-300"
                 >
-                  <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mx-auto mb-3 group-hover:bg-primary/15 transition-colors">
+                  <div className="w-9 h-9 rounded bg-primary/10 flex items-center justify-center mx-auto mb-3 group-hover:bg-primary/15 transition-colors">
                     <stat.icon className="h-4 w-4 text-primary" />
                   </div>
                   <p className="font-heading text-xl md:text-2xl font-bold text-foreground">
@@ -216,9 +242,9 @@ const Donate = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08 }}
-                  className="p-6 rounded-xl border border-border bg-card hover:shadow-md hover:border-primary/30 transition-all duration-300"
+                  className="p-6 rounded border border-border bg-card hover:shadow-md hover:border-primary/30 transition-all duration-300"
                 >
-                  <div className="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                  <div className="w-11 h-11 rounded bg-primary/10 flex items-center justify-center mb-4">
                     <area.icon className="h-5 w-5 text-primary" />
                   </div>
                   <h3 className="font-heading text-base font-semibold text-foreground mb-2">
@@ -245,9 +271,30 @@ const Donate = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-sm"
+                className="rounded border border-border bg-card p-6 md:p-8 shadow-sm"
               >
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  {submitted ? (
+                    <div
+                      className="flex items-start gap-3 rounded border border-[var(--laya-cyan)]/40 bg-[var(--laya-cyan)]/10 p-5 text-foreground"
+                      role="status"
+                    >
+                      <Check className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-heading text-sm font-semibold">Pledge received!</p>
+                        <p className="text-sm text-muted-foreground font-body mt-1">
+                          Thank you, {formData.name.trim()}. Our team will contact you at {formData.email} with
+                          payment details shortly.
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                  {formError && (
+                    <p className="text-sm text-destructive font-body" role="alert">
+                      {formError}
+                    </p>
+                  )}
                   <div className="space-y-3">
                     <Label className="font-body text-foreground">Select Amount (₹)</Label>
                     <div className="flex flex-wrap gap-2">
@@ -352,9 +399,11 @@ const Donate = () => {
                   <Button type="submit" size="lg" className="w-full text-base font-semibold">
                     Proceed to Donate
                   </Button>
+                    </>
+                  )}
                 </form>
 
-                <div className="mt-6 flex items-start gap-3 rounded-xl border border-primary/20 bg-primary/5 p-4">
+                <div className="mt-6 flex items-start gap-3 rounded border border-primary/20 bg-primary/5 p-4">
                   <AlertCircle className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                   <div>
                     <h3 className="font-heading text-sm font-semibold text-foreground mb-1">
@@ -374,7 +423,7 @@ const Donate = () => {
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  className="rounded-2xl border border-border bg-card overflow-hidden shadow-sm"
+                  className="rounded border border-border bg-card overflow-hidden shadow-sm"
                 >
                   <div className="bg-primary px-6 py-4">
                     <div className="flex items-center gap-2 text-primary-foreground">
@@ -384,11 +433,11 @@ const Donate = () => {
                   </div>
 
                   <div className="p-4 border-b border-border">
-                    <div className="flex rounded-lg bg-muted p-1 gap-1">
+                    <div className="flex rounded bg-muted p-1 gap-1">
                       <button
                         type="button"
                         onClick={() => setBankTab("domestic")}
-                        className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-md text-xs font-body font-medium transition-all ${
+                        className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded text-xs font-body font-medium transition-all ${
                           bankTab === "domestic"
                             ? "bg-card text-foreground shadow-sm"
                             : "text-muted-foreground hover:text-foreground"
@@ -400,7 +449,7 @@ const Donate = () => {
                       <button
                         type="button"
                         onClick={() => setBankTab("foreign")}
-                        className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-md text-xs font-body font-medium transition-all ${
+                        className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded text-xs font-body font-medium transition-all ${
                           bankTab === "foreign"
                             ? "bg-card text-foreground shadow-sm"
                             : "text-muted-foreground hover:text-foreground"
@@ -430,7 +479,7 @@ const Donate = () => {
                             <button
                               type="button"
                               onClick={() => copyToClipboard(value, fieldKey)}
-                              className="p-1.5 hover:bg-muted rounded-md transition-colors shrink-0"
+                              className="p-1.5 hover:bg-muted rounded transition-colors shrink-0"
                               aria-label={`Copy ${label}`}
                             >
                               {copiedField === fieldKey ? (
@@ -451,7 +500,7 @@ const Donate = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.1 }}
-                  className="rounded-2xl bg-primary p-6 text-primary-foreground shadow-sm"
+                  className="rounded bg-primary p-6 text-primary-foreground shadow-sm"
                 >
                   <h3 className="font-heading font-semibold text-lg mb-4">Need Help?</h3>
                   <p className="text-sm text-primary-foreground/80 font-body mb-4">
@@ -463,7 +512,7 @@ const Donate = () => {
                       href="mailto:info@laya.org.in"
                       className="flex items-center gap-3 text-sm font-body hover:text-primary-foreground/90 transition-colors"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-primary-foreground/10 flex items-center justify-center shrink-0">
+                      <div className="w-8 h-8 rounded bg-primary-foreground/10 flex items-center justify-center shrink-0">
                         <Mail className="h-4 w-4" />
                       </div>
                       info@laya.org.in
@@ -472,7 +521,7 @@ const Donate = () => {
                       href="tel:+918912737662"
                       className="flex items-center gap-3 text-sm font-body hover:text-primary-foreground/90 transition-colors"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-primary-foreground/10 flex items-center justify-center shrink-0">
+                      <div className="w-8 h-8 rounded bg-primary-foreground/10 flex items-center justify-center shrink-0">
                         <Phone className="h-4 w-4" />
                       </div>
                       +91-891-2737662

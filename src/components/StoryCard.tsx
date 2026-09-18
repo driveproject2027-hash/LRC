@@ -19,7 +19,7 @@ const StoryCard = ({ story, index }: StoryCardProps) => {
       <Link
         to="/publications"
         aria-label={`${story.title}. ${story.excerpt}`}
-        className="group block rounded-xl overflow-hidden bg-card border border-border hover:shadow-lg transition-all duration-300"
+        className="group block rounded overflow-hidden bg-card border border-border hover:shadow-lg transition-all duration-300"
       >
         <div className="aspect-video overflow-hidden">
           <img

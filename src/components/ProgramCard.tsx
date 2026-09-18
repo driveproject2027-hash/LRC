@@ -29,7 +29,7 @@ const ProgramCard = ({ program, index }: ProgramCardProps) => {
       <Link
         to={programPath}
         aria-label={`${program.title}. ${program.description}`}
-        className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border/80 bg-card transition-all duration-500 hover:-translate-y-1 hover:border-[var(--laya-purple)]/35 hover:shadow-xl"
+        className="group flex h-full flex-col overflow-hidden rounded border border-border/80 bg-card transition-all duration-500 hover:-translate-y-1 hover:border-[var(--laya-purple)]/35 hover:shadow-xl"
       >
         <div className="relative aspect-[16/10] overflow-hidden">
           <img

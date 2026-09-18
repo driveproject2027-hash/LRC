@@ -91,7 +91,9 @@ const Header = () => {
     <>
       <div
         ref={chromeRef}
-        className="fixed top-0 left-0 right-0 z-50 max-lg:min-h-[3.75rem]"
+        className={`fixed top-0 left-0 right-0 z-50 max-lg:min-h-[3.75rem] border-b border-white/20 backdrop-blur-md transition-colors duration-300 ${
+          scrolled ? "bg-white/15" : "bg-white/5"
+        }`}
       >
         <header className="bg-transparent transition-all duration-300 ease-in-out">
           <div className={`transition-all duration-300 ease-in-out ${scrolled ? "py-1 lg:py-5" : "pt-1 pb-1.5 lg:py-4"}`}>
@@ -118,7 +120,7 @@ const Header = () => {
                     <Link
                       to={link.path}
                       onClick={() => scrollPageToTop()}
-                      className={`px-1.5 xl:px-2 py-1.5 text-[0.75rem] xl:text-[0.9rem] font-heading font-semibold uppercase tracking-[0.1em] rounded-md transition-colors inline-flex items-center gap-1 whitespace-nowrap ${
+                      className={`px-1.5 xl:px-2 py-1.5 text-[0.75rem] xl:text-[0.9rem] font-heading font-semibold uppercase tracking-[0.1em] rounded transition-colors inline-flex items-center gap-1 whitespace-nowrap ${
                         isActiveLink(link.path, Boolean(link.dropdown))
                           ? "bg-white text-primary"
                           : "text-white/90 hover:text-white hover:bg-white/15"
@@ -130,7 +132,7 @@ const Header = () => {
                       )}
                     </Link>
                     {link.dropdown && (
-                      <div className="absolute left-0 top-full mt-2 min-w-[280px] bg-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transform group-hover:translate-y-0 translate-y-2 transition-all duration-300 ease-out z-50">
+                      <div className="absolute left-0 top-full mt-2 min-w-[280px] bg-white rounded shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transform group-hover:translate-y-0 translate-y-2 transition-all duration-300 ease-out z-50">
                         {link.dropdown.map((item) => (
                           <Link
                             key={item.path}
@@ -147,7 +149,7 @@ const Header = () => {
                 ))}
                 <button
                   onClick={() => setContactOpen(true)}
-                  className="px-1.5 xl:px-2 py-1.5 text-[0.75rem] xl:text-[0.9rem] font-heading font-semibold uppercase tracking-[0.1em] rounded-md transition-colors text-white/85 hover:text-white hover:bg-white/15"
+                  className="px-1.5 xl:px-2 py-1.5 text-[0.75rem] xl:text-[0.9rem] font-heading font-semibold uppercase tracking-[0.1em] rounded transition-colors text-white/85 hover:text-white hover:bg-white/15"
                 >
                   Contact
                 </button>
@@ -156,7 +158,7 @@ const Header = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="lg:hidden ml-auto text-white hover:text-white hover:bg-white/20 bg-white/10 rounded-lg p-3 transition-all duration-300 hover:scale-110"
+                className="lg:hidden ml-auto text-white hover:text-white hover:bg-white/20 bg-white/10 rounded p-3 transition-all duration-300 hover:scale-110"
                 onClick={() => setIsOpen(!isOpen)}
                 aria-label="Toggle menu"
               >
@@ -180,7 +182,7 @@ const Header = () => {
                             onClick={() =>
                               setExpandedDropdown(expandedDropdown === link.path ? null : link.path)
                             }
-                            className={`w-full text-left block px-5 py-4 rounded-xl text-sm font-heading uppercase tracking-[0.08em] transition-all duration-300 flex items-center justify-between shadow-sm hover:shadow-md ${
+                            className={`w-full text-left block px-5 py-4 rounded text-sm font-heading uppercase tracking-[0.08em] transition-all duration-300 flex items-center justify-between shadow-sm hover:shadow-md ${
                               isActiveLink(link.path, Boolean(link.dropdown))
                                 ? "bg-white/95 text-[var(--laya-purple)] shadow-lg transform scale-105"
                                 : "text-white/95 hover:text-white hover:bg-white/20"
@@ -200,7 +202,7 @@ const Header = () => {
                               scrollPageToTop();
                               setIsOpen(false);
                             }}
-                            className={`block px-5 py-4 rounded-xl text-sm font-heading uppercase tracking-[0.08em] transition-all duration-300 shadow-sm hover:shadow-md ${
+                            className={`block px-5 py-4 rounded text-sm font-heading uppercase tracking-[0.08em] transition-all duration-300 shadow-sm hover:shadow-md ${
                               isActiveLink(link.path, Boolean(link.dropdown))
                                 ? "bg-white/95 text-[var(--laya-purple)] shadow-lg transform scale-105"
                                 : "text-white/95 hover:text-white hover:bg-white/20"
@@ -224,7 +226,7 @@ const Header = () => {
                                     scrollPageToTop();
                                     setIsOpen(false);
                                   }}
-                                  className="block rounded-lg px-4 py-3 text-white/85 hover:bg-white/25 hover:text-white transition-all duration-300 text-sm font-medium shadow-sm hover:shadow-md"
+                                  className="block rounded px-4 py-3 text-white/85 hover:bg-white/25 hover:text-white transition-all duration-300 text-sm font-medium shadow-sm hover:shadow-md"
                                 >
                                   {item.label}
                                 </Link>
@@ -239,7 +241,7 @@ const Header = () => {
                         setContactOpen(true);
                         setIsOpen(false);
                       }}
-                      className="block w-full text-left px-5 py-4 rounded-xl text-sm font-heading uppercase tracking-[0.08em] text-white/95 hover:text-white hover:bg-white/20 transition-all duration-300 shadow-sm hover:shadow-md"
+                      className="block w-full text-left px-5 py-4 rounded text-sm font-heading uppercase tracking-[0.08em] text-white/95 hover:text-white hover:bg-white/20 transition-all duration-300 shadow-sm hover:shadow-md"
                     >
                       Contact
                     </button>
@@ -250,22 +252,22 @@ const Header = () => {
           </div>
         </header>
 
-        {/* White quote bar — bottom edge of sticky chrome; content scrolls under this line */}
-        <div className="bg-white hidden lg:block">
+        {/* Glass quote bar — bottom edge of sticky chrome; content scrolls under this line */}
+        <div className="hidden lg:block">
           <div className="max-w-7xl mx-auto px-4 lg:px-5 py-2 lg:py-3">
             <div className="flex flex-col md:flex-row items-center gap-2 lg:gap-3">
               <div className="flex flex-col items-center gap-1 flex-1">
-                <span className="text-[10px] lg:text-sm text-gray-800 italic font-serif font-medium bg-gradient-to-r from-gray-100 to-transparent px-2 lg:px-4 py-1 rounded text-center leading-tight">
+                <span className="text-[10px] lg:text-sm text-white/90 italic font-serif font-medium bg-gradient-to-r from-white/15 to-transparent px-2 lg:px-4 py-1 rounded text-center leading-tight">
                   "Give me the strength never to disown the poor or bend my knees before insolent might"
                 </span>
-                <span className="text-[10px] lg:text-xs text-[var(--laya-header)] font-semibold">
+                <span className="text-[10px] lg:text-xs text-white font-semibold">
                   — Rabindranath Tagore
                 </span>
               </div>
               <Link
                 to="/donate"
                 onClick={() => scrollPageToTop()}
-                className="px-4 py-2 bg-[var(--laya-header)] text-white text-sm font-semibold rounded-lg hover:opacity-90 transition-colors whitespace-nowrap"
+                className="px-4 py-2 bg-white text-[var(--laya-purple)] text-sm font-semibold rounded hover:bg-white/90 transition-colors whitespace-nowrap shadow-md"
               >
                 Donate
               </Link>

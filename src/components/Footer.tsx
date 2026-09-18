@@ -28,10 +28,12 @@ const Footer = () => {
               {[
                 { label: "About LAYA", path: "/about" },
                 { label: "What We Do", path: "/programs" },
+                { label: "Stories", path: "/stories" },
                 { label: "Publications", path: "/publications" },
-                { label: "Donate", path: "/donate" },
+                { label: "Team", path: "/team" },
                 { label: "Impact", path: "/impact" },
                 { label: "Gallery", path: "/gallery" },
+                { label: "Donate", path: "/donate" },
               ].map((link) => (
                 <li key={link.path}>
                   <Link
