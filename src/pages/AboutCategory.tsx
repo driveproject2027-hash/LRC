@@ -188,7 +188,7 @@ const aboutPages = {
       {
         heading: "Management",
         paragraph:
-          "The management comprises of the Executive Director, who takes overall direction and is responsible for resource generation for the organization. The Executive Director is assisted by an Associate Director, who besides taking responsibility for project direction related tasks also takes specific responsibility for Finance and Administration. The Directors are supported by a Program Policy Team comprising of the unit facilitators and personnel in senior management roles.",
+          "The management comprises the Executive Director, who takes overall direction and is responsible for resource generation for the organization. The Executive Director is assisted by an Associate Director, who, besides taking responsibility for project-direction-related tasks, also takes specific responsibility for Finance and Administration. The Directors are supported by a Program Policy Team comprising the unit facilitators and personnel in senior management roles.",
         bullets: [
           "Executive Director: Overall direction and resource generation",
           "Associate Director: Project direction, Finance and Administration",
@@ -205,8 +205,8 @@ const aboutPages = {
           "Our organisational systems encourage the units to function autonomously. In due time, LAYA envisages that some of these units will emerge as autonomous organisations and it will provide a co-ordinating link for a network of organisations. The system encourages transparency and maintains broad policies to facilitate management efficiency.",
         bullets: [
           "Units encouraged to function autonomously in administrative matters",
-          "Organic linkages and collaboration between units on program front",
-          "Future vision: Units emerging as autonomous organisations with LAYA as coordinating link",
+          "Organic linkages and collaboration between units on the program front",
+          "Future vision: Units emerging as autonomous organisations with LAYA as the coordinating link",
           "Transparency and broad policies for management efficiency",
           "Financial standards and principles for daily functioning at main and field offices",
           "Enhanced financial control systems at main office and field offices",
@@ -218,18 +218,18 @@ const aboutPages = {
       {
         heading: "Monitoring and Reporting Systems",
         paragraph:
-          "The LAYA team meets regularly to coordinate, report and plan strategically. The team building and linkages are maintained among staff through structured meetings and learning sharing sessions.",
+          "The LAYA team meets regularly to coordinate, report and plan strategically. Team building and linkages are maintained among staff through structured meetings and learning-sharing sessions.",
         bullets: [
           "Monthly and fortnightly staff meetings organized at the unit and Resource Center level",
           "Quarterly coordination unit meetings organized at unit levels",
-          "Six monthly strategic meetings with the representatives of each of the units",
+          "Six-monthly strategic meetings with the representatives of each of the units",
           "Policy meetings held annually and when required",
           "Sharing of learning from workshops, seminars, training programs attended",
         ],
       },
     ],
     points: [
-      "The thrust areas, goals and specific objectives, planned activities for each program and the expected outcome are the basis for the monitoring and reporting systems.",
+      "The thrust areas, goals and specific objectives, planned activities for each program and the expected outcomes form the basis of the monitoring and reporting systems.",
     ],
     image: referenceProgramImages[2],
   },
@@ -502,6 +502,8 @@ const timelineAccents = [
 ];
 
 const wayWeWorkIcons = [Users, Settings, ClipboardList] as const;
+const wayWeWorkAccents = ["bg-primary/10", "bg-accent/10", "bg-violet-500/10"] as const;
+const wayWeWorkIconColors = ["text-primary", "text-accent", "text-violet-500"] as const;
 
 const heroLabels: Record<string, string> = {
   "/about/who-we-are": "Resource Center for Adivasis",
@@ -567,7 +569,7 @@ const AboutCategory = () => {
                     { value: "1985", label: "Founded", icon: Sparkles },
                     { value: "7", label: "Journey Phases", icon: Target },
                     { value: "6", label: "Program Areas", icon: Leaf },
-                    { value: "37+", label: "Years of Service", icon: Trees },
+                    { value: "39+", label: "Years of Service", icon: Trees },
                   ].map((stat, i) => (
                     <motion.div
                       key={stat.label}
@@ -789,9 +791,9 @@ const AboutCategory = () => {
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
                   {[
                     { value: "3", label: "Core Pillars", icon: Layers },
-                    { value: "Unit", label: "Based Approach", icon: Users },
-                    { value: "100%", label: "Transparency", icon: Eye },
-                    { value: "CBO", label: "Partnership Model", icon: Globe },
+                    { value: "6", label: "Field Units", icon: Users },
+                    { value: "39+", label: "Years of Experience", icon: Eye },
+                    { value: "1,500+", label: "Villages via CBO Network", icon: Globe },
                   ].map((stat, i) => (
                     <motion.div
                       key={stat.label}
@@ -818,6 +820,7 @@ const AboutCategory = () => {
                   page.sections?.map((section, sectionIndex) => {
                     const Icon = wayWeWorkIcons[sectionIndex] ?? Layers;
                     const isMonitoring = sectionIndex === 2;
+                    const iconColor = wayWeWorkIconColors[sectionIndex] ?? "text-primary";
 
                     return (
                       <motion.article
@@ -856,7 +859,11 @@ const AboutCategory = () => {
                                   key={bullet}
                                   className="flex items-start gap-3 p-4 rounded border border-border bg-muted/40 hover:bg-muted/70 transition-colors"
                                 >
-                                  <div className="w-8 h-8 rounded bg-primary text-primary-foreground flex items-center justify-center shrink-0 text-sm font-bold font-heading">
+                                  <div
+                                    className={`w-8 h-8 rounded flex items-center justify-center shrink-0 text-sm font-bold font-heading text-primary-foreground ${
+                                      i % 2 === 0 ? "bg-primary" : "bg-accent"
+                                    }`}
+                                  >
                                     {i + 1}
                                   </div>
                                   <p className="text-sm text-foreground font-body leading-relaxed">{bullet}</p>
@@ -870,7 +877,7 @@ const AboutCategory = () => {
                                   key={bullet}
                                   className="flex items-start gap-2.5 p-3 rounded border border-border bg-background"
                                 >
-                                  <Check className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                                  <Check className={`h-4 w-4 mt-0.5 shrink-0 ${iconColor}`} />
                                   <span className="text-sm text-foreground font-body leading-relaxed">{bullet}</span>
                                 </li>
                               ))}
@@ -885,6 +892,14 @@ const AboutCategory = () => {
 
             <section className="section-padding bg-section-alt">
               <div className="container-narrow mx-auto">
+                <SectionHeading
+                  title={isWayWeWork ? "The Monitoring Foundation" : "How We Operate in the Field"}
+                  subtitle={
+                    isWayWeWork
+                      ? "What our monitoring and reporting systems are built on"
+                      : "Our field presence in context"
+                  }
+                />
                 {"points" in page &&
                   page.points?.map((point) => (
                     <motion.div
@@ -899,7 +914,7 @@ const AboutCategory = () => {
                       </div>
                       <div>
                         <h3 className="font-heading text-lg font-semibold text-foreground mb-2">
-                          Monitoring Foundation
+                          {isWayWeWork ? "Monitoring Foundation" : "Field Foundation"}
                         </h3>
                         <p className="text-sm text-muted-foreground font-body leading-relaxed">{point}</p>
                       </div>
@@ -916,10 +931,12 @@ const AboutCategory = () => {
                   viewport={{ once: true }}
                 >
                   <h2 className="font-heading text-2xl md:text-3xl font-bold text-primary-foreground mb-3">
-                    Governance & Accountability
+                    {isWayWeWork ? "Systems Backed by Accountability" : "Governance & Accountability"}
                   </h2>
                   <p className="text-primary-foreground/80 font-body max-w-xl mx-auto mb-6">
-                    Learn about LAYA&apos;s governance structure, board, and financial transparency.
+                    {isWayWeWork
+                      ? "Our management and monitoring systems are grounded in the same governance structure and financial transparency that guide the whole organization."
+                      : "Learn about LAYA's governance structure, board, and financial transparency."}
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     <Button
@@ -1387,8 +1404,8 @@ const AboutCategory = () => {
                   {[
                     { value: "5", label: "Field Locations", icon: MapPin },
                     { value: "4", label: "Districts Covered", icon: Navigation },
-                    { value: "37+", label: "Years in Region", icon: Trees },
-                    { value: "500+", label: "Villages Reached", icon: Mountain },
+                    { value: "39+", label: "Years in Region", icon: Trees },
+                    { value: "1,500+", label: "Villages Reached", icon: Mountain },
                   ].map((stat, i) => (
                     <motion.div
                       key={stat.label}
