@@ -1,14 +1,13 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
+# robots.txt — LAYA
+#
+# One permissive rule is sufficient: every user-agent is allowed everywhere.
+# The previous version listed Googlebot, Bingbot, Twitterbot and
+# facebookexternalhit separately and then repeated the same `Allow: /` under
+# `User-agent: *`, which is redundant — those four are already covered by the
+# wildcard. It also had no Sitemap directive, which is the one thing here that
+# actually helps discovery.
 
 User-agent: *
 Allow: /
+
+Sitemap: https://laya.org.in/sitemap.xml

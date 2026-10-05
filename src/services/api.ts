@@ -189,7 +189,6 @@ export const mockPartners: Partner[] = [
 export const mockTeam: TeamMember[] = [
   { id: 1, name: "Nafisa Goga D'Souza", designation: "Executive Director", photo: "", bio: "Founder and visionary leader of LAYA, dedicated to Adivasi rights and development for over three decades." },
   { id: 2, name: "Dominic D'Souza", designation: "Program Director", photo: "", bio: "Leading LAYA's program strategy and community engagement across the Eastern Ghats region." },
-  { id: 3, name: "Myron Mendes", designation: "Senior Program Manager", photo: "", bio: "Spearheading governance and land rights programs with deep field experience." },
 ];
 
 export const mockTestimonials: Testimonial[] = [

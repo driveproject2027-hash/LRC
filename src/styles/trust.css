@@ -1,0 +1,517 @@
+/* ==========================================================================
+   LAYA — PARTNERS, IMPACT & TRANSPARENCY
+   --------------------------------------------------------------------------
+   Three institutional surfaces. Direction: credibility, not decoration.
+
+   Shared approach:
+     - typographic ledgers and large figures rather than card grids
+     - hairline rules instead of boxes
+     - the warm ivory canvas throughout
+   ========================================================================== */
+
+@layer components {
+  /* ------------------------------------------------------------------------
+     PAGE HEADER — same archival plate as About and Programmes
+     ------------------------------------------------------------------------ */
+
+  .trust-header {
+    padding-block-start: calc(var(--laya-chrome-height) + var(--space-2xl));
+    padding-block-end: var(--space-lg);
+    padding-inline: var(--gutter);
+    background-color: var(--surface-canvas);
+  }
+
+  .trust-header__inner {
+    max-width: var(--container-content);
+    margin-inline: auto;
+  }
+
+  .trust-header__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .trust-header__eyebrow::before {
+    content: "";
+    width: 1.5rem;
+    height: 1px;
+    background-color: var(--laya-forest-600);
+  }
+
+  .trust-header__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-display);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    font-weight: 600;
+    color: var(--text-primary);
+    text-wrap: balance;
+    max-width: 22ch;
+  }
+
+  .trust-header__lead {
+    margin-top: var(--space-xs);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-width: 48rem;
+  }
+
+  .trust-band {
+    padding-block: var(--section-y);
+    padding-inline: var(--gutter);
+    background-color: var(--surface-canvas);
+  }
+
+  .trust-band--warm {
+    background-color: var(--surface-warm);
+    border-block: var(--hairline) solid var(--border-subtle);
+  }
+
+  .trust-band--sunken {
+    background-color: var(--surface-sunken);
+    border-block: var(--hairline) solid var(--border-subtle);
+  }
+
+  .trust-heading {
+    max-width: 48rem;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .trust-heading__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    color: var(--text-primary);
+    text-wrap: balance;
+    margin-top: var(--space-2xs);
+    margin-bottom: var(--space-xs);
+  }
+
+  .trust-heading__intro {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    /* Cap the measure so lines stay in the 45-75 character range. */
+    max-width: var(--measure);
+  }
+
+  /* ------------------------------------------------------------------------
+     PARTNERS — institutional ledger
+     ------------------------------------------------------------------------
+     Not a logo wall (no logo files exist) and not acronym boxes. Each partner
+     is a ruled record: name, location, reported contribution.
+     ------------------------------------------------------------------------ */
+
+  .partner-list {
+    border-top: 2px solid var(--laya-forest-600);
+  }
+
+  .partner-row {
+    display: grid;
+    gap: var(--space-2xs) var(--space-lg);
+    padding-block: var(--space-md);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+    align-items: baseline;
+  }
+
+  @media (min-width: 768px) {
+    .partner-row {
+      grid-template-columns: minmax(0, 1.7fr) minmax(8rem, 0.7fr) minmax(9rem, 0.6fr);
+    }
+  }
+
+  .partner-row__name {
+    font-family: var(--font-sans);
+    font-size: var(--text-body-lg);
+    font-weight: 600;
+    line-height: var(--leading-snug);
+    color: var(--text-primary);
+  }
+
+  .partner-row__location {
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+  }
+
+  .partner-row__amount {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-brand);
+  }
+
+  @media (min-width: 768px) {
+    .partner-row__amount {
+      text-align: right;
+    }
+  }
+
+  .partner-row__amount--none {
+    color: var(--text-muted);
+  }
+
+  /* Column captions above the ledger */
+  .partner-captions {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .partner-captions {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(8rem, 0.7fr) minmax(9rem, 0.6fr);
+      gap: var(--space-lg);
+      padding-bottom: var(--space-2xs);
+    }
+  }
+
+  .partner-caption {
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  @media (min-width: 768px) {
+    .partner-caption--end {
+      text-align: right;
+    }
+  }
+
+  /* Source note — states where the figures come from. */
+  .trust-note {
+    margin-top: var(--space-lg);
+    padding: var(--space-sm) var(--space-md);
+    border-left: 2px solid var(--laya-forest-500);
+    background-color: var(--laya-forest-50);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+    max-width: 52rem;
+  }
+
+  .trust-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+  }
+
+  /* ------------------------------------------------------------------------
+     IMPACT — editorial figures
+     ------------------------------------------------------------------------ */
+
+  .impact-figures {
+    display: grid;
+    gap: var(--space-lg);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: 900px) {
+    .impact-figures {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-xl);
+    }
+  }
+
+  .impact-figure {
+    padding-top: var(--space-md);
+    border-top: 2px solid var(--laya-forest-600);
+  }
+
+  .impact-figure__value {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: clamp(2.25rem, 1.5rem + 2.8vw, 3.75rem);
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .impact-figure__label {
+    display: block;
+    margin-top: var(--space-2xs);
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-brand);
+  }
+
+  .impact-figure__desc {
+    margin-top: var(--space-2xs);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  /* Programme-level outcomes — alternating ruled records. */
+  .outcome-record {
+    display: grid;
+    gap: var(--space-sm) var(--space-2xl);
+    padding-block: var(--space-lg);
+    border-top: var(--hairline) solid var(--border-subtle);
+  }
+
+  @media (min-width: 900px) {
+    .outcome-record {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(9rem, 0.5fr);
+      align-items: baseline;
+    }
+  }
+
+  .outcome-record:last-of-type {
+    border-bottom: var(--hairline) solid var(--border-subtle);
+  }
+
+  .outcome-record__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h4);
+    line-height: var(--leading-snug);
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .outcome-record__desc {
+    font-size: var(--text-body);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .outcome-record__metric {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--text-brand);
+    white-space: nowrap;
+  }
+
+  @media (min-width: 900px) {
+    .outcome-record__metric {
+      text-align: right;
+    }
+  }
+
+  /* ------------------------------------------------------------------------
+     FIELD PRESENCE
+     ------------------------------------------------------------------------
+     A structured location record, NOT a drawn map.
+     No boundary file or coordinates exist in the repository, so plotting
+     villages would mean inventing geography. Real districts and pincodes are
+     listed instead.
+     ------------------------------------------------------------------------ */
+
+  .presence-grid {
+    display: grid;
+    gap: var(--space-2xl);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 900px) {
+    .presence-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+    }
+  }
+
+  .presence-districts {
+    list-style: none;
+    margin: var(--space-md) 0 0;
+    padding: 0;
+    border-top: var(--hairline) solid var(--border-default);
+  }
+
+  .presence-district {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding-block: var(--space-2xs);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+    font-size: var(--text-body);
+    color: var(--text-primary);
+  }
+
+  .presence-district__mark {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--text-muted);
+  }
+
+  .presence-locations {
+    border-top: var(--hairline) solid var(--border-default);
+  }
+
+  .presence-location {
+    display: grid;
+    gap: 0.125rem var(--space-md);
+    padding-block: var(--space-sm);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+  }
+
+  @media (min-width: 640px) {
+    .presence-location {
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    }
+  }
+
+  /*
+    The name and the type label are separate rows, never two inline runs on
+    one line. `align-items: flex-start` stops the label from stretching the
+    column to the full grid track width.
+  */
+  .presence-location__head {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.125rem;
+    min-width: 0;
+  }
+
+  .presence-location__name {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 600;
+    line-height: var(--leading-snug);
+    color: var(--text-primary);
+  }
+
+  .presence-location__type {
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .presence-location__meta {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  /* ------------------------------------------------------------------------
+     TRANSPARENCY — document ledger
+     ------------------------------------------------------------------------ */
+
+  .transparency-grid {
+    display: grid;
+    gap: var(--space-lg);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 768px) {
+    .transparency-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .transparency-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .transparency-doc {
+    display: flex;
+    gap: var(--space-sm);
+    padding-top: var(--space-md);
+    border-top: 2px solid var(--laya-forest-600);
+  }
+
+  .transparency-doc__icon {
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--laya-forest-700);
+    background-color: var(--laya-forest-50);
+    border: var(--hairline) solid var(--laya-forest-200);
+    border-radius: var(--radius-sm);
+  }
+
+  .transparency-doc__glyph {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  .transparency-doc__kind {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 0.25rem;
+  }
+
+  .transparency-doc__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h4);
+    line-height: var(--leading-snug);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  .transparency-doc__desc {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .transparency-doc__meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--text-muted);
+  }
+
+  /* Registration facts, set as a clean record list. */
+  .reg-list {
+    display: grid;
+    gap: var(--space-md);
+    margin: 0;
+  }
+
+  @media (min-width: 640px) {
+    .reg-list--two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--space-2xl);
+    }
+  }
+
+  .reg-list__term {
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  .reg-list__value {
+    margin: 0.25rem 0 0;
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-snug);
+    color: var(--text-primary);
+  }
+
+  .reg-list__value--mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+}

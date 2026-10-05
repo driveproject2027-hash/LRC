@@ -1,41 +1,32 @@
-import { useState, useEffect } from "react";
-import logo from "../assets/laya-logo.png";
-
-const Loader = () => {
-  const [loading, setLoading] = useState(true);
-  const [fadeOut, setFadeOut] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setFadeOut(true);
-      setTimeout(() => {
-        setLoading(false);
-      }, 500);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!loading) return null;
-
-  return (
-    <div
-      className={`fixed inset-0 z-[9999] flex items-center justify-center bg-gradient-to-br from-[#5BC0DE] to-[#4aa3c0] transition-all duration-500 ease-in-out ${
-        fadeOut ? "opacity-0 invisible" : "opacity-100 visible"
-      }`}
-    >
-      <div className="text-center">
-        <img
-          src={logo}
-          alt="LAYA Logo"
-          className="h-28 w-28 rounded-full object-cover animate-pulse-logo md:h-32 md:w-32"
-        />
-        <p className="mt-4 text-white/80 text-sm font-heading tracking-wider uppercase animate-pulse">
-          Loading...
-        </p>
-      </div>
-    </div>
-  );
-};
+/**
+ * Route-loading fallback.
+ *
+ * WHAT THIS REPLACED
+ *   The previous `Loader` was a full-screen overlay that forced a hard
+ *   2-second `setTimeout`, then a further 500ms fade — 2.5 seconds of
+ *   artificial delay on every cold load, on top of real network time. It
+ *   also painted a hardcoded cyan gradient (`#5BC0DE` to `#4aa3c0`) left
+ *   over from the pre-Phase-1 design, and announced "Loading..." to screen
+ *   readers for every lazy route chunk.
+ *
+ * WHAT THIS IS NOW
+ *   A genuine Suspense fallback, shown only while a lazy route chunk is
+ *   actually resolving. On a warm cache it never paints at all. It uses the
+ *   design-system canvas so there is no flash of a different colour, and it
+ *   is announced politely rather than as an alert.
+ *
+ * It renders no text which keeps the fallback to a single muted mark, so a
+ * fast chunk swap is invisible rather than a flicker of the word "Loading".
+ */
+const Loader = () => (
+  <div
+    className="flex min-h-[60vh] items-center justify-center"
+    role="status"
+    aria-live="polite"
+    aria-label="Loading page"
+  >
+    <span className="h-8 w-8 animate-pulse rounded-full border border-[var(--border-subtle)] bg-[var(--surface-warm)]" />
+  </div>
+);
 
 export default Loader;

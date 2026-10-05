@@ -1,138 +1,64 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
-import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
+import { AlertCircle, Check, Copy } from "lucide-react";
 import MainLayout from "@/layouts/MainLayout";
-import SectionHeading from "@/components/SectionHeading";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { EditorialLink } from "@/components/home/EditorialLink";
+import { useRevealOnScroll } from "@/hooks/use-reveal-on-scroll";
+import { ROUTES } from "@/lib/routes";
 import {
-  AlertCircle,
-  BadgePercent,
-  Check,
-  Copy,
-  Globe,
-  Heart,
-  Landmark,
-  Mail,
-  MapPin,
-  Phone,
-  ShieldCheck,
-  Sprout,
-  Users,
-  Calendar,
-} from "lucide-react";
-import { referenceProgramImages } from "@/assets/referenceAssets";
-
-const QUICK_AMOUNTS = [500, 1000, 2500, 5000, 10000];
-
-const heroStats = [
-  // Kept in sync with the homepage hero stats (Index.tsx) — mismatched
-  // numbers between pages undermine donor trust.
-  { value: "39+", label: "Years of Service", icon: Calendar },
-  { value: "1,500+", label: "Villages Reached", icon: MapPin },
-  { value: "10K+", label: "Families Impacted", icon: Users },
-  { value: "80G", label: "Tax Exemption", icon: BadgePercent },
-];
-
-const impactAreas = [
-  {
-    icon: Users,
-    title: "Adivasi Rights",
-    description: "Legal advocacy, gram sabha empowerment, and PESA implementation across tribal villages.",
-  },
-  {
-    icon: Sprout,
-    title: "Food Sovereignty",
-    description: "Millet farming revival, watershed management, and sustainable livelihood programs.",
-  },
-  {
-    icon: Heart,
-    title: "Herbal Healthcare",
-    description: "Strengthening community-based herbal medicine systems in remote tribal areas.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Climate Resilience",
-    description: "Building adaptive capacity for Adivasi communities facing climate change.",
-  },
-];
-
-const foreignBankDetails = {
-  "Account Holder": "LAYA",
-  "Account Number": "063310011007529",
-  "Swift Code": "ANDBINBB",
-  "IFSC Code": "ANDB0000633",
-  "Bank Name": "Andhra Bank, Waltair Branch",
-  "Bank Address": "Lawsons Bay, Visakhapatnam",
-  "Beneficiary Address":
-    "LAYA Plot No.110, Near Senora Beach Resorts, Yendada, Visakhapatnam - 530045",
-};
-
-const domesticBankDetails = {
-  "Account Holder": "LAYA",
-  "Account Number": "063310011009657",
-  "IFSC Code": "ANDB0000633",
-  "Bank Name": "Andhra Bank, Waltair Branch",
-  "Bank Address": "Lawsons Bay Colony, Visakhapatnam - 530017",
-  "Beneficiary Address":
-    "LAYA Plot No.110, Near Senora Beach Resorts, Yendada, Visakhapatnam - 530045",
-};
+  BANK_DOMESTIC,
+  BANK_FOREIGN,
+  DONATE_METRICS,
+  DONATE_STATEMENTS,
+  DONATION_PURPOSES,
+} from "@/content/contact";
 
 type BankTab = "domestic" | "foreign";
 
+/**
+ * DONATE  →  /donate
+ * ---------------------------------------------------------------------------
+ * Trustworthy and restrained. No countdown timers, no progress thermometers,
+ * no "only 3 hours left", no emotional pressure language. The page states what
+ * LAYA does, how money can be given, and what the legal position is.
+ *
+ * HONEST MECHANISM
+ *   There is no payment gateway in this project. The page therefore says so
+ *   plainly — contributions are made by bank transfer — rather than implying an
+ *   online payment flow that does not exist. The pledge form records intent so
+ *   the team can follow up.
+ *
+ * METRICS
+ *   Only the four organisation-wide figures from `mockImpactMetrics` are shown.
+ *   A previous "10K+ Families Impacted" stat appeared nowhere else and
+ *   conflicted with a programme-level figure; it has been removed.
+ *
+ * FINANCIAL INFORMATION
+ *   Domestic and foreign (FCRA) account details, 80G status and the FCRA
+ *   registration number are all existing published information, reproduced
+ *   verbatim. Nothing financial has been invented or rounded.
+ */
 const Donate = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    amount: "",
-    message: "",
-  });
-  const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
+  /*
+    Required by every `.reveal` element on this page.
+
+    `.reveal` sets `opacity: 0` until `is-visible` is added by the
+    IntersectionObserver inside this hook. Without the hook the observer never
+    runs, so the metrics row, the donation purposes list and the bank details
+    panel all stayed permanently invisible — measured at opacity 0 while still
+    present in the DOM.
+  */
+  useRevealOnScroll();
+
   const [bankTab, setBankTab] = useState<BankTab>("domestic");
   const [copiedField, setCopiedField] = useState<string | null>(null);
+  const [pledge, setPledge] = useState({ name: "", email: "", amount: "", message: "" });
+  const [pledgeErrors, setPledgeErrors] = useState<Record<string, string | null>>({});
+  const [pledgeSent, setPledgeSent] = useState(false);
 
-  const [formError, setFormError] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState(false);
-  const { toast } = useToast();
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (name === "amount") setSelectedAmount(null);
-  };
-
-  const selectQuickAmount = (amount: number) => {
-    setSelectedAmount(amount);
-    setFormData((prev) => ({ ...prev, amount: String(amount) }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Lightweight client-side validation so donors get instant feedback
-    // instead of submitting an unusable pledge.
-    if (!formData.name.trim()) {
-      setFormError("Please enter your name.");
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      setFormError("Please enter a valid email address.");
-      return;
-    }
-    if (!formData.amount || Number(formData.amount) <= 0) {
-      setFormError("Please choose or enter a donation amount.");
-      return;
-    }
-    setFormError(null);
-    setSubmitted(true);
-    toast({
-      title: "Thank you for your generosity!",
-      description: "Our team will contact you with payment details shortly.",
-    });
-  };
+  const details = bankTab === "foreign" ? BANK_FOREIGN : BANK_DOMESTIC;
 
   const copyToClipboard = (text: string, field: string) => {
     navigator.clipboard.writeText(text);
@@ -140,395 +66,288 @@ const Donate = () => {
     setTimeout(() => setCopiedField(null), 2000);
   };
 
-  const activeBankDetails = bankTab === "foreign" ? foreignBankDetails : domesticBankDetails;
+  const handlePledgeSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const errs: Record<string, string | null> = {
+      name: !pledge.name.trim() ? "Please enter your name." : null,
+      email: !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(pledge.email.trim())
+        ? "Please enter a valid email address."
+        : null,
+      amount:
+        !pledge.amount || Number(pledge.amount) <= 0
+          ? "Please enter a donation amount."
+          : null,
+    };
+    setPledgeErrors(errs);
+    if (Object.values(errs).some((v) => v !== null)) return;
+    setPledgeSent(true);
+  };
 
   return (
     <>
       <Helmet>
-        <title>Donate | Support LAYA</title>
+        <title>Donate | LAYA</title>
         <meta
           name="description"
-          content="Support LAYA's work with Adivasi communities through donations and partnerships."
+          content="Support LAYA's work with Adivasi communities in the Eastern Ghats. Bank transfer details, FCRA registration and 80G tax exemption information."
         />
+        <link rel="canonical" href="https://laya.org.in/donate" />
       </Helmet>
+
       <MainLayout>
-        <section className="laya-section pt-8 lg:pt-10 pb-8 md:pb-12">
-          <div className="container-narrow mx-auto">
-            <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
-              <motion.div
-                initial={{ opacity: 0, x: -24 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6 }}
-                className="order-2 lg:order-1"
-              >
-                <p className="laya-label mb-4">Give with Purpose</p>
-                <h1 className="font-heading text-4xl md:text-5xl lg:text-[3.25rem] font-bold text-white leading-tight mb-5">
-                  Support Our Mission
-                </h1>
-                <p className="text-lg text-white/85 font-body leading-relaxed max-w-lg mb-8">
-                  Your contribution empowers Adivasi communities through rights, health, education,
-                  and sustainable livelihoods across the Eastern Ghats.
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 text-white text-sm font-body font-medium border border-white/25">
-                    <ShieldCheck className="h-4 w-4" />
-                    Section 80G Tax Exempt
-                  </span>
-                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-white/90 text-sm font-body font-medium border border-white/25">
-                    <Heart className="h-4 w-4 text-accent" />
-                    FCRA Registered
-                  </span>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 24 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="order-1 lg:order-2 relative"
-              >
-                <div className="relative rounded overflow-hidden shadow-2xl border-4 border-white/90 aspect-[5/4] lg:aspect-[4/3]">
-                  <img
-                    src={referenceProgramImages[1]}
-                    alt="Support LAYA's work with Adivasi communities"
-                    className="w-full h-full object-cover"
-                    width={1920}
-                    height={1080}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 via-transparent to-transparent" />
-                </div>
-                <div className="absolute -z-10 -bottom-4 -right-4 w-3/4 h-3/4 rounded bg-primary/15" />
-                <div className="absolute -z-10 -top-3 -left-3 w-20 h-20 rounded-full bg-accent/25 blur-2xl" />
-              </motion.div>
-            </div>
+        <header className="ut-header">
+          <div className="ut-header__inner">
+            <p className="ut-header__eyebrow type-eyebrow">Support LAYA</p>
+            <h1 className="ut-header__title">Support our work</h1>
+            <p className="ut-header__lead">
+              Contributions support rights work, herbal health care, sustainable livelihoods,
+              lifelong learning and climate resilience with Adivasi communities across the Eastern
+              Ghats.
+            </p>
           </div>
+        </header>
 
-          <div className="container-narrow mx-auto px-4 pb-12 md:pb-16">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-              {heroStats.map((stat, i) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 + i * 0.07 }}
-                  className="group relative rounded border border-border bg-card p-4 md:p-5 text-center shadow-sm hover:shadow-md hover:border-primary/25 hover:-translate-y-0.5 transition-all duration-300"
-                >
-                  <div className="w-9 h-9 rounded bg-primary/10 flex items-center justify-center mx-auto mb-3 group-hover:bg-primary/15 transition-colors">
-                    <stat.icon className="h-4 w-4 text-primary" />
-                  </div>
-                  <p className="font-heading text-xl md:text-2xl font-bold text-foreground">
-                    {stat.value}
-                  </p>
-                  <p className="text-xs md:text-sm text-muted-foreground font-body mt-1">
-                    {stat.label}
-                  </p>
-                </motion.div>
+        {/* ---- Verified figures ------------------------------------------ */}
+        <section className="ut-band">
+          <div className="ut-header__inner">
+            <dl className="donate-metrics reveal">
+              {DONATE_METRICS.map((m) => (
+                <div key={m.label} className="donate-metric">
+                  <dd className="donate-metric__value">{m.value}</dd>
+                  <dt className="donate-metric__label">{m.label}</dt>
+                </div>
               ))}
-            </div>
+            </dl>
           </div>
         </section>
 
-        <section className="laya-section">
-          <div className="container-narrow mx-auto laya-panel-solid p-6 md:p-10">
-            <SectionHeading
-              title="Where Your Donation Goes"
-              subtitle="Every contribution directly supports grassroots programs with Adivasi communities"
-            />
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {impactAreas.map((area, i) => (
-                <motion.div
-                  key={area.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08 }}
-                  className="p-6 rounded border border-border bg-card hover:shadow-md hover:border-primary/30 transition-all duration-300"
-                >
-                  <div className="w-11 h-11 rounded bg-primary/10 flex items-center justify-center mb-4">
-                    <area.icon className="h-5 w-5 text-primary" />
-                  </div>
-                  <h3 className="font-heading text-base font-semibold text-foreground mb-2">
-                    {area.title}
+        {/* ---- What contributions support --------------------------------- */}
+        <section className="ut-band ut-band--warm">
+          <div className="ut-header__inner">
+            <header className="ut-heading">
+              <p className="type-eyebrow">Where support goes</p>
+              <h2 className="ut-heading__title">What the work covers</h2>
+            </header>
+
+            <div className="about-points reveal" style={{ maxWidth: "none" }}>
+              {DONATION_PURPOSES.map((p) => (
+                <div key={p.title} className="about-points__item">
+                  <h3 className="about-points__title">
+                    <Link to={p.to} className="laya-link--quiet">
+                      {p.title}
+                    </Link>
                   </h3>
-                  <p className="text-sm text-muted-foreground font-body leading-relaxed">
-                    {area.description}
-                  </p>
-                </motion.div>
+                  <p className="about-points__desc">{p.description}</p>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="laya-section pb-20 md:pb-28">
-          <div className="container-narrow mx-auto laya-panel-solid p-6 md:p-10 lg:p-12">
-            <SectionHeading
-              title="Make a Donation"
-              subtitle="Fill in your details below or transfer directly to our bank account"
-            />
+        {/* ---- How to give ------------------------------------------------ */}
+        <section className="ut-band">
+          <div className="ut-header__inner">
+            <header className="ut-heading">
+              <p className="type-eyebrow">How to give</p>
+              <h2 className="ut-heading__title">Bank transfer</h2>
+              <p className="ut-heading__intro">{DONATE_STATEMENTS.mechanism}</p>
+            </header>
 
-            <div className="grid lg:grid-cols-[1.4fr_1fr] gap-8 items-start">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="rounded border border-border bg-card p-6 md:p-8 shadow-sm"
-              >
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  {submitted ? (
-                    <div
-                      className="flex items-start gap-3 rounded border border-[var(--laya-cyan)]/40 bg-[var(--laya-cyan)]/10 p-5 text-foreground"
-                      role="status"
-                    >
-                      <Check className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                      <div>
-                        <p className="font-heading text-sm font-semibold">Pledge received!</p>
-                        <p className="text-sm text-muted-foreground font-body mt-1">
-                          Thank you, {formData.name.trim()}. Our team will contact you at {formData.email} with
-                          payment details shortly.
-                        </p>
-                      </div>
+            <div className="reveal">
+              <div className="bank-tabs" role="tablist" aria-label="Account type">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={bankTab === "domestic"}
+                  className="bank-tab"
+                  onClick={() => setBankTab("domestic")}
+                >
+                  Domestic
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={bankTab === "foreign"}
+                  className="bank-tab"
+                  onClick={() => setBankTab("foreign")}
+                >
+                  Foreign (FCRA)
+                </button>
+              </div>
+
+              <div className="bank-list">
+                {Object.entries(details).map(([label, value]) => {
+                  const key = `${bankTab}-${label}`;
+                  return (
+                    <div key={label} className="bank-row">
+                      <span className="bank-row__label">{label}</span>
+                      <span className="bank-row__value">{value}</span>
+                      <button
+                        type="button"
+                        className="copy-btn"
+                        onClick={() => copyToClipboard(value, key)}
+                        aria-label={
+                          copiedField === key ? `${label} copied` : `Copy ${label}`
+                        }
+                      >
+                        {copiedField === key ? (
+                          <Check className="copy-btn__icon" aria-hidden="true" />
+                        ) : (
+                          <Copy className="copy-btn__icon" aria-hidden="true" />
+                        )}
+                      </button>
                     </div>
-                  ) : (
-                    <>
-                  {formError && (
-                    <p className="text-sm text-destructive font-body" role="alert">
-                      {formError}
-                    </p>
-                  )}
-                  <div className="space-y-3">
-                    <Label className="font-body text-foreground">Select Amount (₹)</Label>
-                    <div className="flex flex-wrap gap-2">
-                      {QUICK_AMOUNTS.map((amount) => (
-                        <button
-                          key={amount}
-                          type="button"
-                          onClick={() => selectQuickAmount(amount)}
-                          className={`px-4 py-2 rounded-full text-sm font-body font-medium transition-all duration-200 ${
-                            selectedAmount === amount
-                              ? "bg-primary text-primary-foreground shadow-md"
-                              : "bg-muted border border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"
-                          }`}
-                        >
-                          ₹{amount.toLocaleString("en-IN")}
-                        </button>
-                      ))}
-                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Live region so the copied confirmation is announced. */}
+              <p aria-live="polite" className="form-field__hint" style={{ marginTop: "var(--space-sm)" }}>
+                {copiedField ? "Copied to clipboard." : ""}
+              </p>
+            </div>
+
+            <p className="statement">{DONATE_STATEMENTS.legal}</p>
+            <p className="statement">{DONATE_STATEMENTS.fcra}</p>
+
+            <div className="prog-actions">
+              <EditorialLink to={ROUTES.aboutFcraInformation}>FCRA information</EditorialLink>
+              <EditorialLink to={ROUTES.aboutFinancialReports}>
+                Foreign contribution reports
+              </EditorialLink>
+            </div>
+          </div>
+        </section>
+
+        {/* ---- Record your intent ----------------------------------------- */}
+        <section className="ut-band ut-band--sunken">
+          <div className="ut-header__inner">
+            <header className="ut-heading">
+              <p className="type-eyebrow">Record your intention</p>
+              <h2 className="ut-heading__title">Tell us about your contribution</h2>
+              <p className="ut-heading__intro">
+                This form does not take payment. It records your intention to give so the LAYA
+                team can send payment details and, where applicable, a receipt for 80G purposes.
+              </p>
+            </header>
+
+            <div className="form-panel" style={{ maxWidth: "44rem" }}>
+              {pledgeSent ? (
+                <div className="form-status form-status--success" role="status">
+                  <Check className="form-status__icon" aria-hidden="true" />
+                  <div>
+                    <span className="form-status__title">Thank you, {pledge.name.trim()}.</span>
+                    The LAYA team will contact you at {pledge.email} with payment details and
+                    receipt information.
+                  </div>
+                </div>
+              ) : (
+                <form onSubmit={handlePledgeSubmit} noValidate>
+                  <div className="form-field">
+                    <label htmlFor="pledge-name" className="form-field__label">
+                      Name
+                    </label>
+                    <input
+                      id="pledge-name"
+                      type="text"
+                      autoComplete="name"
+                      value={pledge.name}
+                      onChange={(e) => setPledge({ ...pledge, name: e.target.value })}
+                      aria-invalid={pledgeErrors.name ? true : undefined}
+                      aria-describedby={pledgeErrors.name ? "pledge-name-error" : undefined}
+                      className={`form-field__input ${
+                        pledgeErrors.name ? "form-field__input--invalid" : ""
+                      }`}
+                    />
+                    {pledgeErrors.name && (
+                      <p className="form-field__error" id="pledge-name-error" role="alert">
+                        <AlertCircle className="form-field__error-icon" aria-hidden="true" />
+                        <span>{pledgeErrors.name}</span>
+                      </p>
+                    )}
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="name" className="font-body">
-                        Full Name
-                      </Label>
-                      <Input
-                        id="name"
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        placeholder="Enter your name"
-                        required
-                        className="h-11"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email" className="font-body">
-                        Email
-                      </Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        placeholder="Enter your email"
-                        required
-                        className="h-11"
-                      />
-                    </div>
+                  <div className="form-field">
+                    <label htmlFor="pledge-email" className="form-field__label">
+                      Email
+                    </label>
+                    <input
+                      id="pledge-email"
+                      type="email"
+                      autoComplete="email"
+                      value={pledge.email}
+                      onChange={(e) => setPledge({ ...pledge, email: e.target.value })}
+                      aria-invalid={pledgeErrors.email ? true : undefined}
+                      aria-describedby={pledgeErrors.email ? "pledge-email-error" : undefined}
+                      className={`form-field__input ${
+                        pledgeErrors.email ? "form-field__input--invalid" : ""
+                      }`}
+                    />
+                    {pledgeErrors.email && (
+                      <p className="form-field__error" id="pledge-email-error" role="alert">
+                        <AlertCircle className="form-field__error-icon" aria-hidden="true" />
+                        <span>{pledgeErrors.email}</span>
+                      </p>
+                    )}
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="phone" className="font-body">
-                        Phone
-                      </Label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        placeholder="Enter phone number"
-                        className="h-11"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="amount" className="font-body">
-                        Donation Amount (₹)
-                      </Label>
-                      <Input
-                        id="amount"
-                        type="number"
-                        name="amount"
-                        value={formData.amount}
-                        onChange={handleInputChange}
-                        placeholder="Enter custom amount"
-                        required
-                        min={1}
-                        className="h-11"
-                      />
-                    </div>
+                  <div className="form-field">
+                    <label htmlFor="pledge-amount" className="form-field__label">
+                      Intended amount (₹)
+                    </label>
+                    <input
+                      id="pledge-amount"
+                      type="number"
+                      min={1}
+                      value={pledge.amount}
+                      onChange={(e) => setPledge({ ...pledge, amount: e.target.value })}
+                      aria-invalid={pledgeErrors.amount ? true : undefined}
+                      aria-describedby={pledgeErrors.amount ? "pledge-amount-error" : undefined}
+                      className={`form-field__input ${
+                        pledgeErrors.amount ? "form-field__input--invalid" : ""
+                      }`}
+                    />
+                    {pledgeErrors.amount && (
+                      <p className="form-field__error" id="pledge-amount-error" role="alert">
+                        <AlertCircle className="form-field__error-icon" aria-hidden="true" />
+                        <span>{pledgeErrors.amount}</span>
+                      </p>
+                    )}
+                    <span className="form-field__hint">
+                      Enter an amount you intend to transfer. Nothing is charged here.
+                    </span>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="message" className="font-body">
-                      Message (Optional)
-                    </Label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
+                  <div className="form-field">
+                    <label htmlFor="pledge-message" className="form-field__label">
+                      Message <span className="form-field__optional">(optional)</span>
+                    </label>
+                    <textarea
+                      id="pledge-message"
                       rows={3}
-                      placeholder="Any specific purpose or dedication..."
-                      className="resize-none"
+                      value={pledge.message}
+                      onChange={(e) => setPledge({ ...pledge, message: e.target.value })}
+                      className="form-field__textarea"
                     />
                   </div>
 
-                  <Button type="submit" size="lg" className="w-full text-base font-semibold">
-                    Proceed to Donate
+                  <Button type="submit" size="lg">
+                    Record my intention to give
                   </Button>
-                    </>
-                  )}
                 </form>
+              )}
+            </div>
 
-                <div className="mt-6 flex items-start gap-3 rounded border border-primary/20 bg-primary/5 p-4">
-                  <AlertCircle className="h-5 w-5 text-primary mt-0.5 shrink-0" />
-                  <div>
-                    <h3 className="font-heading text-sm font-semibold text-foreground mb-1">
-                      Important Note
-                    </h3>
-                    <p className="text-sm text-muted-foreground font-body leading-relaxed">
-                      All donations to LAYA are eligible for tax exemption under Section 80G of the
-                      Income Tax Act, 1961. You will receive a receipt via email within 3–5 working
-                      days. For foreign contributions, please ensure compliance with FCRA regulations.
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
+            <p className="statement">
+              For questions about donations, write to{" "}
+              <a href="mailto:info@laya.org.in" className="contact-record__link">
+                info@laya.org.in
+              </a>{" "}
+              or call +91-891-2737662.
+            </p>
 
-              <div className="flex flex-col gap-6">
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  className="rounded border border-border bg-card overflow-hidden shadow-sm"
-                >
-                  <div className="bg-primary px-6 py-4">
-                    <div className="flex items-center gap-2 text-primary-foreground">
-                      <Landmark className="h-5 w-5" />
-                      <h3 className="font-heading font-semibold text-sm">Bank Transfer Details</h3>
-                    </div>
-                  </div>
-
-                  <div className="p-4 border-b border-border">
-                    <div className="flex rounded bg-muted p-1 gap-1">
-                      <button
-                        type="button"
-                        onClick={() => setBankTab("domestic")}
-                        className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded text-xs font-body font-medium transition-all ${
-                          bankTab === "domestic"
-                            ? "bg-card text-foreground shadow-sm"
-                            : "text-muted-foreground hover:text-foreground"
-                        }`}
-                      >
-                        <Landmark className="h-3.5 w-3.5" />
-                        Domestic
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setBankTab("foreign")}
-                        className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded text-xs font-body font-medium transition-all ${
-                          bankTab === "foreign"
-                            ? "bg-card text-foreground shadow-sm"
-                            : "text-muted-foreground hover:text-foreground"
-                        }`}
-                      >
-                        <Globe className="h-3.5 w-3.5" />
-                        Foreign (FCRA)
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="p-5">
-                    {Object.entries(activeBankDetails).map(([label, value]) => {
-                      const fieldKey = `${bankTab}-${label}`;
-                      return (
-                        <div
-                          key={label}
-                          className="flex items-start justify-between gap-3 py-3 border-b border-border last:border-0"
-                        >
-                          <span className="text-xs text-muted-foreground font-body min-w-[110px] shrink-0 pt-0.5">
-                            {label}
-                          </span>
-                          <div className="flex items-start gap-2 flex-1 min-w-0">
-                            <span className="text-sm font-medium text-foreground font-body text-right break-words leading-relaxed flex-1">
-                              {value}
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => copyToClipboard(value, fieldKey)}
-                              className="p-1.5 hover:bg-muted rounded transition-colors shrink-0"
-                              aria-label={`Copy ${label}`}
-                            >
-                              {copiedField === fieldKey ? (
-                                <Check className="h-3.5 w-3.5 text-green-600" />
-                              ) : (
-                                <Copy className="h-3.5 w-3.5 text-muted-foreground" />
-                              )}
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 }}
-                  className="rounded bg-primary p-6 text-primary-foreground shadow-sm"
-                >
-                  <h3 className="font-heading font-semibold text-lg mb-4">Need Help?</h3>
-                  <p className="text-sm text-primary-foreground/80 font-body mb-4">
-                    Our team is happy to assist with donation queries, receipts, or partnership
-                    opportunities.
-                  </p>
-                  <div className="space-y-3">
-                    <a
-                      href="mailto:info@laya.org.in"
-                      className="flex items-center gap-3 text-sm font-body hover:text-primary-foreground/90 transition-colors"
-                    >
-                      <div className="w-8 h-8 rounded bg-primary-foreground/10 flex items-center justify-center shrink-0">
-                        <Mail className="h-4 w-4" />
-                      </div>
-                      info@laya.org.in
-                    </a>
-                    <a
-                      href="tel:+918912737662"
-                      className="flex items-center gap-3 text-sm font-body hover:text-primary-foreground/90 transition-colors"
-                    >
-                      <div className="w-8 h-8 rounded bg-primary-foreground/10 flex items-center justify-center shrink-0">
-                        <Phone className="h-4 w-4" />
-                      </div>
-                      +91-891-2737662
-                    </a>
-                  </div>
-                </motion.div>
-              </div>
+            <div className="prog-actions">
+              <EditorialLink to={ROUTES.contact}>Contact the office</EditorialLink>
             </div>
           </div>
         </section>

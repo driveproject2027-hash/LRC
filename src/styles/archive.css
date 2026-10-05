@@ -1,0 +1,631 @@
+/* ==========================================================================
+   LAYA — VISUAL ARCHIVE & FIELD NOTES
+   --------------------------------------------------------------------------
+   Documentary archive treatment. Photography, typography, rules and archival
+   sequencing carry the page — no fabricated editorial copy, no card walls.
+
+   PHOTOGRAPHY CONSTRAINT
+   Every archive photograph is LANDSCAPE, and several are large files. Frames
+   below use landscape ratios so nothing is cropped into an unreadable strip.
+   ========================================================================== */
+
+@layer components {
+  /* ------------------------------------------------------------------------
+     HEADERS
+     ------------------------------------------------------------------------ */
+
+  .arc-header {
+    padding-block-start: calc(var(--laya-chrome-height) + var(--space-2xl));
+    padding-block-end: var(--space-lg);
+    padding-inline: var(--gutter);
+    background-color: var(--surface-canvas);
+  }
+
+  .arc-header__inner {
+    max-width: var(--container-content);
+    margin-inline: auto;
+  }
+
+  .arc-header__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: var(--space-sm);
+    /*
+      WCAG 2.2 target size (minimum): 24x24 CSS px.
+      On the field-note detail this eyebrow wraps a link back to /stories,
+      which measured 17px tall because the anchor box wrapped only the text
+      line.
+    */
+    min-height: 1.5rem;
+  }
+
+  /* The eyebrow itself may be a link — give that anchor the full hit area. */
+  .arc-header__eyebrow a,
+  .arc-header__eyebrow .type-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.5rem;
+  }
+
+  .arc-header__eyebrow::before {
+    content: "";
+    width: 1.5rem;
+    height: 1px;
+    background-color: var(--laya-forest-600);
+  }
+
+  .arc-header__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-display);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    font-weight: 600;
+    color: var(--text-primary);
+    text-wrap: balance;
+    max-width: 22ch;
+  }
+
+  .arc-header__lead {
+    margin-top: var(--space-xs);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-width: 48rem;
+  }
+
+  .arc-header__stats {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-sm);
+    border-top: var(--hairline) solid var(--border-subtle);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xl);
+  }
+
+  .arc-stat__value {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    line-height: 1;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .arc-stat__label {
+    display: block;
+    margin-top: 0.25rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  .arc-band {
+    padding-block: var(--section-y-tight);
+    padding-inline: var(--gutter);
+    background-color: var(--surface-canvas);
+  }
+
+  .arc-band--warm {
+    background-color: var(--surface-warm);
+    border-block: var(--hairline) solid var(--border-subtle);
+  }
+
+  /* Archival note stating what metadata is and is not held. */
+  .arc-note {
+    margin-top: var(--space-lg);
+    padding: var(--space-sm) var(--space-md);
+    border-left: 2px solid var(--laya-forest-500);
+    background-color: var(--laya-forest-50);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+    max-width: 52rem;
+  }
+
+  /* ------------------------------------------------------------------------
+     ARCHIVE SEQUENCE
+     ------------------------------------------------------------------------
+     A continuous numbered sequence, not a masonry grid. Each plate occupies a
+     full-width record: plate number, then the photograph, then its caption.
+     This is the "archival sequencing" the brief asks for.
+     ------------------------------------------------------------------------ */
+
+  .plate {
+    display: grid;
+    gap: var(--space-md);
+    padding-block: var(--space-xl);
+    border-top: var(--hairline) solid var(--border-subtle);
+  }
+
+  @media (min-width: 900px) {
+    .plate {
+      grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+      gap: var(--space-2xl);
+      /*
+        Centre the caption against the photograph.
+
+        With `align-items: start` a two-line caption sat at the top of a ~500px
+        media column, leaving up to 392px of empty space beneath it on every
+        plate — measured. Centring removes the void and is standard archival
+        practice: the text is aligned to the plate, not stranded above it.
+      */
+      align-items: center;
+    }
+
+    /* Controlled asymmetry: every other plate puts the caption first. */
+    .plate--reverse .plate__media {
+      order: 2;
+    }
+  }
+
+  .plate__media {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background-color: var(--laya-stone-100);
+    border-radius: var(--radius-media);
+    overflow: hidden;
+    cursor: zoom-in;
+    /* 3:2 landscape suits the source frames without punishing crops. */
+    aspect-ratio: 3 / 2;
+  }
+
+  .plate__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--duration-slow) var(--ease-out);
+  }
+
+  .plate__media:hover img {
+    transform: scale(1.02);
+  }
+
+  .plate--untitled .plate__media img {
+    /* Untitled plates are not dimmed — the photograph is still the primary
+       content. Only the caption treatment differs. */
+    filter: none;
+  }
+
+  .plate__body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Plate number in monospace — archival, not decorative. */
+  .plate__index {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    padding-bottom: var(--space-2xs);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+    margin-bottom: var(--space-sm);
+  }
+
+  .plate__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    line-height: 1.22;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-wrap: balance;
+    margin-bottom: var(--space-xs);
+  }
+
+  /* The honest treatment for a photograph with no recorded caption. Italic and
+     muted, so it reads as an absence rather than a name. */
+  .plate__title--untitled {
+    font-family: var(--font-sans);
+    font-style: italic;
+    font-weight: 400;
+    font-size: var(--text-h4);
+    color: var(--text-muted);
+  }
+
+  .plate__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem 0.875rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .plate__meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--text-tertiary);
+  }
+
+  .plate__meta-item::before {
+    content: "";
+    width: 3px;
+    height: 3px;
+    border-radius: 9999px;
+    background-color: var(--border-strong);
+  }
+
+  .plate__meta-item:first-child::before {
+    display: none;
+  }
+
+  .plate__note {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xs);
+  }
+
+  /* Provenance label — where a caption came from. */
+  .plate__provenance {
+    display: inline-block;
+    margin-top: auto;
+    padding-top: var(--space-sm);
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* ------------------------------------------------------------------------
+     LIGHTBOX — keeps the existing keyboard behaviour, restyled
+     ------------------------------------------------------------------------ */
+
+  .arc-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-sm);
+    background-color: rgba(15, 18, 32, 0.92);
+  }
+
+  @media (min-width: 768px) {
+    .arc-lightbox {
+      padding: var(--space-lg);
+    }
+  }
+
+  .arc-lightbox__panel {
+    position: relative;
+    display: grid;
+    width: 100%;
+    max-width: 76rem;
+    max-height: 92vh;
+    overflow: hidden;
+    background-color: var(--surface-canvas);
+    border-radius: var(--radius-card);
+  }
+
+  @media (min-width: 900px) {
+    .arc-lightbox__panel {
+      grid-template-columns: minmax(0, 1.5fr) minmax(18rem, 1fr);
+    }
+  }
+
+  .arc-lightbox__stage {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #111;
+    min-height: 40vh;
+  }
+
+  @media (min-width: 900px) {
+    .arc-lightbox__stage {
+      min-height: 70vh;
+    }
+  }
+
+  .arc-lightbox__stage img {
+    display: block;
+    max-width: 100%;
+    max-height: 70vh;
+    object-fit: contain;
+  }
+
+  .arc-lightbox__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    color: var(--text-inverse);
+    background-color: rgba(250, 248, 244, 0.14);
+    border: 0;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .arc-lightbox__nav:hover {
+    background-color: rgba(250, 248, 244, 0.26);
+  }
+
+  .arc-lightbox__nav--prev {
+    left: var(--space-sm);
+  }
+
+  .arc-lightbox__nav--next {
+    right: var(--space-sm);
+  }
+
+  .arc-lightbox__caption {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-md);
+    overflow-y: auto;
+  }
+
+  @media (min-width: 900px) {
+    .arc-lightbox__caption {
+      padding: var(--space-lg);
+    }
+  }
+
+  .arc-lightbox__close {
+    position: absolute;
+    top: var(--space-sm);
+    right: var(--space-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--text-primary);
+    background-color: var(--surface-raised);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+
+  .arc-lightbox__close:hover {
+    background-color: var(--laya-stone-100);
+  }
+
+  .arc-lightbox__thumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin-top: var(--space-md);
+  }
+
+  .arc-lightbox__thumb {
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    overflow: hidden;
+    background-color: var(--laya-stone-100);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xs);
+    cursor: pointer;
+    opacity: 0.65;
+    transition: opacity var(--duration-fast) var(--ease-out);
+  }
+
+  .arc-lightbox__thumb:hover {
+    opacity: 1;
+  }
+
+  .arc-lightbox__thumb--active {
+    opacity: 1;
+    border-color: var(--laya-forest-600);
+    box-shadow: 0 0 0 2px var(--laya-forest-600);
+  }
+
+  .arc-lightbox__thumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ------------------------------------------------------------------------
+     FIELD NOTES — index
+     ------------------------------------------------------------------------ */
+
+  .note-lead {
+    display: grid;
+    gap: var(--space-lg);
+    padding-bottom: var(--space-xl);
+    border-bottom: var(--hairline) solid var(--border-default);
+  }
+
+  @media (min-width: 900px) {
+    .note-lead {
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: var(--space-2xl);
+      align-items: center;
+    }
+  }
+
+  .note-lead__media {
+    overflow: hidden;
+    border-radius: var(--radius-media);
+    background-color: var(--laya-stone-100);
+    aspect-ratio: 3 / 2;
+  }
+
+  .note-lead__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .note-lead__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    line-height: 1.15;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-wrap: balance;
+    margin-block: var(--space-2xs) var(--space-xs);
+  }
+
+  .note-lead__title a:hover {
+    color: var(--text-brand);
+  }
+
+  .note-lead__body {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-width: 42rem;
+  }
+
+  /* Supporting notes as ruled records. */
+  .note-list {
+    border-top: var(--hairline) solid var(--border-default);
+    margin-top: var(--space-xl);
+  }
+
+  .note-item {
+    display: grid;
+    gap: var(--space-md);
+    padding-block: var(--space-lg);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+  }
+
+  @media (min-width: 768px) {
+    .note-item {
+      grid-template-columns: 11rem minmax(0, 1fr);
+      gap: var(--space-2xl);
+      align-items: start;
+    }
+  }
+
+  .note-item__media {
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    background-color: var(--laya-stone-100);
+    aspect-ratio: 3 / 2;
+  }
+
+  .note-item__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .note-item__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h4);
+    line-height: var(--leading-snug);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-block: 0.25rem var(--space-2xs);
+  }
+
+  .note-item__title a:hover {
+    color: var(--text-brand);
+  }
+
+  .note-item__body {
+    font-size: var(--text-body);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-width: 44rem;
+  }
+
+  /* Metadata row reused across the archive and field notes. */
+  .arc-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem 0.75rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--text-tertiary);
+  }
+
+  .arc-meta__sep {
+    color: var(--border-strong);
+  }
+
+  /* ------------------------------------------------------------------------
+     FIELD NOTE — detail
+     ------------------------------------------------------------------------ */
+
+  .note-detail__hero {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--laya-stone-100);
+    aspect-ratio: 21 / 9;
+  }
+
+  .note-detail__hero img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 45%;
+  }
+
+  .note-detail__hero-caption {
+    max-width: var(--container-content);
+    margin: var(--space-xs) auto 0;
+    padding-inline: var(--gutter);
+    font-size: var(--text-caption);
+    line-height: var(--leading-snug);
+    color: var(--text-muted);
+  }
+
+  /* Generous reading width for the note body. */
+  .note-detail__body {
+    max-width: 42rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+    padding-block: var(--space-xl);
+  }
+
+  .note-detail__text {
+    font-family: var(--font-serif);
+    font-size: var(--text-h4);
+    line-height: 1.6;
+    color: var(--text-primary);
+    text-wrap: pretty;
+  }
+
+  /* Honest framing block explaining the depth of the record. */
+  .note-detail__framing {
+    max-width: 42rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+    padding-block-end: var(--space-xl);
+  }
+
+  .note-detail__framing-inner {
+    padding: var(--space-sm) var(--space-md);
+    border-left: 2px solid var(--laya-forest-500);
+    background-color: var(--laya-forest-50);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .plate__media img {
+      transition: none;
+    }
+  }
+}

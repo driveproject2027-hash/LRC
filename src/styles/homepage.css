@@ -1,0 +1,1213 @@
+/* ==========================================================================
+   LAYA — HOMEPAGE
+   --------------------------------------------------------------------------
+   Editorial composition styles for the homepage only.
+
+   Direction: documentary, editorial, institutional. Photography, typography and
+   whitespace carry the page. No gradients, no glass, no decorative blobs.
+
+   Everything reads Phase 1 tokens — no literal colours.
+   ========================================================================== */
+
+@layer components {
+  /* ------------------------------------------------------------------------
+     HERO
+     ------------------------------------------------------------------------
+     A split editorial hero rather than a full-bleed image. The strongest
+     available LAYA field photographs are wide banner crops (1500x451), so a
+     full-bleed hero would either distort the subject or crop unrecoverably.
+     A text + photograph split respects the source aspect ratio honestly.
+     ------------------------------------------------------------------------ */
+
+  .home-hero {
+    position: relative;
+    min-height: calc(100svh - 4.5rem); /* subtract header height */
+    overflow: hidden;
+    background-color: var(--surface-ink);
+  }
+
+  .home-hero__media {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    background-color: var(--laya-stone-100);
+  }
+
+  /*
+    HERO PHOTOGRAPH — cropping is measured, not guessed.
+
+    srm.jpg is 1500x451 — a 3.33:1 banner. The hero box is roughly 1.88:1, so
+    `cover` must zoom ~1.7x to fill the height, which necessarily discards
+    width. Measured width loss before the fix:
+
+        1440x900  box 1440x764   1.69x zoom   43% of the photo discarded
+        1280x800  box 1280x743   1.65x zoom   48%
+        1024x768  box 1024x710   1.57x zoom   57%
+         768x1024 box  768x736   1.63x zoom   69%
+
+    NOTE ON THE SUBJECT'S POSITION: an earlier version of this comment claimed
+    the woman occupies "the left 20% to 45%" of the source frame. That was a
+    misreading — she sits toward the RIGHT of the frame. The 22% anchor below
+    was chosen to bias the window toward the wider left-hand context (paddy,
+    water spray) which is what the photograph is composed around, NOT to point
+    at a subject on the left. Do not use that claim to justify changes.
+
+    The anchor is a single fixed percentage, not a per-breakpoint series: the
+    photograph does not change, so the framing decision should not either.
+
+    `object-position` on the vertical axis is `center` — there is no vertical
+    overflow to manage (height is never cropped; the zoom exists to fill it).
+  */
+  .home-hero__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 22% center;
+  }
+
+  /*
+    HERO STORY — the copy plate sits on the RIGHT at every width.
+
+    It was previously left-aligned, and an intermediate version flipped it from
+    left to right at 1200px. Both were attempts to dodge a subject-in-frame
+    problem that was itself misdiagnosed, and the flip produced its own bug:
+    below 1200px the plate jumped to the left half, straight back over the
+    photograph on exactly the smaller desktops where the image has least room.
+
+    One fixed side, always right, with no breakpoint. The photograph keeps the
+    left of the frame and the type keeps the right, at every viewport.
+
+    `align-items: flex-end` anchors the plate to the bottom of the hero and it
+    grows upward as the copy rewraps, so the top of the photograph stays clear.
+  */
+  .home-hero__story {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center; /* Center vertically instead of pushing to bottom */
+    justify-content: flex-start;
+    min-height: calc(100svh - 4.5rem);
+    padding-block: var(--space-md); /* Reduced from xl */
+  }
+
+  /*
+    HERO COPY PLATE — now translucent, so the photograph reads through it.
+
+    Was rgba(15, 33, 25, 0.94): effectively a solid box that hid the field
+    photograph behind the most important text on the page. Dropped to 0.72,
+    which lets the paddy frame show through as texture while the ivory type
+    keeps its contrast.
+
+    0.72 is a deliberate stopping point, not an arbitrary one. The photograph
+    contains a bright, high-luminance water and paddy region, and light text
+    over a light patch of an image is the failure mode this plate exists to
+    prevent. Going much below this lets that region start to compete with the
+    body copy. It was chosen by eye against the real photograph at both 1440px
+    and 390px — the exact contrast ratio is NOT asserted here, because text
+    over a photograph varies with the crop and the viewport, so a single
+    number would be misleading. The plate is a legibility floor, not a
+    certified contrast value.
+
+    backdrop-filter adds a slight blur so the photo texture softens into a
+    wash instead of reading as busy noise behind the type. The blur also does
+    real legibility work: it flattens the bright paddy highlights that would
+    otherwise show through as high-contrast patches directly behind the text.
+
+    It is guarded by @supports below — browsers without it render the 0.72
+    plate alone, which is already legible, so nothing breaks where it is
+    unsupported. This is a progressive enhancement, not a dependency.
+
+    WIDTH IS NOW PROPORTIONAL, NOT FIXED — this is what stops it covering the
+    photograph. It was `min(100%, 38rem)` (608px) at every viewport, so as the
+    screen narrowed the plate ate a larger share of the image:
+
+        1440px  plate 608px  = 42% of hero width
+        1280px  plate 608px  = 48%
+        1200px  plate 608px  = 51%   (and it flipped to the LEFT half)
+        1024px  plate 608px  = 59%
+
+    At 1024px a 608px slab on the left covered most of the picture. `clamp`
+    keeps a comfortable reading measure at large sizes while letting the plate
+    shrink with the viewport instead of holding a fixed width. 44vw is the
+    scaling term: at 1440px it yields ~634px (unchanged in practice) and at
+    1024px ~450px, which leaves the photograph the larger share of the frame.
+  */
+  .home-hero__copy {
+    width: clamp(21rem, 44vw, 38rem);
+    padding: clamp(1rem, 1rem + 1vw, 2rem); /* Reduced padding to fit screen */
+    background-color: rgba(15, 33, 25, 0.35); /* Much more transparent */
+    color: var(--text-inverse);
+    border-inline-start: 2px solid rgba(255, 255, 255, 0.2); /* Soft glass border instead of hard violet */
+    border-radius: var(--radius-md);
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    .home-hero__copy {
+      -webkit-backdrop-filter: blur(16px) saturate(120%);
+      backdrop-filter: blur(16px) saturate(120%);
+    }
+  }
+
+  .home-hero__copy .type-eyebrow {
+    color: var(--laya-blue-300);
+  }
+
+  .home-hero__copy .home-hero__secondary-action,
+  .home-hero__copy .editorial-link {
+    color: var(--text-inverse);
+  }
+
+  .home-hero__copy .home-hero__secondary-action:hover,
+  .home-hero__copy .editorial-link:hover {
+    color: var(--laya-blue-300);
+  }
+
+  /*
+    HERO EYEBROW — set a step up from the global --text-label (11px).
+
+    Measured at 11px with 0.2em tracking, "THE LAYA CHRONICLE" was the least
+    legible text in the hero despite doing an orienting job. Raised to the
+    caption step (12px) and tracking eased from 0.2em to 0.14em, because 0.2em
+    tracking at small sizes starts to break word shapes apart rather than
+    clarify them.
+  */
+  .home-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: var(--space-2xs); /* Reduced from sm */
+  }
+
+  /*
+    Compound selector is REQUIRED here, not stylistic. `.type-eyebrow` in
+    index.css sets 11px and 0.2em tracking at the same specificity (one class),
+    and index.css is imported after this file — so a bare `.home-hero__eyebrow`
+    loses on source order and the eyebrow stayed at 11px. Two classes win
+    regardless of import order. Confirmed in the browser: measured 11px before,
+    12px after.
+  */
+  .home-hero__eyebrow.type-eyebrow {
+    font-size: var(--text-caption);
+    letter-spacing: var(--tracking-label);
+  }
+
+  /* Small rule before the eyebrow — editorial device, not decoration. */
+  .home-hero__eyebrow::before {
+    content: "";
+    width: 1.5rem;
+    height: 1px;
+    background-color: var(--laya-blue-500);
+  }
+
+  /*
+    HERO HEADLINE — line-height is deliberately NOT --leading-display.
+
+    Measured before this change: 63.04px type on 65.56px leading (1.04). That
+    ratio is an editorial-magazine value that only works on a headline set on
+    ONE line. This headline wraps to three lines at desktop width, so 1.04
+    left the descender of "Standing" almost touching the "w" of "with" and
+    locked "Adivasi"/"Communities" together — the counter-forms of a serif at
+    63px need more air than a tight display setting gives them.
+
+    1.12 is the adjustment: still unmistakably a display headline (a body-text
+    1.5 would dissolve the block), but each line now has enough leading that
+    the serif's ascenders and descenders stop crowding. Verified at 1440px
+    (3 lines) and 390px (3 lines).
+  */
+  .home-hero__title {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 3.5vw, 3.2rem); /* Reduced from --text-display to fit small screens */
+    line-height: 1.1;
+    letter-spacing: var(--tracking-display);
+    font-weight: 600;
+    color: var(--text-inverse);
+    text-wrap: balance;
+    margin-bottom: var(--space-2xs); /* Reduced from sm */
+  }
+
+  /*
+    HERO LEAD — full ivory, not the 0.82-alpha secondary.
+
+    Measured: --text-inverse-secondary is rgba(250,248,244,0.82), which
+    composites to roughly 8.9:1 over the 0.94-alpha ink plate — technically
+    AA, but visibly dimmer than the headline directly above it. This is the
+    paragraph visitors actually read before deciding to scroll, so it gets
+    the same colour as the headline (~13:1) and reads as one coherent block.
+
+    The 34rem cap is kept rather than widened to --measure: inside the hero
+    plate the text box is only ~514px wide, so --measure (40rem) would be
+    inert here, and 34rem correctly holds the lead to a comfortable measure
+    on the wider tablet breakpoints where the plate does grow.
+  */
+  .home-hero__lead {
+    font-size: var(--text-base); /* Reduced from --text-body-lg */
+    line-height: var(--leading-relaxed);
+    color: var(--text-inverse);
+    max-width: 34rem;
+    margin-bottom: var(--space-sm); /* Reduced from lg */
+  }
+
+  .home-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md); /* Reduced from xl */
+  }
+
+  .home-hero__secondary-action {
+    min-height: 2.75rem;
+    padding-inline: 0.25rem;
+    color: var(--text-inverse);
+  }
+
+  /* --- Figures under the hero copy --------------------------------------- */
+
+  .home-figures {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    padding-top: var(--space-md);
+    border-top: var(--hairline) solid var(--border-inverse);
+    max-width: 34rem;
+  }
+
+  .home-figures > div {
+    padding-inline: var(--space-sm);
+    border-inline-start: var(--hairline) solid var(--border-inverse);
+  }
+
+  .home-figures > div:first-child {
+    padding-inline-start: 0;
+    border-inline-start: 0;
+  }
+
+  .home-figure__value {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2rem);
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    color: var(--text-inverse);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .home-figure__label {
+    display: block;
+    margin-top: 0.375rem;
+    font-size: var(--text-caption);
+    line-height: var(--leading-snug);
+    color: var(--text-inverse-secondary);
+  }
+
+  /* ------------------------------------------------------------------------
+     HERO CAPTION
+     ------------------------------------------------------------------------
+     A full-width bottom-up gradient was not enough: the caption sits over
+     bright green paddy in the lower-left of the hero photograph, where the
+     scrim is fully transparent, making the text unreadable.
+
+     The caption is instead a localised plate — a solid dark chip sized to its
+     own text — so contrast is guaranteed regardless of what the photograph is
+     doing underneath it. Measured ~14:1 against the film.
+     ------------------------------------------------------------------------ */
+
+  .home-hero__caption {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    bottom: auto;
+    max-width: calc(100% - var(--space-xl));
+    padding: 0.375rem 0.625rem;
+    font-size: var(--text-caption);
+    line-height: var(--leading-snug);
+    color: var(--text-inverse);
+    background-color: var(--laya-violet-800);
+    border-radius: 0;
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .home-hero__caption {
+      background-color: rgb(22, 21, 15);
+    }
+  }
+
+  @media (max-width: 639px) {
+    .home-hero,
+    .home-hero__story {
+      min-height: 42rem;
+    }
+
+    .home-hero__story {
+      padding-block: var(--space-md);
+    }
+
+    .home-hero__actions {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    /*
+      CAPTION — moved out from under the copy plate on narrow screens.
+
+      At 390px the plate spans the full hero width and its top edge sat over
+      the caption, which is absolutely positioned at top: var(--space-md). The
+      result was a caption clipped to its lower half, reading as a stray
+      fragment of text above the headline.
+
+      Dropping it to the BOTTOM of the hero on mobile rather than raising the
+      plate: the plate is anchored with `align-items: flex-end` and grows
+      upward as the content rewraps, so any fixed top offset for the caption
+      is a fixed collision waiting for a text change. The bottom edge is the
+      one region the plate never occupies when it is flex-end anchored.
+
+      The extra bottom padding on the story below is what actually clears the
+      caption. Without it the caption sat inside the plate's own bottom
+      padding — not over any text, but on the plate's tinted background rather
+      than the photograph, which read as an accident. Reserving a caption-high
+      strip means the chip always lands on clean photo, whatever the photo is
+      doing at that point.
+    */
+    .home-hero__story {
+      padding-bottom: 3.25rem;
+    }
+
+    .home-hero__caption {
+      top: auto;
+      bottom: var(--space-sm);
+      right: var(--space-sm);
+      left: var(--space-sm);
+      max-width: none;
+    }
+
+    /*
+      FIGURES — equal columns with aligned label baselines.
+
+      "Villages Reached" is two words and "Lives Impacted" is two words, but
+      only the first wrapped at 390px, so the three numbers sat at different
+      heights and the row read as broken. `align-content: start` plus a
+      matching min-height on the label lets every label take the same number
+      of line boxes whether it wraps or not.
+    */
+    .home-figures {
+      gap: var(--space-2xs);
+      align-items: start;
+    }
+
+    .home-figures > div {
+      padding-inline: var(--space-2xs);
+    }
+
+    .home-figure__value {
+      font-size: 1.375rem;
+    }
+
+    .home-figure__label {
+      min-height: 2.6em;
+    }
+  }
+
+  /* ------------------------------------------------------------------------
+     EDITORIAL SPLIT — reused by Four Decades, Impact, Support
+     ------------------------------------------------------------------------ */
+
+  .home-split {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .home-split {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: var(--space-3xl);
+    }
+
+    /* Photograph first, on wide screens. */
+    .home-split--media-start > :first-child {
+      order: 2;
+    }
+  }
+
+  .home-media {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-media);
+    background-color: var(--laya-stone-100);
+    aspect-ratio: 3 / 2;
+  }
+
+  .home-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .home-media__note {
+    position: absolute;
+    left: var(--space-md);
+    bottom: var(--space-md);
+    padding: 0.625rem 0.875rem;
+    background-color: rgba(250, 248, 244, 0.94);
+    border: var(--hairline) solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+  }
+
+  .home-media__note-label {
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-brand);
+  }
+
+  .home-media__note-value {
+    display: block;
+    margin-top: 0.25rem;
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .home-prose {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-width: var(--measure-tight);
+  }
+
+  .home-prose > * + * {
+    margin-top: var(--space-sm);
+  }
+
+  /* --- Section header (eyebrow + heading + intro) ------------------------ */
+
+  .home-section-header {
+    max-width: 46rem;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .home-section-header--wide {
+    max-width: 62rem;
+  }
+
+  .home-section-header__heading {
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    color: var(--text-primary);
+    text-wrap: balance;
+    margin-top: var(--space-2xs);
+    margin-bottom: var(--space-xs);
+  }
+
+  .home-section-header__intro {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  /* ------------------------------------------------------------------------
+     OUR WORK — documentary index
+     ------------------------------------------------------------------------
+     Deliberately asymmetric: one large featured programme, then a four-up
+     editorial rail. Not an identical card grid.
+     ------------------------------------------------------------------------ */
+
+  .work-feature {
+    display: grid;
+    gap: 0;
+    border: var(--hairline) solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background-color: var(--surface-raised);
+    margin-bottom: var(--space-lg);
+  }
+
+  @media (min-width: 900px) {
+    .work-feature {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    }
+  }
+
+  .work-feature__media {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--laya-stone-100);
+    aspect-ratio: 16 / 10;
+  }
+
+  /*
+     On the two-column layout the media column is narrower than it is tall, so a
+     narrow `object-fit: cover` window into a 3.32:1 banner cut the tops of
+     heads off. Reducing the minimum height and biasing the crop upwards keeps
+     the subjects whole while still filling the frame.
+  */
+  @media (min-width: 900px) {
+    .work-feature__media {
+      aspect-ratio: auto;
+      height: 100%;
+      min-height: 17rem;
+    }
+  }
+
+  .work-feature__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 32%;
+    transition: transform var(--duration-slow) var(--ease-out);
+  }
+
+  .work-feature:hover .work-feature__media img {
+    transform: scale(1.02);
+  }
+
+  .work-feature__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--space-lg);
+  }
+
+  @media (min-width: 900px) {
+    .work-feature__body {
+      padding: var(--space-2xl);
+    }
+  }
+
+  .work-feature__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    line-height: 1.2;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-top: var(--space-2xs);
+    margin-bottom: var(--space-xs);
+  }
+
+  .work-feature__desc {
+    font-size: var(--text-body);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .work-feature__metric {
+    margin-top: var(--space-md);
+    padding-top: var(--space-sm);
+    border-top: var(--hairline) solid var(--border-subtle);
+  }
+
+  /* --- Programme rail ----------------------------------------------------- */
+
+  .work-rail {
+    display: grid;
+    gap: var(--space-md);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 640px) {
+    .work-rail {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .work-rail {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  .work-tile {
+    display: flex;
+    flex-direction: column;
+    border: var(--hairline) solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background-color: var(--surface-raised);
+    transition: border-color var(--duration-fast) var(--ease-out),
+      transform var(--duration-base) var(--ease-out),
+      box-shadow var(--duration-base) var(--ease-out);
+  }
+
+  .work-tile:hover {
+    border-color: var(--border-default);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px -8px rgba(109, 87, 165, 0.18);
+  }
+
+  /* Stagger children in the work rail */
+  .work-rail > :nth-child(1) { transition-delay: 0ms; }
+  .work-rail > :nth-child(2) { transition-delay: 80ms; }
+  .work-rail > :nth-child(3) { transition-delay: 160ms; }
+  .work-rail > :nth-child(4) { transition-delay: 240ms; }
+
+  /* Programme photography is a 3.32:1 banner, so a 3:2 tile would discard
+     roughly half of every frame. 16:9 keeps the subject and the environment
+     legible while still giving the tile useful height. */
+  .work-tile__media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    background-color: var(--laya-stone-100);
+  }
+
+  .work-tile__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--duration-slow) var(--ease-out);
+  }
+
+  .work-tile:hover .work-tile__media img {
+    transform: scale(1.03);
+  }
+
+  .work-tile__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: var(--space-md);
+  }
+
+  .work-tile__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    line-height: var(--leading-snug);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.375rem;
+  }
+
+  .work-tile__desc {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+    flex: 1;
+    margin-bottom: var(--space-sm);
+  }
+
+  /* ------------------------------------------------------------------------
+     STORIES — one lead story plus supporting stack
+     ------------------------------------------------------------------------ */
+
+  .stories-grid {
+    display: grid;
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 900px) {
+    .stories-grid {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+      gap: var(--space-2xl);
+    }
+  }
+
+  .story-lead {
+    display: block;
+    border: var(--hairline) solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background-color: var(--surface-raised);
+    transition: border-color var(--duration-fast) var(--ease-out),
+      transform var(--duration-base) var(--ease-out),
+      box-shadow var(--duration-base) var(--ease-out);
+  }
+
+  .story-lead:hover {
+    border-color: var(--border-default);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px -8px rgba(109, 87, 165, 0.18);
+  }
+
+  .story-lead__media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    background-color: var(--laya-stone-100);
+  }
+
+  .story-lead__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--duration-slow) var(--ease-out);
+  }
+
+  .story-lead:hover .story-lead__media img {
+    transform: scale(1.02);
+  }
+
+  .story-lead__body {
+    padding: var(--space-lg);
+  }
+
+  .story-lead__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    line-height: 1.2;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-block: var(--space-2xs) var(--space-xs);
+  }
+
+  .story-lead__excerpt {
+    font-size: var(--text-body);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .story-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .story-item {
+    display: grid;
+    grid-template-columns: 7rem minmax(0, 1fr);
+    gap: var(--space-md);
+    align-items: start;
+    padding-bottom: var(--space-md);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+  }
+
+  .story-item:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .story-item__media {
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+    aspect-ratio: 1 / 1;
+    background-color: var(--laya-stone-100);
+  }
+
+  .story-item__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--duration-slow) var(--ease-out);
+  }
+
+  .story-item:hover .story-item__media img {
+    transform: scale(1.04);
+  }
+
+  .story-item__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    line-height: var(--leading-snug);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-block: 0.25rem 0.375rem;
+  }
+
+  .story-item__excerpt {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  /* ------------------------------------------------------------------------
+     CHRONICLE — document cards
+     ------------------------------------------------------------------------ */
+
+  .chronicle-grid {
+    display: grid;
+    gap: var(--space-md);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 640px) {
+    .chronicle-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .document-card {
+    display: flex;
+    flex-direction: column;
+    border: var(--hairline) solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background-color: var(--surface-raised);
+    transition: border-color var(--duration-fast) var(--ease-out),
+      transform var(--duration-base) var(--ease-out),
+      box-shadow var(--duration-base) var(--ease-out);
+  }
+
+  .document-card:hover {
+    border-color: var(--border-default);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px -8px rgba(109, 87, 165, 0.18);
+  }
+
+  /* Stagger children in the chronicle grid */
+  .chronicle-grid > :nth-child(1) { transition-delay: 0ms; }
+  .chronicle-grid > :nth-child(2) { transition-delay: 100ms; }
+  .chronicle-grid > :nth-child(3) { transition-delay: 200ms; }
+
+  /* ------------------------------------------------------------------------
+     DOCUMENT COVERS — constrained by the source files
+     ------------------------------------------------------------------------
+     `chronicle.jpg` and `hbhc-publication.jpg` are only 150x168 px. Rendering
+     them into a 4:3 frame at full column width upscaled them ~2.8x and they
+     read as blurry.
+
+     Two changes keep them honest:
+       1. A squarer 1:1 frame is closer to the 0.89:1 source, so less is
+          stretched away than in a 4:3 box.
+       2. `object-fit: contain` never crops the document artwork, so nothing
+          that identifies the publication is lost.
+     `covid-banner.jpg` (1500x451) is far larger and simply letterboxes,
+     which reads as intentional.
+     ------------------------------------------------------------------------ */
+
+  .document-card__cover {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    background-color: var(--laya-stone-50);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+  }
+
+  .document-card__cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: var(--space-md);
+    transition: transform var(--duration-slow) var(--ease-out);
+  }
+
+  .document-card:hover .document-card__cover img {
+    transform: scale(1.03);
+  }
+
+  .document-card__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: var(--space-md);
+  }
+
+  .document-card__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    line-height: var(--leading-snug);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.375rem;
+  }
+
+  .document-card__desc {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+    flex: 1;
+  }
+
+  /* ------------------------------------------------------------------------
+     IMPACT BAND — typographic, not card-based
+     ------------------------------------------------------------------------ */
+
+  .impact-band {
+    background-color: var(--surface-warm);
+    border-block: var(--hairline) solid var(--border-subtle);
+    padding-block: var(--section-y);
+    padding-inline: var(--gutter);
+  }
+
+  .impact-grid {
+    display: grid;
+    gap: var(--space-lg);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: var(--space-2xl);
+  }
+
+  @media (min-width: 900px) {
+    .impact-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-xl);
+    }
+  }
+
+  .impact-metric {
+    padding-top: var(--space-md);
+    border-top: 2px solid var(--laya-forest-600);
+  }
+
+  /* Stagger children in the impact grid */
+  .impact-grid > :nth-child(1) { transition-delay: 0ms; }
+  .impact-grid > :nth-child(2) { transition-delay: 120ms; }
+  .impact-grid > :nth-child(3) { transition-delay: 240ms; }
+  .impact-grid > :nth-child(4) { transition-delay: 360ms; }
+
+  .impact-metric:nth-child(2n) {
+    border-top-color: var(--laya-violet-600);
+  }
+
+  .impact-metric:nth-child(3n) {
+    border-top-color: var(--laya-blue-600);
+  }
+
+  .impact-metric__value {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3.25rem);
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .impact-metric__label {
+    display: block;
+    margin-top: var(--space-2xs);
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-brand);
+  }
+
+  .impact-metric__desc {
+    margin-top: var(--space-2xs);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  /* ------------------------------------------------------------------------
+     VOICES — pull quotes on a dark documentary band
+     ------------------------------------------------------------------------ */
+
+  .voices-grid {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 900px) {
+    .voices-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .voice {
+    border-top: 2px solid var(--laya-forest-400);
+    padding-top: var(--space-md);
+  }
+
+  .voice__quote {
+    font-family: var(--font-serif);
+    font-size: var(--text-h4);
+    line-height: 1.5;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text-primary);
+    text-wrap: pretty;
+  }
+
+  .voice__attribution {
+    margin-top: var(--space-md);
+    font-size: var(--text-sm);
+    line-height: var(--leading-snug);
+  }
+
+  .voice__name {
+    display: block;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .voice__role {
+    display: block;
+    margin-top: 0.125rem;
+    color: var(--text-muted);
+  }
+
+  /* ------------------------------------------------------------------------
+     SUPPORT
+     ------------------------------------------------------------------------ */
+
+  .support-band {
+    border-top: var(--hairline) solid var(--border-subtle);
+    padding-block: var(--section-y);
+    padding-inline: var(--gutter);
+    background-color: var(--surface-canvas);
+  }
+
+  .support-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-top: var(--space-lg);
+  }
+
+  .support-assurances {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-md);
+    border-top: var(--hairline) solid var(--border-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    max-width: 34rem;
+  }
+
+  .support-assurance {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: var(--text-caption);
+    line-height: var(--leading-snug);
+    color: var(--text-muted);
+  }
+
+  .support-assurance__mark {
+    flex-shrink: 0;
+    width: 0.875rem;
+    height: 0.875rem;
+    margin-top: 0.1rem;
+    color: var(--laya-forest-600);
+  }
+
+  /* ------------------------------------------------------------------------
+     SECTION BANDS
+     ------------------------------------------------------------------------ */
+
+  .home-band {
+    position: relative;
+    padding-block: var(--section-y);
+    padding-inline: var(--gutter);
+  }
+
+  /* Smooth gradient transitions between section bands */
+  .home-band--sunken {
+    background-color: var(--surface-sunken);
+  }
+
+  .home-band--sunken::before {
+    content: "";
+    position: absolute;
+    top: -2rem;
+    left: 0;
+    right: 0;
+    height: 4rem;
+    background: linear-gradient(to bottom, transparent, var(--surface-sunken));
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .home-band--ink {
+    background-color: var(--surface-ink);
+    color: var(--text-inverse);
+    /* Re-point the semantic text tokens so nested components inherit correctly. */
+    --text-primary: var(--text-inverse);
+    --text-secondary: var(--text-inverse-secondary);
+    --text-tertiary: var(--text-inverse-muted);
+    --text-muted: var(--text-inverse-muted);
+    --border-subtle: var(--border-inverse);
+    --border-default: var(--border-inverse);
+  }
+
+  /* ------------------------------------------------------------------------
+     EDITORIAL LINK — arrow affordance used across the homepage
+     ------------------------------------------------------------------------ */
+
+  /*
+    WCAG 2.2 target size (minimum): 24x24 CSS px.
+
+    Measured at 390px: these links rendered 22px tall because the anchor box
+    wrapped only the text line. There are 9 of them on the homepage alone and
+    they are used across About, Programmes, Impact and the Resource Centre, so
+    this single rule resolves the recurring offender site-wide.
+
+    `inline-flex` + `min-height` gives a 24px hit area without changing the
+    visual size of the text or its position in the flow.
+  */
+  .editorial-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.5rem;
+    gap: 0.4375rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text-brand);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .editorial-link:hover {
+    color: var(--laya-forest-800);
+  }
+
+  .editorial-link__arrow {
+    width: 1rem;
+    height: 1rem;
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  .editorial-link:hover .editorial-link__arrow {
+    transform: translateX(3px);
+  }
+
+  /* ------------------------------------------------------------------------
+     LIGHT-ON-DARK CORRECTIONS
+     ------------------------------------------------------------------------
+     `.type-eyebrow` and `.editorial-link` use `--text-brand` (forest green
+     #25543d). Against the dark documentary band (`--surface-ink` #16150f)
+     that measures ~1.9:1 — a severe WCAG failure.
+
+     Both opt into lighter tones on dark bands. `--laya-forest-300` (#9dc2ae)
+     keeps the eyebrow reading as brand-green while measuring **9.37:1** on
+     ink — well clear of the 4.5:1 AA floor. Verified by browser measurement.
+     ------------------------------------------------------------------------ */
+
+  .home-band--ink .type-eyebrow {
+    color: var(--laya-forest-300);
+  }
+
+  .home-band--ink .editorial-link {
+    color: var(--text-inverse);
+  }
+
+  .home-band--ink .editorial-link:hover {
+    color: var(--text-inverse);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  /* ------------------------------------------------------------------------
+     SUBTLE REVEAL — homepage sections only
+     ------------------------------------------------------------------------
+     Uses the `.reveal` utility from index.css, applied via IntersectionObserver
+     in the page. Disabled entirely under reduced-motion (handled globally).
+     ------------------------------------------------------------------------ */
+
+  @media (prefers-reduced-motion: reduce) {
+    .work-feature__media img,
+    .work-tile__media img,
+    .story-lead__media img,
+    .story-item__media img,
+    .document-card__cover img,
+    .editorial-link__arrow {
+      transition: none;
+    }
+  }
+}

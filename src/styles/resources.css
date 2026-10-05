@@ -1,0 +1,671 @@
+/* ==========================================================================
+   LAYA — RESOURCE CENTRE
+   --------------------------------------------------------------------------
+   Document library and financial disclosure pages.
+
+   Direction: institutional transparency. Off-white canvas, document-led cards,
+   typographic filters, hairline rules. No gradients, no glass, no floating
+   grids on a coloured background.
+
+   PHOTOGRAPHY NOTE
+   Document covers are PORTRAIT A4 scans (median 1040x1416, aspect 0.72). The
+   card frame below is portrait to match, so covers are shown whole rather than
+   cropped into an unreadable strip.
+   ========================================================================== */
+
+@layer components {
+  /* ------------------------------------------------------------------------
+     PAGE HEADER
+     ------------------------------------------------------------------------ */
+
+  .res-header {
+    padding-block-start: calc(var(--laya-chrome-height) + var(--space-2xl));
+    padding-block-end: var(--space-lg);
+    padding-inline: var(--gutter);
+    background-color: var(--surface-canvas);
+  }
+
+  .res-header__inner {
+    max-width: var(--container-content);
+    margin-inline: auto;
+  }
+
+  .res-header__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .res-header__eyebrow::before {
+    content: "";
+    width: 1.5rem;
+    height: 1px;
+    background-color: var(--laya-forest-600);
+  }
+
+  .res-header__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-display);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    font-weight: 600;
+    color: var(--text-primary);
+    text-wrap: balance;
+    max-width: 22ch;
+  }
+
+  .res-header__lead {
+    margin-top: var(--space-xs);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-width: 46rem;
+  }
+
+  .res-header__stats {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-sm);
+    border-top: var(--hairline) solid var(--border-subtle);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xl);
+  }
+
+  .res-stat__value {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    line-height: 1;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .res-stat__label {
+    display: block;
+    margin-top: 0.25rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  /* ------------------------------------------------------------------------
+     BANDS
+     ------------------------------------------------------------------------ */
+
+  .res-band {
+    padding-block: var(--section-y-tight);
+    padding-inline: var(--gutter);
+    background-color: var(--surface-canvas);
+  }
+
+  .res-band--warm {
+    background-color: var(--surface-warm);
+    border-block: var(--hairline) solid var(--border-subtle);
+  }
+
+  .res-band--sunken {
+    background-color: var(--surface-sunken);
+    border-block: var(--hairline) solid var(--border-subtle);
+  }
+
+  /* ------------------------------------------------------------------------
+     FILTER BAR — typographic, not a row of pills
+     ------------------------------------------------------------------------ */
+
+  .res-filters {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background-color: var(--surface-canvas);
+    border-block: var(--hairline) solid var(--border-subtle);
+    padding-block: var(--space-sm);
+    padding-inline: var(--gutter);
+  }
+
+  .res-filters__inner {
+    max-width: var(--container-content);
+    margin-inline: auto;
+    display: grid;
+    gap: var(--space-sm);
+  }
+
+  @media (min-width: 1024px) {
+    .res-filters__inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: var(--space-lg);
+    }
+  }
+
+  .res-filters__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-xs) var(--space-md);
+  }
+
+  .res-filters__label {
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  /* Filter chip — a bordered rect with the same restraint as the nav. */
+  .res-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.625rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--text-secondary);
+    background-color: transparent;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out),
+      background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .res-chip:hover {
+    color: var(--text-primary);
+    border-color: var(--border-default);
+    background-color: var(--laya-stone-50);
+  }
+
+  .res-chip--active {
+    color: var(--laya-forest-50);
+    background-color: var(--laya-forest-700);
+    border-color: var(--laya-forest-700);
+  }
+
+  .res-chip--active:hover {
+    color: var(--laya-forest-50);
+    background-color: var(--laya-forest-800);
+    border-color: var(--laya-forest-800);
+  }
+
+  .res-chip__count {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    opacity: 0.7;
+  }
+
+  /* Search input — underline, not a rounded box. */
+  .res-search {
+    position: relative;
+    width: 100%;
+  }
+
+  @media (min-width: 1024px) {
+    .res-search {
+      width: 20rem;
+    }
+  }
+
+  .res-search__input {
+    width: 100%;
+    height: 2.5rem;
+    padding-inline: 2.25rem 0.75rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+    background-color: var(--surface-raised);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    transition: border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .res-search__input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .res-search__input:focus-visible {
+    border-color: var(--laya-forest-600);
+    outline: 2px solid var(--laya-forest-600);
+    outline-offset: 1px;
+  }
+
+  .res-search__icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1rem;
+    height: 1rem;
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
+  .res-filters__result {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+  }
+
+  .res-filters__result strong {
+    color: var(--text-primary);
+  }
+
+  /* ------------------------------------------------------------------------
+     DOCUMENT GRID
+     ------------------------------------------------------------------------ */
+
+  .res-grid {
+    display: grid;
+    gap: var(--space-lg);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 560px) {
+    .res-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .res-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-xl);
+    }
+  }
+
+  /* ------------------------------------------------------------------------
+     RESOURCE CARD
+     ------------------------------------------------------------------------
+     A document record, not a marketing tile: portrait cover, then a metadata
+     ledger (type · year), title, description and two explicit actions.
+     ------------------------------------------------------------------------ */
+
+  .res-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--surface-raised);
+    border: var(--hairline) solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    transition: border-color var(--duration-fast) var(--ease-out);
+  }
+
+  @media (min-width: 640px) {
+    .res-card {
+      flex-direction: row;
+      align-items: stretch;
+    }
+  }
+
+  .res-card:hover {
+    border-color: var(--border-default);
+  }
+
+  /* Unavailable documents are visibly quieted — the record still exists in the
+     library, but nothing suggests it can be read. */
+  .res-card--unavailable {
+    background-color: var(--laya-stone-50);
+  }
+
+  .res-card--unavailable .res-card__cover img {
+    opacity: 0.55;
+    filter: grayscale(1);
+  }
+
+  .res-card__cover {
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    /* Portrait frame matches the A4 scan aspect (0.72). */
+    aspect-ratio: 3 / 4;
+    background-color: var(--laya-stone-100);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+  }
+
+  @media (min-width: 640px) {
+    .res-card__cover {
+      width: 240px;
+      border-bottom: none;
+      border-right: var(--hairline) solid var(--border-subtle);
+    }
+  }
+
+  .res-card__cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    /* `contain` never crops the document artwork — the cover IS the document. */
+    object-fit: contain;
+    object-position: top center;
+    transition: transform var(--duration-slow) var(--ease-out);
+  }
+
+  .res-card:hover .res-card__cover img {
+    transform: scale(1.02);
+  }
+
+  .res-card__badge {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.1875rem 0.4375rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-inverse);
+    background-color: rgba(22, 21, 15, 0.82);
+    border-radius: var(--radius-xs);
+  }
+
+  .res-card__badge--unavailable {
+    background-color: var(--laya-stone-400);
+    color: var(--text-primary);
+  }
+
+  .res-card__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: var(--space-sm) var(--space-md) var(--space-md);
+  }
+
+  /* Metadata ledger: TYPE · YEAR */
+  .res-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem;
+    margin-bottom: var(--space-2xs);
+  }
+
+  .res-card__type {
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-brand);
+  }
+
+  .res-card__year {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--text-tertiary);
+  }
+
+  .res-card__year::before {
+    content: "";
+    width: 3px;
+    height: 3px;
+    border-radius: 9999px;
+    background-color: var(--border-strong);
+  }
+
+  .res-card__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    line-height: var(--leading-snug);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.375rem;
+  }
+
+  /*
+    WCAG 2.2 target size (minimum): 24x24 CSS px.
+
+    Measured at 360px: 27 of these title links were 20px tall because the
+    anchor box wrapped only the text line. `inline-block` with a min-height
+    gives the link a proper hit area while the heading keeps its own layout.
+  */
+  .res-card__title a {
+    display: inline-block;
+    min-height: 1.5rem;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .res-card__title a:hover {
+    color: var(--text-brand);
+  }
+
+  .res-card__desc {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+    flex: 1;
+  }
+
+  .res-card__context {
+    margin-top: var(--space-md);
+    margin-bottom: var(--space-md);
+    padding: var(--space-md);
+    background-color: var(--laya-stone-50);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    border-left: 2px solid var(--laya-forest-300);
+  }
+
+  .res-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    margin-top: var(--space-md);
+    padding-top: var(--space-2xs);
+    border-top: var(--hairline) solid var(--border-subtle);
+  }
+
+  /* Action buttons — real buttons/links, 36px+ targets. */
+  .res-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    min-height: 2.25rem;
+    padding: 0.375rem 0.75rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    font-weight: 600;
+    color: var(--text-primary);
+    background-color: transparent;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out),
+      background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .res-action:hover {
+    color: var(--laya-forest-800);
+    border-color: var(--laya-forest-400);
+    background-color: var(--laya-forest-50);
+  }
+
+  .res-action--primary {
+    color: var(--laya-forest-50);
+    background-color: var(--laya-forest-700);
+    border-color: var(--laya-forest-700);
+  }
+
+  .res-action--primary:hover {
+    color: var(--laya-forest-50);
+    background-color: var(--laya-forest-800);
+    border-color: var(--laya-forest-800);
+  }
+
+  .res-action[aria-disabled="true"],
+  .res-action:disabled {
+    color: var(--text-muted);
+    background-color: transparent;
+    border-color: var(--border-subtle);
+    cursor: not-allowed;
+  }
+
+  .res-action__icon {
+    width: 0.875rem;
+    height: 0.875rem;
+    flex-shrink: 0;
+  }
+
+  /* ------------------------------------------------------------------------
+     EMPTY STATE
+     ------------------------------------------------------------------------ */
+
+  .res-empty {
+    padding: var(--space-3xl) var(--space-md);
+    text-align: center;
+    border: 1px dashed var(--border-default);
+    border-radius: var(--radius-card);
+    background-color: var(--surface-raised);
+  }
+
+  .res-empty__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h4);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .res-empty__body {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-md);
+  }
+
+  /* ------------------------------------------------------------------------
+     FINANCIAL REPORT LEDGER — clean list on off-white
+     ------------------------------------------------------------------------ */
+
+  .fy-ledger {
+    border-top: var(--hairline) solid var(--border-default);
+  }
+
+  .fy-row {
+    display: grid;
+    gap: var(--space-2xs) var(--space-md);
+    padding-block: var(--space-md);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+    align-items: center;
+  }
+
+  /*
+    COLUMN SIZING
+    An earlier revision used `auto` for the actions column. At 1440px the
+    proportional description column expanded into the remaining space and
+    pushed the two action buttons past the right edge of the container, so
+    "Download" rendered clipped (and sat under the WhatsApp float).
+
+    The actions column is now `max-content` with an explicit floor, and the
+    description column is capped, so the buttons always have room.
+  */
+  @media (min-width: 900px) {
+    .fy-row {
+      grid-template-columns: 7.5rem minmax(0, 1.5fr) minmax(12rem, 1fr) max-content;
+      gap: var(--space-md);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .fy-row {
+      grid-template-columns: 8.5rem minmax(0, 1.6fr) minmax(14rem, 1fr) max-content;
+      gap: var(--space-lg);
+    }
+  }
+
+  .fy-row__year {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
+    white-space: nowrap;
+  }
+
+  .fy-row__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: var(--leading-snug);
+  }
+
+  .fy-row__desc {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  .fy-row__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+  }
+
+  @media (min-width: 900px) {
+    .fy-row__actions {
+      justify-content: flex-end;
+      flex-wrap: nowrap;
+      /* Never let the buttons be compressed by a long description. */
+      flex-shrink: 0;
+    }
+  }
+
+  /* Long donor-style descriptions wrap rather than pushing the row wider. */
+  .fy-row__desc {
+    overflow-wrap: anywhere;
+  }
+
+  /* ------------------------------------------------------------------------
+     DOCUMENT ICON — consistent glyph across the Resource Centre
+     ------------------------------------------------------------------------ */
+
+  .doc-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+    color: var(--laya-forest-700);
+    background-color: var(--laya-forest-50);
+    border: var(--hairline) solid var(--laya-forest-200);
+    border-radius: var(--radius-sm);
+  }
+
+  .doc-icon__glyph {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* ------------------------------------------------------------------------
+     REVEAL / REDUCED MOTION
+     ------------------------------------------------------------------------ */
+
+  @media (prefers-reduced-motion: reduce) {
+    .res-card__cover img {
+      transition: none;
+    }
+  }
+}

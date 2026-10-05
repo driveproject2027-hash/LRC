@@ -1,0 +1,451 @@
+/* ==========================================================================
+   LAYA DESIGN SYSTEM — TOKENS
+   --------------------------------------------------------------------------
+   Single source of truth for the LAYA visual language.
+
+   Direction: warm, light, editorial, documentary, institutional.
+   Canvas is warm ivory. Brand colours (forest + LAYA violet) are accents and
+   occasional section tones — never the page background.
+
+   Rules of engagement:
+   - Raw values live in "Palette" below. Nothing else may hardcode a hex.
+   - Every other layer (semantic, component classes) references palette vars.
+   - shadcn/Radix primitives read the HSL triplets in "shadcn bridge".
+   ========================================================================== */
+
+:root {
+  /* -----------------------------------------------------------------------
+     1. PALETTE — raw values, unprefixed meaning
+     ----------------------------------------------------------------------- */
+
+  /* Ink — deep charcoal / near-black for editorial text.
+     Warm-tinted (a touch of red) so it sits with ivory rather than fighting it. */
+  --laya-ink-900: #16150f;
+  --laya-ink-800: #211f19;
+  --laya-ink-700: #33312a;
+  --laya-ink-600: #4a4740;
+  --laya-ink-500: #5f5c53;
+  --laya-ink-400: #7d7970;
+  --laya-ink-300: #a09c92;
+  --laya-ink-200: #c4c0b6;
+  --laya-ink-100: #e2dfd7;
+
+  /* Canvas — warm off-white / ivory. The primary page surface. */
+  --laya-ivory-50: #fdfcfa;
+  --laya-ivory-100: #faf8f4;
+  --laya-ivory-200: #f5f2ec;
+  --laya-ivory-300: #eae6dd;
+
+  /* Stone — very light warm greys. Secondary surfaces and rules. */
+  --laya-stone-50: #f7f5f1;
+  --laya-stone-100: #f0ede7;
+  --laya-stone-200: #e6e2da;
+  --laya-stone-300: #d6d1c7;
+  --laya-stone-400: #b8b2a6;
+
+  /* Forest — deep forest green. Primary brand + action accent. */
+  --laya-forest-950: #0f2119;
+  --laya-forest-900: #163023;
+  --laya-forest-800: #1d4230;
+  --laya-forest-700: #25543d;
+  --laya-forest-600: #2f6b4e;
+  --laya-forest-500: #3d8060;
+  --laya-forest-400: #6ba184;
+  --laya-forest-300: #9dc2ae;
+  --laya-forest-200: #c8ded2;
+  --laya-forest-100: #e5f0e9;
+  --laya-forest-50: #f2f8f4;
+
+  /* Moss — muted earthy green. Quieter supporting tone. */
+  --laya-moss-700: #4a5b3c;
+  --laya-moss-600: #5d7049;
+  --laya-moss-500: #74875c;
+  --laya-moss-400: #93a37d;
+  --laya-moss-300: #b6c2a5;
+  --laya-moss-200: #d5ddc9;
+
+  /* LAYA Violet — retained from the logo. ACCENT ONLY. */
+  --laya-violet-800: #4a3a7a;
+  --laya-violet-700: #5b478f;
+  --laya-violet-600: #6d57a5;
+  --laya-violet-500: #826ab8;
+  --laya-violet-400: #9d8ac9;
+  --laya-violet-300: #bcaddb;
+  --laya-violet-200: #d9d0ea;
+  --laya-violet-100: #ece7f5;
+
+  /* Logo blue — a clear cyan-blue signal, reserved for the LAYA lockup and
+     supporting brand details rather than used as a page background. */
+  --laya-blue-700: #287da9;
+  --laya-blue-600: #3799cf;
+  --laya-blue-500: #4daee5;
+  --laya-blue-300: #a8d9ef;
+  --laya-blue-100: #e6f5fb;
+
+  /*
+    LOGO BLUE — sampled directly from src/assets/logo.png (the blue lobe of the
+    mark), not estimated: rgb(85, 177, 235). Kept separate from the blue ramp
+    above because it is a brand-extracted value rather than a step on an
+    editorial scale, and it is noticeably lighter than --laya-blue-600.
+
+    The matching foreground is DARK, not white. Measured contrast:
+        white on #55b1eb   2.37:1   FAILS AA
+        ink   on #55b1eb   7.73:1   passes AAA
+    Any control filled with the true logo blue must therefore carry dark text.
+    Pairing it with white would look plausible and be unreadable.
+  */
+  --laya-logo-blue: #55b1eb;
+  --laya-logo-blue-foreground: var(--laya-ink-900);
+
+  /* Clay — subtle warm earth / rust accent. Used sparingly. */
+  --laya-clay-800: #6b3a24;
+  --laya-clay-700: #8a4c30;
+  --laya-clay-600: #a55f3d;
+  --laya-clay-500: #bc7a56;
+  --laya-clay-400: #cf9a79;
+  --laya-clay-300: #e0bda5;
+  --laya-clay-200: #edd8c8;
+
+  /* Ochre — warm highlight, for figures and metadata emphasis. */
+  --laya-ochre-700: #8a6a1f;
+  --laya-ochre-600: #a8811f;
+  --laya-ochre-500: #c39c33;
+  --laya-ochre-200: #ecd9a8;
+
+  /* Utility — status only. Never decorative. */
+  --laya-success: #2f6b4e;
+  --laya-warning: #a8811f;
+  --laya-danger: #9b3324;
+
+  /* NOTE: status colours are intentionally not yet consumed. They exist so the
+     token layer is complete when later phases add form validation, table
+     states and alerts. Removing them now would force a re-declaration later. */
+
+  /* -----------------------------------------------------------------------
+     2. SEMANTIC SURFACES — what a section actually sits on
+     ----------------------------------------------------------------------- */
+
+  --surface-canvas: var(--laya-ivory-100); /* default page */
+  --surface-raised: #ffffff; /* cards on canvas */
+  --surface-sunken: var(--laya-stone-100); /* quiet bands */
+  --surface-tinted: var(--laya-forest-50); /* green-washed band */
+  --surface-warm: var(--laya-stone-50); /* warm grey band */
+  --surface-ink: var(--laya-ink-900); /* dark documentary band */
+  --surface-forest: var(--laya-forest-900); /* deep green band */
+  --surface-violet: var(--laya-violet-800); /* rare brand band */
+
+  /* -----------------------------------------------------------------------
+     3. SEMANTIC TEXT — contrast-verified against the surfaces above
+     ----------------------------------------------------------------------- */
+
+  /* -----------------------------------------------------------------------
+     TEXT CONTRAST — measured against --surface-canvas (#faf8f4)
+     -----------------------------------------------------------------------
+     These ratios are verified, not estimated. Re-measure with the contrast
+     audit if the palette changes; do not eyeball them.
+
+     CORRECTED IN PHASE 4: `--text-muted` was `--laya-ink-400` (#7d7970),
+     which measures 4.09:1 on ivory. The previous comment claimed 4.7:1, which
+     was wrong, and it is BELOW the 4.5:1 WCAG AA floor for normal-sized text.
+     Every `.type-meta`, `.type-caption` and `.home-figure__label` (12–13px)
+     rendering muted text was failing AA as a result.
+
+     Moved to `--laya-ink-500` (6.30:1). `--laya-ink-400` stays in the palette
+     as a border / divider tone only — it must not carry text.
+     ----------------------------------------------------------------------- */
+
+  --text-primary: var(--laya-ink-900); /* 15.84:1 on ivory */
+  --text-secondary: var(--laya-ink-600); /*  8.74:1 on ivory */
+  --text-tertiary: var(--laya-ink-500); /*  6.30:1 on ivory */
+  --text-muted: var(--laya-ink-500); /*  6.30:1 on ivory — was ink-400 (4.09)*/
+  --text-brand: var(--laya-forest-700); /* 7.4:1  on ivory  */
+  --text-accent: var(--laya-violet-700); /* 6.9:1  on ivory  */
+  --text-warm: var(--laya-clay-700); /* 6.1:1  on ivory  */
+
+  --text-inverse: var(--laya-ivory-100); /* on ink / forest   */
+  --text-inverse-secondary: rgba(250, 248, 244, 0.82);
+  --text-inverse-muted: rgba(250, 248, 244, 0.64);
+
+  /* -----------------------------------------------------------------------
+     4. SEMANTIC BORDERS
+     ----------------------------------------------------------------------- */
+
+  --border-subtle: rgba(109, 87, 165, 0.16); /* Subtle purple */
+  --border-default: rgba(109, 87, 165, 0.28); /* Slightly stronger purple */
+  --border-strong: var(--laya-ink-300);
+  --border-brand: var(--laya-forest-300);
+  --border-inverse: rgba(250, 248, 244, 0.22);
+
+  /* -----------------------------------------------------------------------
+     5. BRAND LOCKUP
+     ----------------------------------------------------------------------- */
+
+  --laya-header: var(--surface-canvas);
+  --laya-chrome-height: 4.5rem; /* published at runtime by the Header */
+
+  /* -----------------------------------------------------------------------
+     6b. GLOBAL HEADER
+     -----------------------------------------------------------------------
+     The sticky header is a two-state system:
+       overlay — sits on the page beneath it, for hero imagery
+       solid   — opaque warm surface once the page scrolls
+     Heights are declared here so the Header, the scroll-root offset and any
+     future scroll-margin can agree on one value.
+     ----------------------------------------------------------------------- */
+
+  --header-height-mobile: 3.5rem; /* 56px — comfortable 44px+ touch target */
+  --header-height-desktop: 4.5rem; /* 72px — room for the lockup and nav */
+
+  /*
+    HEADER GLASS — blue/violet tinted, translucent in BOTH states.
+
+    The bar is now a single glass surface rather than two unrelated skins:
+    a lighter tint at the top of a page, a slightly denser one once scrolled.
+    The tint is the brand's blue and violet, laid down as two overlapping
+    gradients at low alpha over a semi-transparent ivory base, so the bar
+    reads as tinted glass rather than as a flat cream slab.
+
+    The ivory base is retained underneath the tint on purpose. Text here is
+    charcoal (--text-primary), so the surface must stay light enough to keep
+    it above the 4.5:1 AA floor. The tints are therefore low-alpha washes over
+    a light base, NOT saturated colour — a strong blue or violet fill would
+    drop charcoal text below AA and would also fight the Donate button.
+  */
+  --header-glass-tint-blue: rgba(77, 174, 229, 0.1);
+  --header-glass-tint-violet: rgba(109, 87, 165, 0.12);
+  --header-glass-sheen: rgba(255, 255, 255, 0.55);
+
+  /* Scrolled state gets a slightly denser wash of the same two hues, so the
+     bar reads as one glass surface that firms up rather than changing
+     identity. Kept as separate tokens because the alpha is tuned per state. */
+  --header-glass-tint-blue-strong: rgba(77, 174, 229, 0.16);
+  --header-glass-tint-violet-strong: rgba(109, 87, 165, 0.2);
+
+  /* Overlay state (at the top of a page) — lightest tint, most see-through. */
+  --header-overlay-bg: rgba(250, 248, 244, 0.62);
+  --header-overlay-border: rgba(109, 87, 165, 0.16);
+
+  /* Scrolled state — denser tint so navigation stays the most solid thing on
+     screen while content moves beneath it. Still translucent, still glass. */
+  --header-solid-bg: rgba(250, 248, 244, 0.78);
+  --header-solid-border: rgba(109, 87, 165, 0.2);
+  --header-solid-shadow: 0 1px 2px rgba(22, 21, 15, 0.04),
+    0 8px 24px -16px rgba(109, 87, 165, 0.4);
+
+  --header-glass-blur: 14px;
+  --header-glass-saturate: 1.6;
+
+  /* Dropdown panel */
+  --menu-bg: var(--surface-raised);
+  --menu-border: var(--border-subtle);
+  --menu-shadow: var(--shadow-overlay);
+  --menu-width: 22rem;
+  --menu-width-wide: 26rem;
+
+  /* Navigation type and rhythm */
+  --nav-font-size: 0.8125rem; /* 13px — institutional, not shouty */
+  --nav-tracking: 0.06em;
+  --nav-gap: 0.25rem;
+  --nav-item-padding-x: 0.6875rem;
+  --nav-item-padding-y: 0.5rem;
+
+  /* Active / hover indicator */
+   --nav-indicator: var(--laya-violet-700);
+  --nav-hover-bg: rgba(22, 21, 15, 0.045);
+  --nav-muted: var(--text-secondary);
+
+  --z-header: 60;
+  --z-menu: 70;
+  --z-mobile-drawer: 80;
+
+  /* -----------------------------------------------------------------------
+     6. shadcn / Radix bridge
+     -------------------------------------------------------------------------
+     shadcn primitives consume `hsl(var(--name))`, so these must be raw
+     "H S% L%" triplets with no hsl() wrapper and no hex.
+     ----------------------------------------------------------------------- */
+
+  --background: 40 33% 97%; /* ivory-100   */
+  --foreground: 51 19% 7%; /* ink-900     */
+
+  --card: 0 0% 100%;
+  --card-foreground: 51 19% 7%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 51 19% 7%;
+
+  --primary: 152 38% 24%; /* forest-700  */
+  --primary-foreground: 40 33% 97%;
+
+  --secondary: 40 20% 95%; /* stone-100   */
+  --secondary-foreground: 51 19% 12%;
+
+  --muted: 40 20% 95%;
+  --muted-foreground: 50 9% 40%; /* ink-500     */
+
+  --accent: 262 27% 49%; /* violet-700  */
+  --accent-foreground: 40 33% 97%;
+
+  --destructive: 8 61% 37%; /* danger      */
+  --destructive-foreground: 40 33% 97%;
+
+  --border: 40 19% 88%; /* stone-200   */
+  --input: 40 16% 81%; /* stone-300   */
+  --ring: 152 38% 24%; /* forest-700  */
+
+  --radius: 0.5rem; /* modern, softer edges */
+
+  --sidebar-background: 153 37% 12%;
+  --sidebar-foreground: 40 33% 97%;
+  --sidebar-primary: 152 38% 24%;
+  --sidebar-primary-foreground: 40 33% 97%;
+  --sidebar-accent: 153 25% 18%;
+  --sidebar-accent-foreground: 40 33% 97%;
+  --sidebar-border: 153 20% 26%;
+  --sidebar-ring: 152 38% 40%;
+
+  /* -----------------------------------------------------------------------
+     7. TYPOGRAPHY
+     ------------------------------------------------------------------------- */
+
+  /*
+    BODY / UI — Inter
+    Modern, clean, premium web typography.
+  */
+   --font-sans: "Inter", "Segoe UI", ui-sans-serif, system-ui,
+      -apple-system, "Helvetica Neue", Arial, sans-serif;
+
+  /*
+    EDITORIAL / DISPLAY — Outfit
+    Modern, geometric display face.
+  */
+   --font-serif: "Outfit", "Inter", sans-serif;
+
+  /*
+    METADATA, LABELS, FIGURES — IBM Plex Mono or standard mono.
+  */
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Fluid editorial scale.
+     clamp(min, preferred, max) — removes the 4-breakpoint override habit. */
+   --text-display: clamp(2.5rem, 1.6rem + 2.6vw, 4rem);
+  --text-h1: clamp(2rem, 1.35rem + 2.6vw, 3.5rem);
+  --text-h2: clamp(1.625rem, 1.2rem + 1.7vw, 2.5rem);
+  --text-h3: clamp(1.25rem, 1.05rem + 0.8vw, 1.625rem);
+  --text-h4: clamp(1.0625rem, 0.98rem + 0.35vw, 1.25rem);
+  --text-body-lg: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem);
+  --text-body: 1rem;
+  --text-sm: 0.875rem;
+  --text-caption: 0.75rem;
+  --text-label: 0.6875rem;
+
+  --leading-display: 1.04;
+  --leading-tight: 1.15;
+  --leading-snug: 1.3;
+  --leading-normal: 1.55;
+  --leading-relaxed: 1.72;
+
+   --tracking-display: 0;
+   --tracking-tight: 0;
+  --tracking-label: 0.14em;
+  --tracking-eyebrow: 0.2em;
+
+  /* -----------------------------------------------------------------------
+     8. SPACING / RHYTHM
+     ------------------------------------------------------------------------- */
+
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --space-4xl: 8rem;
+
+  /* Section rhythm — fluid, replaces px-4 py-16 md:px-8 md:py-24 lg:px-16 */
+   --section-y: clamp(3.25rem, 2.2rem + 3.2vw, 5.5rem);
+   --section-y-tight: clamp(2.25rem, 1.7rem + 2.2vw, 3.75rem);
+  --section-gap: clamp(2rem, 1.5rem + 2vw, 3.5rem);
+
+  /* Container widths */
+  --container-content: 82rem; /* page shell      */
+  --container-prose: 46rem; /* long-form text  */
+  --container-wide: 90rem; /* full-bleed grids */
+
+  /*
+    READABLE MEASURE
+    Maximum width for a run of body copy. Measured on /about/governance at
+    768px: the section intro ran to 710px, which at 18px type is roughly 95-
+    100 characters per line — well beyond the 45-75 character range that reads
+    comfortably.
+
+    --measure        prose paragraphs in editorial sections
+    --measure-tight  captions and short standfirsts
+    These apply to TEXT ONLY. They must not constrain media grids.
+  */
+  --measure: 40rem; /* ~68ch at 18px */
+  --measure-tight: 34rem; /* ~58ch at 18px */
+
+  --gutter: clamp(1.25rem, 0.85rem + 2vw, 3rem);
+
+  /* -----------------------------------------------------------------------
+     9. BORDER RADIUS — restrained. Institutional, not bubbly.
+     ----------------------------------------------------------------------- */
+
+  --radius-none: 0;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-card: 16px;
+  --radius-media: 12px;
+
+  /* -----------------------------------------------------------------------
+     10. ELEVATION — three levels only, all soft and warm-tinted
+     ----------------------------------------------------------------------- */
+
+  --shadow-flat: none;
+  --shadow-raised: 0 4px 20px -2px rgba(22, 21, 15, 0.05),
+    0 8px 16px -4px rgba(22, 21, 15, 0.03);
+  --shadow-overlay: 0 12px 32px -12px rgba(22, 21, 15, 0.12),
+    0 32px 64px -32px rgba(22, 21, 15, 0.16);
+
+  /* -----------------------------------------------------------------------
+     11. MOTION — subtle, one easing family
+     ----------------------------------------------------------------------- */
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --duration-instant: 120ms;
+  --duration-fast: 200ms;
+  --duration-base: 320ms;
+  --duration-slow: 560ms;
+  --duration-editorial: 900ms;
+
+  /* -----------------------------------------------------------------------
+     12. LAYOUT
+     ----------------------------------------------------------------------- */
+
+  --hairline: 1px;
+}
+
+/* ==========================================================================
+   DARK SURFACE — opt-in via .surface-ink / .surface-forest, not global theme
+   ========================================================================== */
+
+.is-inverse {
+  --text-primary: var(--text-inverse);
+  --text-secondary: var(--text-inverse-secondary);
+  --text-tertiary: var(--text-inverse-muted);
+  --text-muted: var(--text-inverse-muted);
+  --border-subtle: var(--border-inverse);
+  --border-default: var(--border-inverse);
+  --surface-canvas: var(--surface-ink);
+  --surface-raised: rgba(250, 248, 244, 0.06);
+  --background: 153 37% 8%;
+  --foreground: 40 33% 97%;
+}

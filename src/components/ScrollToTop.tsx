@@ -24,11 +24,10 @@ const ScrollToTopButton = () => {
           exit={{ opacity: 0, scale: 0.8, y: 20 }}
           transition={{ duration: 0.3 }}
           onClick={() => scrollPageToTop(true)}
-          className="fixed bottom-24 right-8 z-50 bg-[#5BC0DE] rounded-full shadow-2xl hover:bg-[#4aa3c0] transition-colors"
-          style={{ width: "48px", height: "48px" }}
           aria-label="Scroll to top"
+          className="laya-scroll-top"
         >
-          <ChevronUp className="w-6 h-6 text-white mx-auto" />
+          <ChevronUp className="h-4 w-4" aria-hidden="true" />
         </motion.button>
       )}
     </AnimatePresence>

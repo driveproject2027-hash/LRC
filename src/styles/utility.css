@@ -1,0 +1,855 @@
+/* ==========================================================================
+   LAYA — CONTACT, DONATE, TEAM & FOOTER
+   --------------------------------------------------------------------------
+   Institutional surfaces. Restrained, trustworthy, typographic.
+   No manipulative urgency, no progress thermometers, no emotional pressure.
+   ========================================================================== */
+
+@layer components {
+  /* ------------------------------------------------------------------------
+     PAGE HEADER — shared archival plate
+     ------------------------------------------------------------------------ */
+
+  .ut-header {
+    padding-block-start: calc(var(--laya-chrome-height) + var(--space-2xl));
+    padding-block-end: var(--space-lg);
+    padding-inline: var(--gutter);
+    background-color: var(--surface-canvas);
+  }
+
+  .ut-header__inner {
+    max-width: var(--container-content);
+    margin-inline: auto;
+  }
+
+  .ut-header__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .ut-header__eyebrow::before {
+    content: "";
+    width: 1.5rem;
+    height: 1px;
+    background-color: var(--laya-forest-600);
+  }
+
+  .ut-header__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-display);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    font-weight: 600;
+    color: var(--text-primary);
+    text-wrap: balance;
+    max-width: 20ch;
+  }
+
+  .ut-header__lead {
+    margin-top: var(--space-xs);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-width: 46rem;
+  }
+
+  .ut-band {
+    padding-block: var(--section-y-tight);
+    padding-inline: var(--gutter);
+    background-color: var(--surface-canvas);
+  }
+
+  .ut-band--warm {
+    background-color: var(--surface-warm);
+    border-block: var(--hairline) solid var(--border-subtle);
+  }
+
+  .ut-band--sunken {
+    background-color: var(--surface-sunken);
+    border-block: var(--hairline) solid var(--border-subtle);
+  }
+
+  .ut-heading {
+    max-width: 46rem;
+    margin-bottom: var(--space-xl);
+  }
+
+  .ut-heading__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    color: var(--text-primary);
+    text-wrap: balance;
+    margin-top: var(--space-2xs);
+    margin-bottom: var(--space-xs);
+  }
+
+  .ut-heading__intro {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-width: var(--measure);
+  }
+
+  /* ------------------------------------------------------------------------
+     CONTACT — details ledger + form
+     ------------------------------------------------------------------------ */
+
+  .contact-grid {
+    display: grid;
+    gap: var(--space-2xl);
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .contact-grid {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: var(--space-3xl);
+    }
+  }
+
+  /* Details as a ruled record list, not icon cards. */
+  .contact-records {
+    border-top: var(--hairline) solid var(--border-default);
+    margin: 0;
+  }
+
+  .contact-record {
+    padding-block: var(--space-sm);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+  }
+
+  .contact-record__label {
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 0.25rem;
+  }
+
+  .contact-record__value {
+    margin: 0;
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-snug);
+    color: var(--text-primary);
+  }
+
+  /*
+    WCAG 2.2 target size (minimum): 24x24 CSS px.
+    Measured at 430px: the phone link rendered 21px and the email link 17px,
+    because the anchor box wrapped only the text line.
+  */
+  .contact-record__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.5rem;
+    color: var(--text-brand);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+  }
+
+  .contact-record__link:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  /* ---- Form ------------------------------------------------------------ */
+
+  .form-panel {
+    border: var(--hairline) solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    background-color: var(--surface-raised);
+    padding: var(--space-lg);
+  }
+
+  @media (min-width: 768px) {
+    .form-panel {
+      padding: var(--space-xl);
+    }
+  }
+
+  .form-field {
+    margin-bottom: var(--space-md);
+  }
+
+  .form-field__label {
+    position: absolute;
+    left: 0.875rem;
+    top: 1.1rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: all var(--duration-fast) var(--ease-out);
+    pointer-events: none;
+    margin: 0;
+  }
+
+  .form-field__optional {
+    font-weight: 400;
+    color: var(--text-muted);
+  }
+
+  .form-field__hint {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: var(--text-caption);
+    line-height: var(--leading-snug);
+    color: var(--text-muted);
+  }
+
+  .form-field__input,
+  .form-field__textarea {
+    width: 100%;
+    padding: 1.5rem 0.875rem 0.5rem; /* Extra top padding for floating label */
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+    background-color: var(--surface-raised);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-sm);
+    transition: all var(--duration-fast) var(--ease-out);
+  }
+
+  .form-field__textarea {
+    min-height: 9rem;
+    padding-top: 1.75rem;
+    line-height: var(--leading-normal);
+    resize: vertical;
+  }
+
+  /* Floating label logic */
+  .form-field__input:focus ~ .form-field__label,
+  .form-field__textarea:focus ~ .form-field__label,
+  .form-field__input:not(:placeholder-shown) ~ .form-field__label,
+  .form-field__textarea:not(:placeholder-shown) ~ .form-field__label {
+    top: 0.35rem;
+    font-size: 0.7rem;
+    color: var(--laya-violet-600);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* We hide the actual placeholder text visually, it just needs to exist for the CSS selector */
+  .form-field__input::placeholder,
+  .form-field__textarea::placeholder {
+    color: transparent;
+  }
+
+  /* Glowing blue-to-purple border on focus */
+  .form-field__input:focus-visible,
+  .form-field__textarea:focus-visible {
+    border-color: transparent;
+    outline: none;
+    box-shadow: 0 0 0 2px var(--surface-canvas), 0 0 0 4px var(--laya-logo-blue), 0 4px 14px 0 rgba(109, 87, 165, 0.4);
+  }
+
+  /* Invalid state — a visible border AND a message, never colour alone. */
+  .form-field__input--invalid,
+  .form-field__textarea--invalid {
+    border-color: var(--laya-danger);
+    border-width: 2px;
+  }
+
+  .form-field__error {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.375rem;
+    margin-top: 0.375rem;
+    font-size: var(--text-caption);
+    line-height: var(--leading-snug);
+    color: var(--laya-danger);
+  }
+
+  .form-field__error-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+    flex-shrink: 0;
+    margin-top: 0.05rem;
+  }
+
+  /* Status banners — success and error. */
+  .form-status {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    border: 1px solid;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    margin-bottom: var(--space-md);
+  }
+
+  .form-status--success {
+    color: var(--laya-forest-900);
+    background-color: var(--laya-forest-50);
+    border-color: var(--laya-forest-300);
+  }
+
+  .form-status--error {
+    color: var(--laya-danger);
+    background-color: var(--laya-clay-200);
+    border-color: var(--laya-clay-400);
+  }
+
+  .form-status__icon {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .form-status__title {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.125rem;
+  }
+
+  /* ------------------------------------------------------------------------
+     DONATE — restrained
+     ------------------------------------------------------------------------ */
+
+  .donate-metrics {
+    display: grid;
+    gap: var(--space-lg);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (min-width: 900px) {
+    .donate-metrics {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-xl);
+    }
+  }
+
+  .donate-metric {
+    padding-top: var(--space-sm);
+    border-top: 2px solid var(--laya-forest-600);
+  }
+
+  .donate-metric__value {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+    line-height: 1;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .donate-metric__label {
+    display: block;
+    margin-top: 0.375rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-brand);
+  }
+
+  /* Bank detail records with copy buttons. */
+  .bank-tabs {
+    display: inline-flex;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    background-color: var(--laya-stone-100);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-md);
+  }
+
+  .bank-tab {
+    padding: 0.4375rem 0.875rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    font-weight: 600;
+    color: var(--text-secondary);
+    background-color: transparent;
+    border: 0;
+    border-radius: var(--radius-xs);
+    cursor: pointer;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .bank-tab[aria-selected="true"] {
+    color: var(--text-primary);
+    background-color: var(--surface-raised);
+  }
+
+  .bank-list {
+    border-top: var(--hairline) solid var(--border-default);
+  }
+
+  .bank-row {
+    display: grid;
+    gap: 0.25rem var(--space-md);
+    padding-block: var(--space-sm);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+    align-items: start;
+  }
+
+  @media (min-width: 640px) {
+    .bank-row {
+      grid-template-columns: minmax(9rem, 0.6fr) minmax(0, 1.4fr) auto;
+    }
+  }
+
+  .bank-row__label {
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  .bank-row__value {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-primary);
+    word-break: break-word;
+  }
+
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex-shrink: 0;
+    color: var(--text-secondary);
+    background-color: transparent;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .copy-btn:hover {
+    color: var(--laya-forest-700);
+    border-color: var(--laya-forest-400);
+  }
+
+  .copy-btn__icon {
+    width: 0.9375rem;
+    height: 0.9375rem;
+  }
+
+  /* Plain statement block — used for the "no online payment" notice and 80G. */
+  .statement {
+    margin-top: var(--space-lg);
+    padding: var(--space-sm) var(--space-md);
+    border-left: 2px solid var(--laya-forest-500);
+    background-color: var(--laya-forest-50);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-width: 52rem;
+  }
+
+  /* ------------------------------------------------------------------------
+     TEAM — directory
+     ------------------------------------------------------------------------ */
+
+  .team-grid {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 640px) {
+    .team-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .team-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .team-member {
+    display: flex;
+    flex-direction: column;
+    padding-top: var(--space-md);
+    border-top: 2px solid var(--laya-forest-600);
+  }
+
+  /*
+    Consistent image ratio.
+
+    NOTE: no team headshots exist in the repository, so this frame currently
+    contains a monogram rather than a photograph. The 1:1 ratio is fixed here so
+    that when real portraits are supplied they render at a consistent aspect
+    without any layout change.
+  */
+  .team-member__portrait {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    margin-bottom: var(--space-md);
+    overflow: hidden;
+    border-radius: var(--radius-media);
+    background-color: var(--laya-forest-50);
+    border: var(--hairline) solid var(--laya-forest-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .team-member__portrait img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+
+  .team-member__monogram {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--laya-forest-800);
+    letter-spacing: 0.02em;
+  }
+
+  .team-member__name {
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    line-height: var(--leading-snug);
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .team-member__role {
+    margin-top: 0.25rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-brand);
+  }
+
+  .team-member__bio {
+    margin-top: var(--space-xs);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  /* Notice when a directory cannot be fully populated. */
+  .team-notice {
+    margin-top: var(--space-lg);
+    padding: var(--space-sm) var(--space-md);
+    border-left: 2px solid var(--border-strong);
+    background-color: var(--surface-warm);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-width: 52rem;
+  }
+}
+/* ==========================================================================
+   FOOTER
+   --------------------------------------------------------------------------
+   Replaces the old footer's hardcoded colour classes (`bg-[var(--laya-bg-right)]`
+   `text-white`, `animate-logo-float`, `opacity-40` copyright) with the Phase 1
+   semantic system.
+   ========================================================================== */
+
+@layer components {
+  .site-footer {
+    background-color: var(--surface-ink);
+    color: var(--text-inverse);
+    /* Re-point semantic tokens so nested text inherits correctly. */
+    --text-primary: var(--text-inverse);
+    --text-secondary: var(--text-inverse-secondary);
+    --text-tertiary: var(--text-inverse-muted);
+    --text-muted: var(--text-inverse-muted);
+    --border-subtle: var(--border-inverse);
+    --border-default: var(--border-inverse);
+    padding-block: var(--space-2xl) var(--space-lg);
+    padding-inline: var(--gutter);
+  }
+
+  .site-footer__inner {
+    max-width: var(--container-content);
+    margin-inline: auto;
+  }
+
+  /* Top region: identity beside the link columns. */
+  .site-footer__top {
+    display: grid;
+    gap: var(--space-2xl);
+    grid-template-columns: minmax(0, 1fr);
+    padding-bottom: var(--space-xl);
+    border-bottom: var(--hairline) solid var(--border-inverse);
+  }
+
+  @media (min-width: 768px) {
+    .site-footer__top {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .site-footer__top {
+      grid-template-columns: minmax(16rem, 1.3fr) repeat(5, minmax(0, 1fr));
+      gap: var(--space-xl);
+    }
+  }
+
+  /* ---- Identity -------------------------------------------------------- */
+
+  .site-footer__identity {
+    max-width: 24rem;
+  }
+
+  .site-footer__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .site-footer__mark {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .site-footer__name {
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-inverse);
+  }
+
+  .site-footer__tagline {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--text-inverse-muted);
+  }
+
+  .site-footer__description {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-inverse-secondary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .site-footer__meaning {
+    font-family: var(--font-serif);
+    font-size: var(--text-sm);
+    font-style: italic;
+    line-height: var(--leading-normal);
+    color: var(--text-inverse-muted);
+    padding-left: var(--space-sm);
+    border-left: 2px solid var(--laya-forest-500);
+  }
+
+  .site-footer__founded {
+    margin-top: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--text-inverse-muted);
+  }
+
+  /* ---- Link columns ---------------------------------------------------- */
+
+  .site-footer__col-title {
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-inverse);
+    margin-bottom: var(--space-sm);
+  }
+
+  .site-footer__links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    /* Reduced from 0.5rem because each link now carries its own 24px hit area. */
+    gap: 0.25rem;
+  }
+
+  /*
+    WCAG 2.2 target size (minimum): 24x24 CSS px.
+
+    Measured at 360px: footer links rendered at 20px tall because the anchor
+    box wrapped only the text line. `min-height` plus vertical padding brings
+    the hit area to 24px without changing the visual rhythm — the extra space
+    sits inside the 0.5rem list gap that was already there.
+  */
+  .site-footer__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.5rem;
+    padding-block: 0.125rem;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-inverse-secondary);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .site-footer__link:hover {
+    color: var(--text-inverse);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  /* Contact rows in the footer */
+  .site-footer__contact {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .site-footer__contact-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-inverse-secondary);
+  }
+
+  .site-footer__contact-icon {
+    width: 0.9375rem;
+    height: 0.9375rem;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    color: var(--laya-forest-400);
+  }
+
+  /* ---- Bottom bar ------------------------------------------------------ */
+
+  .site-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm) var(--space-lg);
+    padding-top: var(--space-lg);
+  }
+
+  .site-footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem 0.875rem;
+    font-size: var(--text-caption);
+    color: var(--text-inverse-muted);
+  }
+
+  /*
+    Previously `opacity-40`, which measured below the 4.5:1 AA floor on the
+    dark band. Now uses --text-inverse-muted, which is a contrast-verified
+    token, with no additional opacity applied.
+  */
+  .site-footer__copyright {
+    font-size: var(--text-caption);
+    line-height: var(--leading-normal);
+    color: var(--text-inverse-muted);
+    margin: 0;
+  }
+
+  .site-footer__reg {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--text-inverse-muted);
+    margin: 0;
+  }
+}
+
+/* ==========================================================================
+   ANIMATED RUNNING BORDER
+   ========================================================================== */
+@layer components {
+  .btn-running-border {
+    position: relative;
+    overflow: hidden;
+    border: none !important;
+    background: transparent !important;
+    border-radius: var(--radius-sm);
+    z-index: 1;
+    color: var(--laya-violet-800) !important;
+    font-weight: 600;
+  }
+  
+  /* The rotating gradient layer (acts as the border) */
+  .btn-running-border::before {
+    content: "";
+    position: absolute;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0%,
+      var(--laya-violet-500) 25%,
+      var(--laya-logo-blue) 50%,
+      transparent 75%
+    );
+    animation: border-spin 4s linear infinite;
+    z-index: -2;
+  }
+  
+  /* The inner background layer that covers the center, leaving a 2px border */
+  .btn-running-border::after {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    border-radius: calc(var(--radius-sm) - 2px);
+    background: linear-gradient(90deg, rgba(244, 248, 255, 0.95), rgba(250, 244, 255, 0.95));
+    z-index: -1;
+    transition: background 0.2s ease-out;
+  }
+  
+  .btn-running-border:hover::after {
+    background: linear-gradient(90deg, rgba(235, 242, 255, 0.98), rgba(245, 235, 255, 0.98));
+  }
+
+  .dark .btn-running-border {
+    color: var(--laya-violet-100) !important;
+  }
+
+  .dark .btn-running-border::after {
+    background: var(--surface-sunken);
+  }
+
+  @keyframes border-spin {
+    100% { transform: rotate(360deg); }
+  }
+}

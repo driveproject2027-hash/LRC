@@ -1,0 +1,725 @@
+/* ==========================================================================
+   LAYA — GLOBAL HEADER / NAVIGATION
+   --------------------------------------------------------------------------
+   Styles for the sticky header system only. Imported by src/index.css after
+   the component layer so header rules can build on the design tokens without
+   competing with page styles.
+
+   Everything here reads Phase 1 tokens. No literal colours.
+   ========================================================================== */
+
+@layer components {
+  /* ------------------------------------------------------------------------
+     SKIN — the two-state header chrome
+     ------------------------------------------------------------------------ */
+
+  /*
+    HEADER — tinted glass.
+
+    The blue and violet washes are painted through the header's OWN
+    background-image, layered over its translucent background-color, rather
+    than on a ::before overlay.
+
+    Why not ::before: the first attempt put the tint layer at z-index -1 with
+    `isolation: isolate` on the header. That created a stacking context in
+    which the pseudo-element painted BEHIND the header's own background — so
+    the ivory base covered the tint completely and the bar rendered flat and
+    untinted, which is exactly what showed up on screen. A ::before with
+    z-index 0 has the opposite problem: it paints over the nav text.
+    background-image has neither issue — it sits above the background-color
+    and below every child element, by definition.
+
+    Stack, back to front:
+      1. background-color  — translucent ivory base
+      2. background-image  — blue wash, violet wash, top sheen
+      3. backdrop-filter   — blurs page content behind the whole box
+      4. brand / nav / actions — opaque text, never tinted
+  */
+  .laya-header {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: var(--z-header);
+    background-color: var(--header-overlay-bg);
+    background-image:
+      /* Top sheen — a single bright edge sells the "glass" read. */
+      linear-gradient(180deg, var(--header-glass-sheen) 0%, transparent 46%),
+      /* Blue wash, strongest on the left where the brand lockup sits. */
+      linear-gradient(
+        100deg,
+        var(--header-glass-tint-blue) 0%,
+        var(--header-glass-tint-blue) 26%,
+        transparent 64%
+      ),
+      /* Violet wash, strongest on the right, under the nav and Donate. */
+      linear-gradient(
+        260deg,
+        var(--header-glass-tint-violet) 0%,
+        var(--header-glass-tint-violet) 32%,
+        transparent 72%
+      );
+    border-top: 2px solid var(--laya-violet-600);
+    border-bottom: 1px solid var(--header-overlay-border);
+    /*
+      The blur is now kept in BOTH states. It was previously dropped when
+      scrolled on the grounds that it cost paint for no benefit — true when
+      the scrolled bar was a fully opaque slab, because there was nothing
+      behind it to blur. As glass it is the entire effect, so it stays.
+    */
+    backdrop-filter: blur(var(--header-glass-blur))
+      saturate(var(--header-glass-saturate));
+    -webkit-backdrop-filter: blur(var(--header-glass-blur))
+      saturate(var(--header-glass-saturate));
+    transition:
+      background-color var(--duration-base) var(--ease-out),
+      border-color var(--duration-base) var(--ease-out),
+      box-shadow var(--duration-base) var(--ease-out);
+  }
+
+  .laya-header--solid {
+    background-color: var(--header-solid-bg);
+    background-image:
+      linear-gradient(180deg, var(--header-glass-sheen) 0%, transparent 50%),
+      linear-gradient(
+        100deg,
+        var(--header-glass-tint-blue-strong) 0%,
+        var(--header-glass-tint-blue-strong) 28%,
+        transparent 66%
+      ),
+      linear-gradient(
+        260deg,
+        var(--header-glass-tint-violet-strong) 0%,
+        var(--header-glass-tint-violet-strong) 34%,
+        transparent 74%
+      );
+    border-bottom-color: var(--header-solid-border);
+    box-shadow: var(--header-solid-shadow);
+  }
+
+  /*
+    Graceful degradation. Without backdrop-filter there is nothing to blur, so
+    a 0.62-alpha bar would let busy hero imagery show straight through the
+    navigation text. Raising the base opacity keeps charcoal legible; the tint
+    layer above it is unaffected.
+  */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .laya-header {
+      background-color: rgba(250, 248, 244, 0.94);
+    }
+
+    .laya-header--solid {
+      background-color: rgba(250, 248, 244, 0.97);
+    }
+  }
+
+  /*
+    Some users set "reduce transparency" for motion sickness and low vision.
+    Honour it by dropping the translucency entirely rather than ignoring it.
+  */
+  @media (prefers-reduced-transparency: reduce) {
+    .laya-header,
+    .laya-header--solid {
+      background-color: var(--surface-canvas);
+      /* The tint is dropped along with the blur. A colour wash with no blur
+         underneath it reads as a flat tinted bar rather than as glass, and
+         the point of this preference is to remove the transparency effect,
+         not to keep a vestige of it. */
+      background-image: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+  }
+
+  /* Inner rail — shared by the brand, nav and actions */
+  .laya-header__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    width: 100%;
+    max-width: var(--container-content);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+    height: var(--header-height-mobile);
+  }
+
+  @media (min-width: 1024px) {
+    .laya-header__inner {
+      height: var(--header-height-desktop);
+    }
+  }
+
+  /*
+    NOTE: the Donate button is NOT styled here.
+
+    It uses Tailwind utilities on the element itself (see Header.tsx). A rule
+    in this @layer components block would be overridden by the Button's own
+    `bg-primary` utility, because index.css guarantees utilities win over
+    component defaults. Keeping the styling in the utilities layer is the
+    correct placement under that contract, not a workaround.
+  */
+
+  /* ------------------------------------------------------------------------
+     BRAND LOCKUP
+     ------------------------------------------------------------------------ */
+
+  .laya-header__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    flex-shrink: 0;
+    border-radius: var(--radius-sm);
+  }
+
+  .laya-header__brand-mark-wrapper {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 9999px;
+    border: 1px solid var(--laya-blue-300);
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width var(--duration-base) var(--ease-out),
+      height var(--duration-base) var(--ease-out);
+  }
+
+  .laya-header__brand-mark {
+    width: 115%; /* Slight zoom to reduce padding without cropping the logo text */
+    height: 115%;
+    max-width: none;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  @media (min-width: 1024px) {
+    .laya-header__brand-mark-wrapper {
+      width: 4.25rem;
+      height: 4.25rem;
+    }
+  }
+
+  /* The wordmark is text, not baked into the raster logo, so it stays crisp
+     and can respond to the active/inverse states. */
+  .laya-header__brand-text {
+    display: none;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+
+  @media (min-width: 640px) {
+    .laya-header__brand-text {
+      display: flex;
+    }
+  }
+
+  .laya-header__brand-name {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+  }
+
+  .laya-header__brand-tagline {
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--laya-blue-700);
+    white-space: nowrap;
+  }
+
+  /* ------------------------------------------------------------------------
+     DESKTOP NAVIGATION
+     ------------------------------------------------------------------------ */
+
+  .laya-nav {
+    display: none;
+    align-items: center;
+    gap: var(--nav-gap);
+    margin-inline-start: auto;
+  }
+
+  @media (min-width: 1024px) {
+    .laya-nav {
+      display: flex;
+    }
+  }
+
+  /* Base state: actions are hidden until the desktop band. Declared BEFORE the
+     media queries below so the band-specific rules that follow can win on
+     source order (they have equal specificity). */
+  .laya-nav__actions {
+    display: none;
+    align-items: center;
+    gap: var(--space-xs);
+    margin-inline-start: var(--space-xs);
+    padding-inline-start: var(--space-sm);
+    border-inline-start: 1px solid var(--border-subtle);
+  }
+
+  /*
+     TABLET BAND (1024–1279px)
+     At 1024px the full nav plus CONTACT plus Donate exceeds the available rail,
+     which pushed the Donate button past the right edge of the viewport. It was
+     not detectable via documentElement.scrollWidth because the header is
+     position:fixed, so an overflowing child does not grow the scroll area.
+
+     Two containment measures, both scoped to this band:
+       1. Tighten item padding and tracking so the five main items fit.
+       2. Hide the secondary CONTACT link — it stays reachable in the mobile
+          drawer and the footer, and Contact is not a primary conversion path
+          at tablet width. Donate is never allowed to clip.
+  */
+  @media (min-width: 1024px) and (max-width: 1279px) {
+    .laya-nav {
+      gap: 0;
+    }
+
+    .laya-nav-item__trigger {
+      padding-inline: 0.5rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+    }
+
+    .laya-nav-item__trigger--active::after {
+      left: 0.5rem;
+      right: 0.5rem;
+    }
+
+    .laya-nav__actions {
+      display: flex;
+      margin-inline-start: var(--space-2xs);
+      padding-inline-start: var(--space-xs);
+    }
+
+    /* Secondary items (CONTACT) defer to the drawer in this band. */
+    .laya-nav__actions .laya-nav-item {
+      display: none;
+    }
+  }
+
+  /* The brand lockup gives up space first on narrow desktops. */
+  @media (min-width: 1024px) and (max-width: 1151px) {
+    .laya-header__brand-tagline {
+      display: none;
+    }
+  }
+
+  /* Full desktop band: the actions rail (CONTACT + Donate) is visible. Must
+     come AFTER the base `display: none` above so source order resolves it. */
+  @media (min-width: 1280px) {
+    .laya-nav__actions {
+      display: flex;
+    }
+  }
+
+  /* ------------------------------------------------------------------------
+     NAV ITEM — one trigger, used for both links and dropdown parents
+     ------------------------------------------------------------------------ */
+
+  .laya-nav-item {
+    position: relative;
+    /* Hover intent: keeps a dropdown open while the pointer crosses the gap
+       between the trigger and the panel. */
+    padding-block: 0.375rem;
+  }
+
+  .laya-nav-item__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: var(--nav-item-padding-y) var(--nav-item-padding-x);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: var(--nav-font-size);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--nav-muted);
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .laya-nav-item__trigger:hover {
+    color: var(--text-primary);
+    background-color: var(--nav-hover-bg);
+  }
+
+  .laya-nav-item__trigger[aria-expanded="true"] {
+    color: var(--text-primary);
+    background-color: var(--nav-hover-bg);
+  }
+
+  /* Active section: forest text plus a short rule under the label. The rule is
+     the primary signal — no fills, pills or glows. */
+  .laya-nav-item__trigger--active {
+    color: var(--text-primary);
+  }
+
+  .laya-nav-item__trigger--active::after {
+    content: "";
+    position: absolute;
+    left: var(--nav-item-padding-x);
+    right: var(--nav-item-padding-x);
+    bottom: 0;
+    height: 2px;
+    background-color: var(--nav-indicator);
+    border-radius: 1px;
+  }
+
+  .laya-nav-item__chevron {
+    width: 0.75rem;
+    height: 0.75rem;
+    transition: transform var(--duration-fast) var(--ease-out);
+    opacity: 0.55;
+  }
+
+  .laya-nav-item__trigger[aria-expanded="true"] .laya-nav-item__chevron {
+    transform: rotate(180deg);
+  }
+
+  /* ------------------------------------------------------------------------
+     DROPDOWN PANEL
+     ------------------------------------------------------------------------ */
+
+  .laya-nav-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: var(--z-menu);
+    width: var(--menu-width);
+    padding: var(--space-2xs);
+    background-color: var(--menu-bg);
+    border: 1px solid var(--menu-border);
+    border-radius: var(--radius-xs);
+    box-shadow: var(--menu-shadow);
+    animation: layaMenuIn var(--duration-fast) var(--ease-out) both;
+  }
+
+  .laya-nav-menu--wide {
+    width: var(--menu-width-wide);
+  }
+
+  /* Right-align panels near the viewport edge so they never overflow. */
+  .laya-nav-menu--end {
+    left: auto;
+    right: 0;
+  }
+
+  .laya-nav-menu__item {
+    display: block;
+    padding: 0.5rem 0.625rem;
+    border-radius: 0;
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .laya-nav-menu__item:hover {
+    background-color: var(--nav-hover-bg);
+  }
+
+  .laya-nav-menu__item--active {
+    background-color: var(--laya-violet-100);
+  }
+
+  .laya-nav-menu__label {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .laya-nav-menu__item--active .laya-nav-menu__label {
+    color: var(--nav-indicator);
+  }
+
+  .laya-nav-menu__description {
+    display: block;
+    margin-top: 0.125rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: var(--text-muted);
+  }
+
+  .laya-nav-menu__divider {
+    height: 1px;
+    margin: var(--space-2xs) 0.625rem;
+    background-color: var(--border-subtle);
+  }
+
+  @keyframes layaMenuIn {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ------------------------------------------------------------------------
+     MOBILE MENU BUTTON
+     ------------------------------------------------------------------------ */
+
+  .laya-menu-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* 44px minimum touch target */
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-inline-start: auto;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background-color: transparent;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .laya-menu-button:hover {
+    background-color: var(--nav-hover-bg);
+    border-color: var(--border-default);
+  }
+
+  @media (min-width: 1024px) {
+    .laya-menu-button {
+      display: none;
+    }
+  }
+
+  .laya-menu-button__icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  /* ------------------------------------------------------------------------
+     MOBILE DRAWER
+     ------------------------------------------------------------------------ */
+
+  .laya-drawer__scrim {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-mobile-drawer);
+    background-color: transparent;
+  }
+
+  .laya-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-mobile-drawer) + 1);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background-color: var(--surface-canvas);
+    animation: layaDrawerIn var(--duration-slow) var(--ease-out) both;
+  }
+
+  @keyframes layaDrawerIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .laya-drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    flex-shrink: 0;
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .laya-drawer__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    flex-shrink: 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    background-color: transparent;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .laya-drawer__close:hover {
+    background-color: var(--nav-hover-bg);
+  }
+
+  /* Scrollable region. `overscroll-behavior: contain` stops the page behind
+     the drawer from scrolling when the list hits its end. */
+  .laya-drawer__body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: var(--space-2xs) 0;
+  }
+
+  .laya-drawer__footer {
+    flex-shrink: 0;
+    padding: var(--space-md);
+    border-top: 1px solid var(--border-subtle);
+    background-color: var(--surface-warm);
+  }
+
+  /* --- Drawer rows ------------------------------------------------------- */
+
+  .laya-drawer__link,
+  .laya-drawer__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    width: 100%;
+    min-height: 4.5rem;
+    padding: var(--space-md) var(--space-xl);
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--text-primary);
+    text-align: left;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .laya-drawer__link:hover,
+  .laya-drawer__trigger:hover {
+    color: var(--laya-violet-600);
+  }
+
+  .laya-drawer__link--active,
+  .laya-drawer__trigger--active {
+    color: var(--laya-violet-600);
+  }
+
+  .laya-drawer__chevron {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    opacity: 0.5;
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .laya-drawer__trigger[aria-expanded="true"] .laya-drawer__chevron {
+    transform: rotate(180deg);
+  }
+
+  .laya-drawer__section {
+    overflow: hidden;
+  }
+
+  .laya-drawer__children {
+    padding-block: var(--space-3xs);
+    background-color: var(--surface-warm);
+    border-block: 1px solid var(--border-subtle);
+  }
+
+  .laya-drawer__child {
+    display: block;
+    min-height: 3rem;
+    padding: 0.5rem var(--space-xl) 0.5rem calc(var(--space-xl) + 2rem);
+    font-family: var(--font-sans);
+    font-size: var(--text-lg);
+    line-height: var(--leading-snug);
+    color: var(--text-secondary);
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .laya-drawer__child:hover {
+    color: var(--text-primary);
+  }
+
+  .laya-drawer__child--active {
+    color: var(--nav-indicator);
+    font-weight: 600;
+  }
+
+  /* ------------------------------------------------------------------------
+     FLOATING ACTION — scroll to top
+     ------------------------------------------------------------------------
+     Previously a hardcoded #5BC0DE cyan circle with `shadow-2xl`, which clashed
+     with the editorial surfaces and sat at `bottom-24 right-8` (48px/32px) —
+     offset from the WhatsApp button at `bottom-8 right-6` (32px/24px), so the
+     two did not align into a stack.
+
+     Both now share the same inline offset and a 44px touch target.
+     ------------------------------------------------------------------------ */
+
+  /*
+    FLOATING ACTION STACK
+    Aligned to the WhatsApp button, which is `fixed bottom-8 right-6`:
+      right 6  = 1.5rem = 24px
+      bottom 8 = 2rem   = 32px
+      size     = w-14 h-14 = 3.5rem = 56px
+    Measured before this fix at 360px:
+      sameRightEdge  = 12px  (WhatsApp ended at x=336, this at x=348)
+      verticalGap    = 4px   (the two buttons almost touched)
+
+    Now: same 1.5rem right edge, and this button sits 0.5rem above WhatsApp's
+    2rem bottom offset plus its 3.5rem height.
+      2rem + 3.5rem + 0.5rem = 6rem
+  */
+  .laya-scroll-top {
+    position: fixed;
+    bottom: 6rem;
+    right: 1.5rem;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-sm);
+    background-color: var(--surface-raised);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .laya-scroll-top:hover {
+    color: var(--laya-forest-700);
+    border-color: var(--laya-forest-400);
+  }
+
+  /* ------------------------------------------------------------------------
+     REDUCED MOTION
+     ------------------------------------------------------------------------ */
+
+  @media (prefers-reduced-motion: reduce) {
+    .laya-nav-menu,
+    .laya-drawer,
+    .laya-drawer__scrim {
+      animation: none;
+    }
+  }
+}

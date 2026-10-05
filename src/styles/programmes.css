@@ -1,0 +1,645 @@
+/* ==========================================================================
+   LAYA — PROGRAMMES (Our Work / What We Do)
+   --------------------------------------------------------------------------
+   Editorial programme directory and detail layouts.
+
+   Direction: field documentation, not a product site. Photography, typography
+   and rules carry the structure. No card walls, no icon grids, no gradients.
+
+   PHOTOGRAPHY CONSTRAINT (drives every ratio below):
+   all five programme photographs are 1500x451 — a 3.32:1 wide banner. Any
+   frame much taller than 16:9 crops most of the subject away, so the design
+   uses wide, landscape frames rather than portrait or square ones.
+   ========================================================================== */
+
+@layer components {
+  /* ------------------------------------------------------------------------
+     PAGE HEADER — archival plate, shared with the About section
+     ------------------------------------------------------------------------ */
+
+  .prog-header {
+    padding-block-start: calc(var(--laya-chrome-height) + var(--space-2xl));
+    padding-block-end: var(--space-xl);
+    padding-inline: var(--gutter);
+    background-color: var(--surface-canvas);
+  }
+
+  .prog-header__inner {
+    max-width: var(--container-content);
+    margin-inline: auto;
+  }
+
+  .prog-header__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .prog-header__eyebrow::before {
+    content: "";
+    width: 1.5rem;
+    height: 1px;
+    background-color: var(--laya-forest-600);
+  }
+
+  .prog-header__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-display);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    font-weight: 600;
+    color: var(--text-primary);
+    text-wrap: balance;
+    max-width: 24ch;
+  }
+
+  .prog-header__lead {
+    margin-top: var(--space-xs);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-width: 46rem;
+  }
+
+  .prog-header__stats {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-sm);
+    border-top: var(--hairline) solid var(--border-subtle);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xl);
+  }
+
+  .prog-stat__value {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    line-height: 1;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .prog-stat__label {
+    display: block;
+    margin-top: 0.25rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  /* ------------------------------------------------------------------------
+     BANDS
+     ------------------------------------------------------------------------ */
+
+  .prog-band {
+    padding-block: var(--section-y);
+    padding-inline: var(--gutter);
+  }
+
+  .prog-band--warm {
+    background-color: var(--surface-warm);
+    border-block: var(--hairline) solid var(--border-subtle);
+  }
+
+  .prog-band--sunken {
+    background-color: var(--surface-sunken);
+    border-block: var(--hairline) solid var(--border-subtle);
+  }
+
+  .prog-band--ink {
+    background-color: var(--surface-ink);
+    color: var(--text-inverse);
+    --text-primary: var(--text-inverse);
+    --text-secondary: var(--text-inverse-secondary);
+    --text-tertiary: var(--text-inverse-muted);
+    --text-muted: var(--text-inverse-muted);
+    --border-subtle: var(--border-inverse);
+    --border-default: var(--border-inverse);
+  }
+
+  .prog-band--ink .type-eyebrow {
+    color: var(--laya-forest-300);
+  }
+
+  .prog-heading {
+    max-width: 46rem;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .prog-heading__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    color: var(--text-primary);
+    text-wrap: balance;
+    margin-top: var(--space-2xs);
+    margin-bottom: var(--space-xs);
+  }
+
+  .prog-heading__intro {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  /* ------------------------------------------------------------------------
+     CATEGORY SECTIONS — the directory is grouped, not a single grid
+     ------------------------------------------------------------------------ */
+
+  .prog-category {
+    padding-block: var(--space-2xl);
+    border-top: var(--hairline) solid var(--border-default);
+  }
+
+  .prog-category:first-of-type {
+    border-top: 0;
+    padding-block-start: 0;
+  }
+
+  /* Category heading: number, name, blurb — a ruled archive header. */
+  .prog-category__header {
+    display: grid;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-xl);
+  }
+
+  @media (min-width: 900px) {
+    .prog-category__header {
+      grid-template-columns: 4rem minmax(0, 1fr) minmax(0, 1.1fr);
+      align-items: baseline;
+      gap: var(--space-lg);
+    }
+  }
+
+  .prog-category__index {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+  }
+
+  .prog-category__name {
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: var(--leading-snug);
+  }
+
+  .prog-category__blurb {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  /* ------------------------------------------------------------------------
+     PROGRAMME CARD — large photograph, editorial body
+     ------------------------------------------------------------------------
+     Deliberately NOT a grid of identical tiles. Each card is a full-width
+     horizontal record: wide photograph on one side, typographic detail on the
+     other, alternating sides down the page.
+     ------------------------------------------------------------------------ */
+
+  .prog-card {
+    display: grid;
+    gap: var(--space-lg);
+    border-top: var(--hairline) solid var(--border-subtle);
+    padding-block: var(--space-lg);
+  }
+
+  @media (min-width: 900px) {
+    .prog-card {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: var(--space-2xl);
+      align-items: center;
+      padding-block: var(--space-xl);
+    }
+
+    /* Alternate the photograph side. */
+    .prog-card--reverse .prog-card__media {
+      order: 2;
+    }
+  }
+
+  .prog-card__media {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-media);
+    background-color: var(--laya-stone-100);
+    /* 16:9 on a 3.32:1 source keeps roughly 55% of the width — the most a
+       portrait-ish frame can show without cutting the subject. */
+    aspect-ratio: 16 / 9;
+  }
+
+  .prog-card__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 45%;
+    transition: transform var(--duration-slow) var(--ease-out);
+  }
+
+  .prog-card:hover .prog-card__media img {
+    transform: scale(1.02);
+  }
+
+  .prog-card__category {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .prog-card__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    line-height: 1.2;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+    text-wrap: balance;
+  }
+
+  /* The one-sentence explanation. */
+  .prog-card__summary {
+    font-size: var(--text-body);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-md);
+  }
+
+  /* Key issue + context as a ruled mini-ledger. */
+  .prog-card__facts {
+    display: grid;
+    gap: var(--space-2xs);
+    margin-bottom: var(--space-md);
+  }
+
+  .prog-card__fact {
+    display: grid;
+    gap: 0.125rem;
+    padding-block: var(--space-2xs);
+    border-top: var(--hairline) solid var(--border-subtle);
+  }
+
+  .prog-card__fact-label {
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  .prog-card__fact-value {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  .prog-card__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  /* Headline metric, set as a figure rather than in a badge. */
+  .prog-card__metric {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding-inline-end: var(--space-md);
+    border-inline-end: var(--hairline) solid var(--border-subtle);
+  }
+
+  .prog-card__metric-value {
+    font-family: var(--font-serif);
+    font-size: var(--text-h4);
+    font-weight: 600;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .prog-card__metric-label {
+    font-size: var(--text-caption);
+    color: var(--text-muted);
+  }
+
+  /* ------------------------------------------------------------------------
+     CROSS-CUTTING APPROACHES
+     ------------------------------------------------------------------------ */
+
+  .approach-grid {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 900px) {
+    .approach-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-2xl);
+    }
+  }
+
+  .approach {
+    border-top: 2px solid var(--laya-forest-500);
+    padding-top: var(--space-md);
+  }
+
+  .approach__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .approach__desc {
+    font-size: var(--text-body);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  /* ------------------------------------------------------------------------
+     PROGRAMME DETAIL
+     ------------------------------------------------------------------------ */
+
+  .prog-detail__hero {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--laya-stone-100);
+    /* Wide banner hero — matches the 3.32:1 source closely so little is lost. */
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 34rem;
+    margin-inline: auto;
+  }
+
+  @media (min-width: 1024px) {
+    .prog-detail__hero {
+      aspect-ratio: 21 / 9;
+    }
+  }
+
+  .prog-detail__hero img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 45%;
+  }
+
+  .prog-detail__hero-caption {
+    margin-top: var(--space-xs);
+    padding-inline: var(--gutter);
+    font-size: var(--text-caption);
+    line-height: var(--leading-snug);
+    color: var(--text-muted);
+    max-width: var(--container-content);
+    margin-inline: auto;
+  }
+
+  /* Alternating image/text section */
+  .prog-section {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: center;
+    padding-block: var(--space-2xl);
+    border-top: var(--hairline) solid var(--border-subtle);
+  }
+
+  .prog-section:first-of-type {
+    border-top: 0;
+    padding-block-start: 0;
+  }
+
+  @media (min-width: 900px) {
+    .prog-section {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: var(--space-3xl);
+    }
+
+    .prog-section--reverse .prog-section__media {
+      order: 2;
+    }
+
+    /*
+      TEXT-ONLY SECTIONS MUST SPAN THE FULL WIDTH.
+
+      Only some programme sections carry a photograph in the source data. For
+      those without one, the two-column grid still reserved its second column,
+      so the prose occupied the left half and the right half rendered as a
+      large empty void.
+
+      Collapsing to a single column lets the text use the full measure, and the
+      list wrapper below can then flow into two columns as intended.
+    */
+    .prog-section--text-only {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* On a full-width text-only section the record list can use two columns
+     regardless of item count, because there is no media column competing. */
+  @media (min-width: 768px) {
+    .prog-section--text-only .prog-list {
+      max-width: none;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--space-2xl);
+    }
+  }
+
+  .prog-section__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    line-height: 1.2;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+    text-wrap: balance;
+  }
+
+  .prog-section__body {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-width: 40rem;
+  }
+
+  .prog-section__media {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-media);
+    background-color: var(--laya-stone-100);
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
+  .prog-section__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 45%;
+  }
+
+  /* Long bullet lists from the source render as a ruled record list, in two
+     columns from 768px, rather than a wall of tick icons. */
+  .prog-list {
+    list-style: none;
+    margin: var(--space-md) 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+    max-width: 46rem;
+  }
+
+  @media (min-width: 768px) {
+    .prog-list--two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--space-xl);
+    }
+  }
+
+  .prog-list li {
+    position: relative;
+    padding-inline-start: 1rem;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  .prog-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 0.375rem;
+    height: 1px;
+    background-color: var(--laya-forest-500);
+  }
+
+  /* Key outcomes — typographic, rule-topped, no boxes. */
+  .outcome-grid {
+    display: grid;
+    gap: var(--space-lg);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 768px) {
+    .outcome-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-xl);
+    }
+  }
+
+  .outcome {
+    padding-top: var(--space-sm);
+    border-top: 2px solid var(--laya-forest-600);
+    font-size: var(--text-body);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  /* Related programmes — compact records, not full cards. */
+  .related-grid {
+    display: grid;
+    gap: var(--space-lg);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 768px) {
+    .related-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .related {
+    display: block;
+    border-top: 2px solid var(--laya-forest-600);
+    padding-top: var(--space-sm);
+  }
+
+  .related__category {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .related__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h4);
+    line-height: var(--leading-snug);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-block: 0.25rem var(--space-2xs);
+  }
+
+  .related__summary {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  /* Calls to action at the foot of a detail page. */
+  .prog-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-top: var(--space-lg);
+  }
+
+  /* Context strip under the detail hero: locations, metric, category. */
+  .prog-context {
+    display: grid;
+    gap: var(--space-md);
+    grid-template-columns: minmax(0, 1fr);
+    padding-block: var(--space-lg);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+  }
+
+  @media (min-width: 768px) {
+    .prog-context {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-2xl);
+    }
+  }
+
+  .prog-context__label {
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: 0.25rem;
+  }
+
+  .prog-context__value {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .prog-card__media img {
+      transition: none;
+    }
+  }
+}

@@ -1,167 +1,963 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap');
+/* ==========================================================================
+   LAYA — GLOBAL STYLESHEET
+   --------------------------------------------------------------------------
+   The single global layer of the LAYA design system.
 
+   STRUCTURE
+     1.  Imports
+     2.  Tailwind
+     3.  Base                  — element defaults, headings, focus, media
+     4.  Typography roles      — .type-* named roles
+     5.  Layout primitives     — sections, containers, rules
+     6.  Surfaces              — canvas / raised / sunken / tinted / ink / …
+     7.  Cards                 — flat-first, elevation opt-in
+     8.  Media                 — documentary image treatment
+     9.  Links · prose · tables
+     10. Compatibility bridges — TEMPORARY, for un-migrated pages
+     11. Motion · reduced motion
+
+   CASCADE CONTRACT
+     Tailwind resolves in the order base → components → utilities. Every rule
+     below sits inside an explicit `@layer` so a Tailwind utility can always
+     override a component default. Rules that escape all layers would silently
+     outrank `@layer utilities` and break that contract.
+
+   REMOVED FROM THE PREVIOUS STYLESHEET
+     - `html { background: #48A9F5 }` — the bright cyan page background
+     - the `--laya-hero-gradient` purple/cyan gradient system
+     - `main { color: #ffffff }` plus ~60 `!important` rules of the form
+       `main .bg-white { background: transparent !important }`. Those silently
+       disabled Tailwind's own utilities sitewide
+     - fixed full-viewport glass panels with `backdrop-filter: blur()`
+     - the `@media (max-width: 1023px)` block of `!important` layout hacks
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. IMPORTS
+   -------------------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+@import "./styles/tokens.css";
+/* Global header + mobile drawer. Both @import rules must precede every other
+   rule — CSS ignores any @import that appears after a style rule, which is why
+   this cannot sit below the @tailwind directives. */
+@import "./styles/header.css";
+/* Homepage editorial composition. Same constraint: before all style rules. */
+@import "./styles/homepage.css";
+/* About section: archival / editorial composition. Before all style rules. */
+@import "./styles/about.css";
+/* Programmes: directory + detail. Before all style rules. */
+@import "./styles/programmes.css";
+/* Resource centre: documents + financial disclosures. Before all style rules. */
+@import "./styles/resources.css";
+/* Partners, impact and transparency. Before all style rules. */
+@import "./styles/trust.css";
+/* Visual archive + field notes. Before all style rules. */
+@import "./styles/archive.css";
+/* Contact, donate, team directory + footer. Before all style rules. */
+@import "./styles/utility.css";
+
+/* --------------------------------------------------------------------------
+   2. TAILWIND
+   -------------------------------------------------------------------------- */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   3. BASE
+   ========================================================================== */
+
 @layer base {
-  :root {
-    /* Exact colors sampled from current site logo */
-    --laya-navy: #3A8BC4;
-    --laya-teal: #55B1EB;
-    --laya-cyan: #56B0EA;
-    --laya-purple: #8E7DDD;
-    --laya-purple-dark: #8F7CDC;
-    --laya-header: #55B1EB;
-    --laya-bg-left: #55B1EB;
-    --laya-bg-right: #8E7DDD;
-    --laya-hero-gradient: linear-gradient(135deg, #55B1EB 0%, #56B0EA 35%, #8E7DDD 70%, #8F7CDC 100%);
-    --laya-chrome-height: 5rem;
-
-    --background: 244 35% 96%;
-    --foreground: 244 30% 15%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 244 30% 15%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 244 30% 15%;
-
-    --primary: 248 28% 60%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 199 72% 68%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 244 20% 94%;
-    --muted-foreground: 244 15% 40%;
-
-    --accent: 199 72% 68%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 244 20% 88%;
-    --input: 244 20% 88%;
-    --ring: 248 28% 60%;
-
-    --radius: 0rem;
-
-    --sidebar-background: 248 28% 45%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 199 72% 68%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 248 28% 50%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 248 22% 55%;
-    --sidebar-ring: 199 72% 68%;
-
-    /* Custom tokens */
-    --hero-overlay: 248 28% 35%;
-    --section-alt: 244 30% 97%;
-    --nature-gradient: var(--laya-hero-gradient);
-    --warm-gradient: linear-gradient(135deg, var(--laya-teal), var(--laya-purple-dark));
-    --earth-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
-
-    font-family: 'Open Sans', sans-serif;
-  }
-
-  .dark {
-    --background: 150 20% 6%;
-    --foreground: 40 20% 92%;
-    --card: 150 20% 9%;
-    --card-foreground: 40 20% 92%;
-    --popover: 150 20% 9%;
-    --popover-foreground: 40 20% 92%;
-    --primary: 201 76% 54%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 30 35% 45%;
-    --secondary-foreground: 40 20% 97%;
-    --muted: 150 15% 15%;
-    --muted-foreground: 40 10% 60%;
-    --accent: 199 90% 72%;
-    --accent-foreground: 40 20% 97%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 150 15% 18%;
-    --input: 150 15% 18%;
-    --ring: 201 76% 54%;
-    --sidebar-background: 201 52% 22%;
-    --sidebar-foreground: 40 20% 90%;
-    --sidebar-primary: 199 90% 72%;
-    --sidebar-primary-foreground: 40 20% 97%;
-    --sidebar-accent: 201 52% 28%;
-    --sidebar-accent-foreground: 40 20% 90%;
-    --sidebar-border: 201 46% 30%;
-    --sidebar-ring: 199 90% 72%;
-  }
-
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply text-foreground antialiased;
-    background: transparent;
-    overflow-x: hidden;
+  *,
+  *::before,
+  *::after {
+    border-color: var(--border-subtle);
   }
 
   html {
-    background: #48A9F5;
+    /* Warm ivory document background — no bright cyan flash on load. */
+    background-color: var(--surface-canvas);
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Poppins', sans-serif;
+  body {
+    background-color: var(--surface-canvas);
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(85, 177, 235, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(109, 87, 165, 0.05) 0px, transparent 50%);
+    background-attachment: fixed;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* ---- Headings ----------------------------------------------------------
+     Headings default to the SANS family so the site reads contemporary and
+     institutional rather than like a luxury editorial template: card titles,
+     sidebar headings, form legends and list headings all stay sans.
+
+     Editorial serif is OPT-IN via `.type-display` / `.type-h1` / `.type-h2` /
+     `.type-editorial`, and is reserved for storytelling moments — page heroes,
+     section openers, pull quotes and timeline phase titles.
+     ------------------------------------------------------------------------ */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  h1,
+  h2 {
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--text-h1);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-display);
+  }
+
+  h2 {
+    font-size: var(--text-h2);
+    line-height: var(--leading-snug);
+  }
+
+  h3 {
+    font-size: var(--text-h3);
+    line-height: var(--leading-snug);
+  }
+
+  h4 {
+    font-size: var(--text-h4);
+    line-height: var(--leading-snug);
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  strong,
+  b {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  /* Numerals align in tables and stat grids without extra classes. */
+  table,
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Visible, consistent focus. */
+  :focus-visible {
+    outline: 2px solid var(--laya-forest-600);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  img {
+    background-color: var(--laya-stone-100);
+  }
+
+  ::selection {
+    background-color: var(--laya-forest-200);
+    color: var(--laya-forest-950);
   }
 }
 
+/* ==========================================================================
+   4–9. COMPONENT LAYER
+   --------------------------------------------------------------------------
+   Typography roles, layout primitives, surfaces, cards, media, links, prose
+   and tables. One block, so the cascade stays predictable and any Tailwind
+   utility can override a component default.
+   ========================================================================== */
+
 @layer components {
+  /* ------------------------------------------------------------------------
+     4. TYPOGRAPHY ROLES
+     ------------------------------------------------------------------------ */
+
   .section-padding {
-    @apply px-4 py-16 md:px-8 md:py-24 lg:px-16;
+    padding-block: var(--section-y);
+    padding-inline: var(--gutter);
   }
 
+  .whatsapp-link {
+    position: fixed;
+    right: var(--gutter);
+    bottom: var(--space-md);
+    z-index: 50;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 2.75rem;
+    padding-inline: 0.75rem;
+    border: 1px solid var(--laya-forest-600);
+    border-radius: var(--radius-xs);
+    background-color: var(--surface-canvas);
+    color: var(--text-brand);
+    font-size: var(--text-caption);
+    font-weight: 600;
+    transition: background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+  }
+
+  .whatsapp-link:hover {
+    background-color: var(--laya-forest-700);
+    color: var(--text-inverse);
+  }
+
+  .whatsapp-link svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* Shared page openers stay close to the navigation so the first record is
+     visible sooner on both compact and wide screens. */
+  .about-header,
+  .prog-header,
+  .res-header,
+  .trust-header,
+  .arc-header,
+  .ut-header {
+    padding-block-start: calc(var(--laya-chrome-height) + var(--space-md));
+  }
+
+  /* --- Editorial serif tier (opt-in, storytelling only) --- */
+
+  .type-display {
+    font-family: var(--font-serif);
+    font-size: var(--text-display);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  .type-h1 {
+    font-family: var(--font-serif);
+    font-size: var(--text-h1);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-display);
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  .type-h2 {
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    line-height: var(--leading-snug);
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  /* Section opener on an editorial band. */
+  .type-editorial {
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    line-height: 1.22;
+    font-weight: 500;
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
+  }
+
+  /* Timeline phase / milestone title — editorial but smaller. */
+  .type-editorial-sm {
+    font-family: var(--font-serif);
+    font-size: var(--text-h4);
+    line-height: var(--leading-snug);
+    font-weight: 500;
+  }
+
+  .type-quote {
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    line-height: 1.45;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: var(--tracking-tight);
+    text-wrap: balance;
+  }
+
+  /* --- Sans tier (structural / UI) --- */
+
+  .type-h3 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h3);
+    line-height: var(--leading-snug);
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .type-h4 {
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    line-height: var(--leading-snug);
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .type-body-lg {
+    font-family: var(--font-sans);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+  }
+
+  .type-body {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--leading-normal);
+  }
+
+  .type-small {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+  }
+
+  /* Captions sit under media. Quiet, never competing with the photograph. */
+  .type-caption {
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--leading-snug);
+    color: var(--text-muted);
+  }
+
+  /* Labels name a field or a table column. */
+  .type-label {
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  /* Metadata: dates, authors, counts. Mono keeps columns aligned. */
+  .type-meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    letter-spacing: 0.02em;
+    color: var(--text-muted);
+  }
+
+  /* Eyebrow above a heading. Replaces the old `.laya-label` bar hack. */
+  .type-eyebrow {
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-brand);
+  }
+
+  /* Figures — impact numbers, financial totals. */
+  .type-figure {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: var(--text-h1);
+    line-height: 1;
+    letter-spacing: var(--tracking-display);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ------------------------------------------------------------------------
+     5. LAYOUT PRIMITIVES
+     ------------------------------------------------------------------------ */
+
+  /* Fluid section rhythm — supersedes the old px-4 py-16 md:px-8 md:py-24. */
+  .laya-section {
+    position: relative;
+    padding-block: var(--section-y);
+    padding-inline: var(--gutter);
+  }
+
+  .laya-section--tight {
+    padding-block: var(--section-y-tight);
+  }
+
+  .laya-section--flush-top {
+    padding-block-start: 0;
+  }
+
+  .container-page {
+    width: 100%;
+    max-width: var(--container-content);
+    margin-inline: auto;
+  }
+
+  .container-wide {
+    width: 100%;
+    max-width: var(--container-wide);
+    margin-inline: auto;
+  }
+
+  /* Retained as the prose alias so existing pages keep their intent. */
   .container-narrow {
-    @apply mx-auto max-w-6xl;
+    width: 100%;
+    max-width: var(--container-prose);
+    margin-inline: auto;
   }
 
-  .text-gradient-primary {
-    @apply bg-clip-text text-transparent;
-    background-image: var(--nature-gradient);
+  /* Hairline rule — the editorial separator. */
+  .laya-rule {
+    border: 0;
+    border-top: var(--hairline) solid var(--border-subtle);
   }
 
-  .text-gradient-accent {
-    @apply bg-clip-text text-transparent;
-    background-image: var(--warm-gradient);
+  .laya-rule--strong {
+    border-top-color: var(--border-strong);
   }
 
-  .bg-nature-gradient {
-    background-image: var(--nature-gradient);
+  /* ------------------------------------------------------------------------
+     6. SURFACES
+     ------------------------------------------------------------------------ */
+
+  .surface-canvas {
+    background-color: var(--surface-canvas);
+    color: var(--text-primary);
   }
 
-  .bg-warm-gradient {
-    background-image: var(--warm-gradient);
+  .surface-raised {
+    background-color: var(--surface-raised);
+    color: var(--text-primary);
   }
 
-  .bg-earth-gradient {
-    background-image: var(--earth-gradient);
+  .surface-sunken {
+    background-color: var(--surface-sunken);
+    color: var(--text-primary);
   }
+
+  .surface-warm {
+    background-color: var(--surface-warm);
+    color: var(--text-primary);
+  }
+
+  /* The green-washed band. Used sparingly for emphasis sections. */
+  .surface-tinted {
+    background-color: var(--surface-tinted);
+    color: var(--text-primary);
+  }
+
+  /* Dark documentary bands — photography and quotes. */
+  .surface-ink {
+    background-color: rgba(22, 21, 15, 0.85); /* Glassmorphic replacement for --surface-ink */
+    backdrop-filter: blur(12px) saturate(120%);
+    color: var(--text-inverse);
+    --text-primary: var(--text-inverse);
+    --text-secondary: var(--text-inverse-secondary);
+    --text-tertiary: var(--text-inverse-muted);
+    --text-muted: var(--text-inverse-muted);
+    --border-subtle: var(--border-inverse);
+    --border-default: var(--border-inverse);
+  }
+
+  .surface-forest {
+    background-color: var(--surface-forest);
+    color: var(--text-inverse);
+    --text-primary: var(--text-inverse);
+    --text-secondary: var(--text-inverse-secondary);
+    --text-tertiary: var(--text-inverse-muted);
+    --text-muted: var(--text-inverse-muted);
+    --border-subtle: var(--border-inverse);
+    --border-default: var(--border-inverse);
+  }
+
+  /* Rare brand band. Dark violet, not the old bright #8E7DDD. */
+  .surface-violet {
+    background-color: var(--surface-violet);
+    color: var(--text-inverse);
+    --text-primary: var(--text-inverse);
+    --text-secondary: var(--text-inverse-secondary);
+    --text-tertiary: var(--text-inverse-muted);
+    --text-muted: var(--text-inverse-muted);
+    --border-subtle: var(--border-inverse);
+    --border-default: var(--border-inverse);
+  }
+
+  .surface-ink h1,
+  .surface-ink h2,
+  .surface-ink h3,
+  .surface-ink h4,
+  .surface-forest h1,
+  .surface-forest h2,
+  .surface-forest h3,
+  .surface-forest h4,
+  .surface-violet h1,
+  .surface-violet h2,
+  .surface-violet h3,
+  .surface-violet h4 {
+    color: var(--text-primary);
+  }
+
+  .surface-ink p,
+  .surface-forest p,
+  .surface-violet p {
+    color: var(--text-secondary);
+  }
+
+  /* ------------------------------------------------------------------------
+     7. CARDS — flat first, elevation opt-in
+     ------------------------------------------------------------------------ */
+
+  .laya-card {
+    background-color: var(--surface-raised);
+    border: var(--hairline) solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    transition: border-color var(--duration-fast) var(--ease-out),
+      box-shadow var(--duration-fast) var(--ease-out);
+  }
+
+  /* The one card style that lifts — used when the whole card is a link. */
+  .laya-card--interactive:hover {
+    border-color: var(--border-default);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .laya-card--on-dark {
+    background-color: rgba(250, 248, 244, 0.05);
+    border-color: var(--border-inverse);
+    color: var(--text-inverse);
+  }
+
+  /* Inset panel for tables, note blocks, callouts. */
+  .laya-inset {
+    background-color: var(--laya-stone-50);
+    border: var(--hairline) solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+  }
+
+  /* Quote block — marked by a rule rather than a container. */
+  .laya-quote {
+    border-left: 2px solid var(--laya-forest-500);
+    padding-left: var(--space-md);
+  }
+
+  /* ------------------------------------------------------------------------
+     8. MEDIA — documentary photography treatment
+     ------------------------------------------------------------------------ */
+
+  .laya-media {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-media);
+    background-color: var(--laya-stone-100);
+  }
+
+  .laya-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--duration-slow) var(--ease-out);
+  }
+
+  .laya-media--zoom:hover img {
+    transform: scale(1.03);
+  }
+
+  /* Scrim for text over photography. Replaces heavy black gradients. */
+  .laya-media__scrim::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(22, 21, 15, 0.72) 0%,
+      rgba(22, 21, 15, 0.34) 38%,
+      rgba(22, 21, 15, 0) 72%
+    );
+    pointer-events: none;
+  }
+
+  .laya-media__caption {
+    margin-top: var(--space-xs);
+    font-size: var(--text-caption);
+    line-height: var(--leading-snug);
+    color: var(--text-muted);
+  }
+
+  .laya-ratio-16-9 {
+    aspect-ratio: 16 / 9;
+  }
+  .laya-ratio-4-3 {
+    aspect-ratio: 4 / 3;
+  }
+  .laya-ratio-3-2 {
+    aspect-ratio: 3 / 2;
+  }
+  .laya-ratio-1-1 {
+    aspect-ratio: 1 / 1;
+  }
+
+  /* ------------------------------------------------------------------------
+     9a. LINKS
+     ------------------------------------------------------------------------ */
+
+  /*
+    WCAG 2.2 target size (minimum): 24x24 CSS px.
+
+    Measured at 390px: the inline "Governance" link in the Team notice
+    rendered 17px tall, because the anchor box wrapped only the text line.
+    `inline-flex` + `min-height` gives it a 24px hit area.
+
+    NOTE: this applies to standalone links. Links embedded inside a paragraph
+    (e.g. `.laya-prose a`) are excluded, because forcing a 24px inline box
+    there would visibly disrupt line spacing in running text.
+  */
+  .laya-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.5rem;
+    color: var(--text-brand);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    transition: color var(--duration-fast) var(--ease-out),
+      text-decoration-color var(--duration-fast) var(--ease-out);
+  }
+
+  /* Restore normal inline flow for links inside running prose. */
+  .laya-prose a {
+    display: inline;
+    min-height: 0;
+  }
+
+  .laya-link:hover {
+    color: var(--laya-forest-800);
+    text-decoration-thickness: 2px;
+  }
+
+  /*
+    WCAG 2.2 target size (minimum): 24x24 CSS px.
+    Measured at 430px: 21px tall. Used on the Donate page and in Impact,
+    Governance and Programmes link headings, so one rule fixes each.
+  */
+  .laya-link--quiet {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.5rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    position: relative;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .laya-link--quiet:hover {
+    color: var(--text-primary);
+  }
+
+  /* ------------------------------------------------------------------------
+     9b. PROSE — long-form editorial content
+     ------------------------------------------------------------------------ */
+
+  .laya-prose {
+    max-width: var(--container-prose);
+    color: var(--text-secondary);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+  }
+
+  .laya-prose > * + * {
+    margin-top: var(--space-md);
+  }
+
+  .laya-prose h2 {
+    margin-top: var(--space-2xl);
+    margin-bottom: var(--space-sm);
+    color: var(--text-primary);
+    font-size: var(--text-h2);
+  }
+
+  .laya-prose h3 {
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-xs);
+    color: var(--text-primary);
+    font-size: var(--text-h3);
+  }
+
+  .laya-prose h4 {
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-2xs);
+    color: var(--text-primary);
+  }
+
+  .laya-prose a {
+    color: var(--text-brand);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+  }
+
+  .laya-prose a:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  .laya-prose strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .laya-prose ul,
+  .laya-prose ol {
+    padding-left: var(--space-md);
+  }
+
+  .laya-prose ul {
+    list-style: disc;
+  }
+
+  .laya-prose ol {
+    list-style: decimal;
+  }
+
+  .laya-prose li + li {
+    margin-top: var(--space-3xs);
+  }
+
+  .laya-prose li::marker {
+    color: var(--laya-forest-500);
+  }
+
+  /* Footnotes, sources, disclaimers. */
+  .laya-prose small,
+  .laya-prose .note {
+    display: block;
+    margin-top: var(--space-sm);
+    font-size: var(--text-caption);
+    color: var(--text-muted);
+    line-height: var(--leading-snug);
+  }
+
+  .laya-prose blockquote {
+    margin-block: var(--space-xl);
+    border-left: 2px solid var(--laya-forest-500);
+    padding-left: var(--space-md);
+    font-family: var(--font-serif);
+    font-size: var(--text-h4);
+    font-style: italic;
+    color: var(--text-primary);
+  }
+
+  .laya-prose hr {
+    margin-block: var(--space-2xl);
+    border: 0;
+    border-top: var(--hairline) solid var(--border-subtle);
+  }
+
+  .laya-prose code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background-color: var(--laya-stone-100);
+    border: var(--hairline) solid var(--border-subtle);
+    border-radius: var(--radius-xs);
+    padding: 0.1em 0.35em;
+  }
+
+  /* ------------------------------------------------------------------------
+     9c. TABLES — institutional data (FCRA receipts, financials)
+     ------------------------------------------------------------------------ */
+
+  .laya-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .laya-table caption {
+    caption-side: bottom;
+    margin-top: var(--space-xs);
+    font-size: var(--text-caption);
+    color: var(--text-muted);
+    text-align: left;
+  }
+
+  .laya-table th {
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    text-align: left;
+    padding: var(--space-xs) var(--space-sm);
+    border-bottom: var(--hairline) solid var(--border-default);
+    white-space: nowrap;
+  }
+
+  .laya-table td {
+    padding: var(--space-xs) var(--space-sm);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+    color: var(--text-secondary);
+    vertical-align: top;
+  }
+
+  .laya-table tbody tr:hover {
+    background-color: var(--laya-stone-50);
+  }
+
+  .laya-table .numeric {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* Horizontal scroll container for wide data on small screens. */
+  .laya-table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ==========================================================================
+   10. COMPATIBILITY BRIDGES — TEMPORARY
+   --------------------------------------------------------------------------
+   Rules below exist ONLY so pages that have not yet been migrated still render
+   legibly against the new palette. Each replaces a removed legacy
+   implementation with a single, clearly-labelled equivalent.
+
+   A full source scan confirms every class here is still referenced by existing
+   components. Remove them as each page adopts the new primitives — and do not
+   build new work on any of them.
+   ========================================================================== */
+
+@layer components {
+  /* --- 10a. Old glass panels → solid editorial surfaces --------------- */
+
+  .laya-panel,
+  .laya-panel-solid {
+    position: relative;
+    background-color: var(--surface-raised);
+    border: var(--hairline) solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    color: var(--text-primary);
+    box-shadow: var(--shadow-flat);
+  }
+
+  .laya-panel h1,
+  .laya-panel h2,
+  .laya-panel h3,
+  .laya-panel h4,
+  .laya-panel-solid h1,
+  .laya-panel-solid h2,
+  .laya-panel-solid h3,
+  .laya-panel-solid h4 {
+    color: var(--text-primary);
+  }
+
+  .laya-panel p,
+  .laya-panel span,
+  .laya-panel li,
+  .laya-panel-solid p,
+  .laya-panel-solid span,
+  .laya-panel-solid li {
+    color: var(--text-secondary);
+  }
+
+  /* Old white "feature card" → flat editorial card. */
+  .laya-feature-card {
+    background-color: var(--surface-raised);
+    border: var(--hairline) solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    padding: var(--space-md);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-flat);
+  }
+
+  .laya-panel .laya-feature-card,
+  .laya-panel-solid .laya-feature-card {
+    text-shadow: none;
+    color: var(--text-primary);
+  }
+
+  .laya-panel .laya-feature-card h3,
+  .laya-panel-solid .laya-feature-card h3 {
+    color: var(--text-primary);
+  }
+
+  .laya-panel .laya-feature-card p,
+  .laya-panel-solid .laya-feature-card p {
+    color: var(--text-secondary);
+  }
+
+  /* Old eyebrow label with a decorative ::after bar → plain typography. */
+  .laya-label {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--text-brand);
+    text-shadow: none;
+  }
+
+  .laya-label::after {
+    content: none;
+  }
+
+  /* --- 10b. Old bands and gradients → flat tonal fills ---------------- */
 
   .bg-section-alt {
-    background-color: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(8px);
+    background-color: var(--surface-sunken);
+    backdrop-filter: none;
   }
 
-  .laya-site-bg {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    overflow: hidden;
-    background-color: transparent;
+  /* `bg-warm-gradient` and the two `text-gradient-*` classes are intentionally
+     NOT carried over — a source scan shows nothing references them. */
+  .bg-nature-gradient,
+  .bg-earth-gradient {
+    background-image: none;
+    background-color: var(--surface-tinted);
   }
 
-  /* Scroll clipped below sticky header (chrome height from Header ResizeObserver) */
+  /* --- 10c. Colour token bridges -------------------------------------- */
+  /* Old token names remapped so any lingering reference stays legible. */
+  :root {
+    --laya-purple: var(--laya-violet-700);
+    --laya-purple-dark: var(--laya-violet-800);
+    --laya-cyan: var(--laya-forest-600);
+    --laya-navy: var(--laya-forest-800);
+    --laya-teal: var(--laya-forest-500);
+    --laya-bg-left: var(--surface-canvas);
+    --laya-bg-right: var(--surface-raised);
+    --laya-hero-gradient: none;
+    --nature-gradient: none;
+    --warm-gradient: none;
+    --earth-gradient: none;
+  }
+
+  /* --- 10d. Scroll container contract --------------------------------- */
+  /* Kept because Header + MainLayout depend on it. The Header publishes its
+     height into --laya-chrome-height via a ResizeObserver. */
   .laya-scroll-root {
     position: fixed;
     left: 0;
@@ -174,220 +970,144 @@
     overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
-  }
-
-  .laya-section {
-    @apply section-padding relative;
-  }
-
-  .laya-panel {
-    @apply rounded-[2rem] md:rounded-[2.5rem] border border-white/30 bg-white/15 backdrop-blur-md overflow-hidden shadow-xl text-white;
-  }
-
-  .laya-panel h1,
-  .laya-panel h2,
-  .laya-panel p,
-  .laya-panel span {
-    color: #ffffff !important;
-    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
-  }
-
-  /* White feature cards inside glass panels keep dark, accent-colored text */
-  .laya-panel .laya-feature-card,
-  .laya-panel .laya-feature-card h3,
-  .laya-panel .laya-feature-card p,
-  .laya-panel .laya-feature-card span {
-    text-shadow: none !important;
-  }
-
-  .laya-panel .laya-feature-card {
-    color: hsl(244 30% 15%) !important;
-  }
-
-  .laya-panel .laya-feature-card h3.laya-feature-card__title--purple {
-    color: var(--laya-purple) !important;
-  }
-
-  .laya-panel .laya-feature-card h3.laya-feature-card__title--cyan {
-    color: var(--laya-cyan) !important;
-  }
-
-  .laya-panel .laya-feature-card p {
-    color: rgb(75 85 99) !important;
-  }
-
-  .laya-panel-solid {
-    @apply rounded-[2rem] md:rounded-[2.5rem] border border-white/40 bg-white/95 backdrop-blur-md overflow-hidden shadow-xl;
-  }
-
-  .laya-feature-card {
-    @apply rounded-2xl bg-white p-6 shadow-lg border border-white/60;
-  }
-
-  .laya-label {
-    @apply text-xs font-heading font-semibold uppercase tracking-[0.2em] text-white;
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
-  }
-
-  .laya-label::after {
-    content: "";
-    display: block;
-    width: 2.5rem;
-    height: 2px;
-    margin-top: 0.5rem;
-    background: rgba(255, 255, 255, 0.75);
-    border-radius: 9999px;
-  }
-
-  /* On brand bg: default to readable white text */
-  main {
-    color: #ffffff;
-  }
-
-  main h1,
-  main h2,
-  main h3,
-  main h4,
-  main p,
-  main span,
-  main li,
-  main label,
-  main a {
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
-  }
-
-  /* Solid white / card surfaces keep dark readable text */
-  main .laya-panel-solid,
-  main .laya-feature-card,
-  main .bg-card,
-  main .bg-background,
-  main [class*="bg-white"] {
-    color: hsl(244 30% 15%);
-  }
-
-  main .laya-panel-solid h1,
-  main .laya-panel-solid h2,
-  main .laya-panel-solid h3,
-  main .laya-panel-solid h4,
-  main .laya-panel-solid p,
-  main .laya-panel-solid span,
-  main .laya-panel-solid li,
-  main .laya-panel-solid a,
-  main .laya-feature-card h1,
-  main .laya-feature-card h2,
-  main .laya-feature-card p,
-  main .laya-feature-card span,
-  main .bg-card h1,
-  main .bg-card h2,
-  main .bg-card h3,
-  main .bg-card p,
-  main .bg-card span,
-  main .bg-card li,
-  main .bg-card a,
-  main [class*="bg-white"] h1,
-  main [class*="bg-white"] h2,
-  main [class*="bg-white"] h3,
-  main [class*="bg-white"] p,
-  main [class*="bg-white"] span,
-  main [class*="bg-white"] li,
-  main [class*="bg-white"] a {
-    text-shadow: none;
-    color: inherit;
-  }
-
-  main .laya-panel-solid .text-muted-foreground,
-  main .laya-feature-card .text-muted-foreground,
-  main .bg-card .text-muted-foreground,
-  main [class*="bg-white"] .text-muted-foreground,
-  main .laya-feature-card .text-gray-600,
-  main .laya-panel .laya-feature-card .text-gray-600 {
-    color: hsl(244 12% 40%) !important;
-  }
-
-  main .laya-panel-solid .text-foreground,
-  main .laya-feature-card .text-foreground,
-  main .bg-card .text-foreground,
-  main [class*="bg-white"] .text-foreground {
-    color: hsl(244 30% 15%) !important;
-  }
-
-  /* Utility text on brand bg */
-  main .text-foreground {
-    color: #ffffff !important;
-  }
-
-  main .text-muted-foreground {
-    color: rgba(255, 255, 255, 0.88) !important;
-  }
-
-  main .laya-feature-card h3.laya-feature-card__title--purple {
-    color: var(--laya-purple) !important;
-  }
-
-  main .laya-feature-card h3.laya-feature-card__title--cyan {
-    color: var(--laya-cyan) !important;
-  }
-
-  /* Let global curved background show through all pages */
-  main .bg-background,
-  main .bg-gray-50,
-  main .bg-slate-50,
-  main .bg-muted,
-  main section.bg-background,
-  main section.bg-nature-gradient,
-  main section.bg-earth-gradient,
-  main section.bg-section-alt,
-  main section[class*="bg-gradient-to"],
-  main div.bg-background,
-  main div.bg-white,
-  main div[class*="bg-gradient-to"] {
-    background: transparent !important;
-  }
-
-  /* Subtle glass bar — curve still visible underneath */
-  main section.bg-primary {
-    background-color: rgba(109, 95, 154, 0.35) !important;
-    backdrop-filter: blur(10px);
-  }
-
-  main .bg-white:not(.laya-panel-solid):not(.laya-feature-card):not(.bg-card) {
-    background-color: transparent !important;
-  }
-
-  main .laya-panel-solid.bg-white,
-  main .bg-card,
-  main .laya-feature-card {
-    background-color: rgba(255, 255, 255, 0.96) !important;
-  }
-
-  main .bg-primary {
-    background-color: rgba(109, 95, 154, 0.92) !important;
-    backdrop-filter: blur(10px);
-  }
-
-  main .bg-primary .text-primary-foreground,
-  main .bg-primary p,
-  main .bg-primary h2,
-  main .bg-primary h3,
-  main .bg-primary span {
-    color: #ffffff !important;
-    text-shadow: none;
+    background-color: var(--surface-canvas);
   }
 }
 
+/* ==========================================================================
+   10e. COMPATIBILITY BRIDGE — LIGHT-TEXT REDIRECT
+   --------------------------------------------------------------------------
+   Lives in `@layer utilities` on purpose. Tailwind emits its own colour
+   utilities into this layer, and within a layer the LATER rule wins at equal
+   specificity. Placed in `components`, Tailwind's `.text-white` kept winning
+   and the page stayed invisible.
+
+   WHY THIS EXISTS
+   Every page was authored against the old saturated blue/purple canvas and
+   marks its text `text-white`, `text-white/85`, `text-primary-foreground`, …
+   Against the new warm ivory canvas that text renders at 1.0:1 — white on
+   near-white, literally invisible. Measured on /about/who-we-are before this
+   bridge existed: 49 elements at 1.0:1, including the header navigation, every
+   page-hero heading and all hero body copy.
+
+   The bridge redirects those legacy utilities to the semantic palette so the
+   existing markup becomes readable WITHOUT editing a single page — keeping
+   this phase within its "global design system only" scope.
+
+   Dark bands opt back out below (higher specificity), so light text remains
+   correct wherever a section is genuinely dark.
+   ========================================================================== */
+
+@layer utilities {
+  .text-white {
+    color: var(--text-primary);
+  }
+
+  .text-white\/90,
+  .text-white\/85,
+  .text-white\/80,
+  .text-white\/75,
+  .text-white\/70 {
+    color: var(--text-secondary);
+  }
+
+  .text-white\/60,
+  .text-white\/50,
+  .text-white\/40 {
+    color: var(--text-muted);
+  }
+
+  /* ------------------------------------------------------------------------
+     `text-primary-foreground`
+     ------------------------------------------------------------------------
+     IMPORTANT: this class is NOT remapped. It means "text that sits on a
+     --primary (forest) fill", so it must stay light. An earlier version of
+     this bridge pointed it at --text-primary (near-black), which rendered
+     every solid button label as black-on-forest-green at **2.11:1** —
+     effectively invisible.
+
+     Tailwind already generates .text-primary-foreground from the
+     `primary.foreground` theme key, resolving to hsl(--primary-foreground),
+     which is ivory. We therefore leave it alone.
+     ------------------------------------------------------------------------ */
+
+  .text-primary-foreground\/80 {
+    color: hsl(var(--primary-foreground) / 0.8);
+  }
+
+  .text-primary-foreground\/70 {
+    color: hsl(var(--primary-foreground) / 0.7);
+  }
+
+  /* Same white convention — map to body text on light surfaces. */
+  .text-accent-foreground,
+  .text-secondary-foreground {
+    color: var(--text-primary);
+  }
+
+  /* Border companions that assumed a dark canvas. */
+  .border-white,
+  .border-white\/90,
+  .border-white\/70,
+  .border-white\/60,
+  .border-white\/50,
+  .border-white\/40,
+  .border-white\/30,
+  .border-white\/25,
+  .border-white\/20 {
+    border-color: var(--border-default);
+  }
+
+  /* --- Opt back out on genuine dark bands ------------------------------
+     Specificity (0,2,0) beats the single-class bridge (0,1,0), so these win
+     regardless of source order. */
+  .surface-ink .text-white,
+  .surface-ink .text-white\/90,
+  .surface-ink .text-white\/85,
+  .surface-ink .text-white\/80,
+  .surface-ink .text-white\/75,
+  .surface-ink .text-white\/70,
+  .surface-ink .text-primary-foreground,
+  .surface-forest .text-white,
+  .surface-forest .text-white\/90,
+  .surface-forest .text-white\/85,
+  .surface-forest .text-white\/80,
+  .surface-forest .text-white\/75,
+  .surface-forest .text-white\/70,
+  .surface-forest .text-primary-foreground,
+  .surface-violet .text-white,
+  .surface-violet .text-white\/90,
+  .surface-violet .text-white\/85,
+  .surface-violet .text-white\/80,
+  .surface-violet .text-white\/75,
+  .surface-violet .text-white\/70,
+  .surface-violet .text-primary-foreground {
+    color: var(--text-inverse);
+  }
+}
+
+/* ==========================================================================
+   11. MOTION — subtle only
+   ========================================================================== */
+
 @layer utilities {
   .animate-fade-up {
-    animation: fadeUp 0.6s ease-out forwards;
+    animation: layaFadeUp var(--duration-slow) var(--ease-out) both;
   }
 
+  /* Retained name for existing usages; now a gentle drift, not a bob. */
   .animate-logo-float {
-    animation: logoFloat 3.2s ease-in-out infinite;
+    animation: layaLogoDrift 6s var(--ease-in-out) infinite;
   }
 
-  @keyframes fadeUp {
+  .animate-pulse-logo {
+    animation: layaPulse 2.4s var(--ease-in-out) infinite;
+  }
+
+  @keyframes layaFadeUp {
     from {
       opacity: 0;
-      transform: translateY(24px);
+      transform: translateY(14px);
     }
     to {
       opacity: 1;
@@ -395,42 +1115,61 @@
     }
   }
 
-  @keyframes logoFloat {
+  @keyframes layaLogoDrift {
     0%,
     100% {
       transform: translateY(0);
     }
     50% {
-      transform: translateY(-4px);
+      transform: translateY(-2px);
     }
+  }
+
+  @keyframes layaPulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.72;
+    }
+  }
+
+  /* Reveal-on-scroll for editorial content. Opt-in only. */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity var(--duration-editorial) var(--ease-out),
+      transform var(--duration-editorial) var(--ease-out);
+    will-change: opacity, transform;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
   }
 }
 
-/* Mobile sticky header for logo */
-@media (max-width: 1023px) {
-  header {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 9999 !important;
+/* ==========================================================================
+   11b. REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
-  
-  /* Add padding to main content to account for fixed headers */
-  main, .main-content, #root > div:not(header):not([class*="motion"]) {
-    padding-top: 0 !important;
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-  
-  /* Prevent horizontal overflow on mobile */
-  html, body, #root {
-    overflow-x: hidden !important;
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-  
-  /* Ensure containers don't overflow */
-  .max-w-7xl {
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
+
+  .reveal {
+    opacity: 1;
+    transform: none;
   }
 }

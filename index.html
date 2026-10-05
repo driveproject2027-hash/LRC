@@ -3,18 +3,144 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The LAYA Chronicle | Resource Center for Adivasis</title>
-    <meta name="description" content="LAYA – Resource Center for Adivasis. 37+ years of empowering indigenous communities in the Eastern Ghats of India." />
-    <meta name="author" content="LAYA" />
-    <link rel="canonical" href="https://layachronicle.org" />
 
-    <meta property="og:title" content="The LAYA Chronicle" />
-    <meta property="og:description" content="Rhythms of Nature and Resilient Lives — LAYA's journey with Adivasi communities." />
+    <!-- Warm ivory document background — no more bright cyan/blue flash on load. -->
+    <meta name="theme-color" content="#faf8f4" />
+    <meta name="color-scheme" content="light" />
+
+    <!--
+      Typography — LAYA design system. One superfamily, three roles:
+        IBM Plex Sans   UI, navigation, body copy
+        IBM Plex Serif  editorial display headings (storytelling moments only)
+        IBM Plex Mono   metadata, figures, tabular data
+      Plex is an institutional typeface designed for long-form documentation
+      and dense data, which matches what this site actually publishes —
+      reports, receipts, district lists. Sourcing all three roles from one
+      superfamily means headings and body share proportions instead of
+      fighting each other, and the whole system reads as one credible voice
+      rather than a display font bolted onto a UI font.
+
+      Loaded via <link> with preconnect (not a CSS @import, which serialises
+      font discovery behind CSS parsing). Only the weights actually used.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      `display=swap` renders fallback text immediately rather than blocking on
+      the webfont, which is the main font-related CLS/LCP risk. Combined with
+      preconnect above, the font arrives during first paint instead of after it.
+
+      Weights are limited to those actually used: IBM Plex Serif 400/500/600 for
+      editorial headings, IBM Plex Sans 400/500/600/700 for UI and body, IBM
+      Plex Mono 400/500 for metadata and tabular figures.
+
+      IBM Plex Sans and IBM Plex Serif carry `latin-ext` deliberately: the copy
+      uses em dashes, middle dots and accented donor names, and the plain
+      `latin` subset leaves those to an inconsistent system fallback.
+    -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&display=swap"
+    />
+
+    <!--
+      SEO DEFAULTS
+      These are the SPA shell values. Every route overrides them via
+      react-helmet-async, so this block only matters for the initial HTML that a
+      non-JS crawler sees, and as the fallback before Helmet runs.
+
+      CANONICAL DOMAIN
+      An earlier version pointed canonical and og:image at
+      `https://layachronicle.org`, while all 16 page-level canonicals in
+      src/pages use `https://laya.org.in`. Two conflicting origins in one
+      codebase let crawlers see the homepage canonicalise away from the real
+      domain. Unified here on laya.org.in, which is the organisation's own
+      domain and the origin used by every page.
+    -->
+    <!--
+      NOTE: there is deliberately NO static <meta name="description"> and NO
+      static <link rel="canonical"> here.
+
+      react-helmet-async replaces tags it manages but does not remove a
+      pre-existing duplicate, so a static description in this file survived
+      alongside the per-page one. Measured on /about/governance: TWO description
+      tags were present, and the static shell value came first — meaning every
+      one of the 19 routes served the SAME description to crawlers and link
+      scrapers.
+
+      Description and canonical are therefore owned entirely by each page's
+      <Helmet> block. The static title and Open Graph tags below remain as the
+      fallback for the initial HTML, and Helmet overrides them per route.
+    -->
+    <title>LAYA Chronicle | Resource Center for Adivasis</title>
+    <meta name="author" content="LAYA" />
+
+    <meta property="og:title" content="LAYA Chronicle | Resource Center for Adivasis" />
+    <meta property="og:description" content="Four decades of work with Adivasi communities in the Eastern Ghats — rights, livelihoods, health, learning and climate resilience." />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://layachronicle.org/og-image.png" />
+    <meta property="og:site_name" content="LAYA — Resource Center for Adivasis" />
+    <meta property="og:locale" content="en_IN" />
+    <!--
+      og-image.jpg is 1200x1200 JPEG, 85KB.
+      The previous og-image.png was 1,612KB — a 95% reduction with no visible
+      difference at social-card size. Large PNGs also risk being skipped by
+      scrapers that enforce a size limit.
+    -->
+    <meta property="og:image" content="https://laya.org.in/og-image.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="1200" />
+    <meta property="og:image:alt" content="LAYA — Resource Center for Adivasis" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@layaorg" />
-    <meta name="twitter:image" content="https://layachronicle.org/og-image.png" />
+    <meta name="twitter:title" content="LAYA Chronicle | Resource Center for Adivasis" />
+    <meta name="twitter:description" content="Four decades of work with Adivasi communities in the Eastern Ghats." />
+    <meta name="twitter:image" content="https://laya.org.in/og-image.jpg" />
+
+    <!--
+      ORGANISATION STRUCTURED DATA
+      Only facts that are verifiable within this repository are asserted:
+        name, alternateName, url, logo, foundingDate, description, address,
+        email, telephone, areaServed, knowsAbout.
+
+      Deliberately NOT included: numberOfEmployees, funding amounts, awards,
+      member counts, and `sameAs` social profiles — none are verified, and
+      inventing structured data is worse than omitting it, because search
+      engines read it as fact.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "NGO",
+        "name": "LAYA",
+        "alternateName": "LAYA — Resource Center for Adivasis",
+        "url": "https://laya.org.in/",
+        "logo": "https://laya.org.in/og-image.jpg",
+        "foundingDate": "1985",
+        "description": "LAYA is a Resource Center for Adivasis working with indigenous communities of the Eastern Ghats in Andhra Pradesh, India, on rights, livelihoods, health, learning and climate resilience.",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Plot No 110, D-No: 5-175/1, Behind Bay Crown Apartment, Yendada",
+          "addressLocality": "Visakhapatnam",
+          "postalCode": "530045",
+          "addressRegion": "Andhra Pradesh",
+          "addressCountry": "IN"
+        },
+        "email": "info@laya.org.in",
+        "telephone": "+91-891-2737662",
+        "areaServed": {
+          "@type": "Place",
+          "name": "Eastern Ghats, Andhra Pradesh"
+        },
+        "knowsAbout": [
+          "Adivasi and indigenous community rights",
+          "Forest rights and self-governance",
+          "Sustainable livelihoods and natural resource management",
+          "Herbal-based community health care",
+          "Lifelong learning and youth leadership",
+          "Climate resilience and renewable energy"
+        ]
+      }
+    </script>
   </head>
 
   <body>

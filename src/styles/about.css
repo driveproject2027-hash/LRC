@@ -1,0 +1,1082 @@
+/* ==========================================================================
+   LAYA — ABOUT SECTION
+   --------------------------------------------------------------------------
+   Editorial / archival composition for the About pages.
+
+   Direction: museum archive, not SaaS dashboard. Typography, rules and
+   whitespace carry the structure. No blobs, no gradients, no glass, no
+   seven-colour phase coding.
+
+   Everything reads Phase 1 tokens — no literal colours except where a
+   photograph scrim requires a fixed film value.
+   ========================================================================== */
+
+@layer components {
+  /* Shared page opener for routes that still use the small PageHero API. */
+  .page-hero {
+    padding-block-start: calc(var(--laya-chrome-height) + var(--space-md));
+    padding-block-end: var(--space-xl);
+    padding-inline: var(--gutter);
+    background-color: var(--surface-canvas);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+  }
+
+  .page-hero__inner {
+    max-width: var(--container-content);
+    margin-inline: auto;
+  }
+
+  .page-hero__inner--split {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .page-hero__inner--split {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: var(--space-3xl);
+    }
+  }
+
+  .page-hero--centered .page-hero__inner {
+    max-width: 52rem;
+    text-align: center;
+  }
+
+  .page-hero__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .page-hero__label::before {
+    content: "";
+    width: 1.5rem;
+    height: 1px;
+    background-color: var(--laya-forest-600);
+  }
+
+  .page-hero__title {
+    max-width: 20ch;
+    font-family: var(--font-serif);
+    font-size: var(--text-display);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    font-weight: 600;
+    color: var(--text-primary);
+    text-wrap: balance;
+  }
+
+  .page-hero--centered .page-hero__title {
+    max-width: none;
+    margin-inline: auto;
+  }
+
+  .page-hero__subtitle {
+    max-width: 46rem;
+    margin-top: var(--space-xs);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+  }
+
+  .page-hero--centered .page-hero__subtitle,
+  .page-hero--centered .page-hero__description {
+    margin-inline: auto;
+  }
+
+  .page-hero__description {
+    max-width: 42rem;
+    margin-top: var(--space-sm);
+    padding-inline-start: var(--space-sm);
+    border-inline-start: 2px solid var(--laya-forest-400);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    text-align: start;
+  }
+
+  .page-hero__media {
+    overflow: hidden;
+    margin: 0;
+    border: var(--hairline) solid var(--border-subtle);
+    border-radius: var(--radius-xs);
+    background-color: var(--laya-stone-100);
+    aspect-ratio: 4 / 3;
+  }
+
+  .page-hero__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ------------------------------------------------------------------------
+     PAGE HEADER — archival
+     ------------------------------------------------------------------------
+     Replaces the split-photo `PageHero` for About pages. An archive plate:
+     eyebrow, serif title, standfirst, hairline rule.
+     ------------------------------------------------------------------------ */
+
+  .about-header {
+    padding-block-start: calc(var(--laya-chrome-height) + var(--space-2xl));
+    padding-block-end: var(--space-xl);
+    padding-inline: var(--gutter);
+    background-color: var(--surface-canvas);
+  }
+
+  .about-header__inner {
+    max-width: var(--container-content);
+    margin-inline: auto;
+  }
+
+  .about-header__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .about-header__eyebrow::before {
+    content: "";
+    width: 1.5rem;
+    height: 1px;
+    background-color: var(--laya-forest-600);
+  }
+
+  .about-header__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-display);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    font-weight: 600;
+    color: var(--text-primary);
+    text-wrap: balance;
+    max-width: 20ch;
+  }
+
+  .about-header__subtitle {
+    margin-top: var(--space-xs);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-width: 46rem;
+  }
+
+  .about-header__meta {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-sm);
+    border-top: var(--hairline) solid var(--border-subtle);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-lg);
+    max-width: 46rem;
+  }
+
+  /* ------------------------------------------------------------------------
+     ARCHIVE BAND
+     ------------------------------------------------------------------------ */
+
+  .about-band {
+    padding-block: var(--section-y);
+    padding-inline: var(--gutter);
+  }
+
+  .about-band--warm {
+    background-color: var(--surface-warm);
+    border-block: var(--hairline) solid var(--border-subtle);
+  }
+
+  .about-band--sunken {
+    background-color: var(--surface-sunken);
+    border-block: var(--hairline) solid var(--border-subtle);
+  }
+
+  .about-band--ink {
+    background-color: var(--surface-ink);
+    color: var(--text-inverse);
+    --text-primary: var(--text-inverse);
+    --text-secondary: var(--text-inverse-secondary);
+    --text-tertiary: var(--text-inverse-muted);
+    --text-muted: var(--text-inverse-muted);
+    --border-subtle: var(--border-inverse);
+    --border-default: var(--border-inverse);
+  }
+
+  .about-band--ink .type-eyebrow {
+    color: var(--laya-forest-300);
+  }
+
+  /* ------------------------------------------------------------------------
+     SECTION HEADING — shared across About pages
+     ------------------------------------------------------------------------ */
+
+  .about-heading {
+    max-width: 46rem;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .about-heading__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    color: var(--text-primary);
+    text-wrap: balance;
+    margin-top: var(--space-2xs);
+    margin-bottom: var(--space-xs);
+  }
+
+  .about-heading__intro {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+      max-width: var(--measure);
+  }
+
+  /* ------------------------------------------------------------------------
+     THE JOURNEY — archival vertical timeline
+     ------------------------------------------------------------------------
+     Structure:
+       .journey            — the list, holds the continuous vertical rule
+       .journey__phase     — one phase, two columns from 900px up
+       .journey__marker    — the small accent node on the rule
+       .journey__body      — year, phase label, title, description, highlights
+
+     The rule is a single continuous element on the LIST (::before), not one
+     segment per phase, so it never breaks between items and stays visually
+     connected on mobile.
+     ------------------------------------------------------------------------ */
+
+  .journey {
+    position: relative;
+    max-width: 62rem;
+    margin-inline: auto;
+    padding-inline-start: 2rem;
+  }
+
+  /* The continuous vertical rule.
+     `top` must match `.journey__marker`'s `top` so the first marker sits ON the
+     line rather than floating above its start. */
+  .journey::before {
+    content: "";
+    position: absolute;
+    top: 0.375rem;
+    bottom: 0.375rem;
+    left: 0;
+    width: 1px;
+    background-color: var(--border-default);
+  }
+
+  @media (min-width: 900px) {
+    .journey {
+      padding-inline-start: 2.75rem;
+    }
+  }
+
+  .journey__phase {
+    position: relative;
+    padding-bottom: var(--space-2xl);
+  }
+
+  .journey__phase:last-child {
+    padding-bottom: 0;
+  }
+
+  /* Accent node — a small square, deliberately not a glowing dot.
+     The 2px canvas-coloured border reads as a gap between the node and the
+     rule, which is what makes the archive "pin" feel rather than a dot. */
+  .journey__marker {
+    position: absolute;
+    left: -2rem;
+    top: 0.375rem;
+    width: 0.625rem;
+    height: 0.625rem;
+    transform: translateX(-4.5px);
+    background-color: var(--laya-forest-600);
+    border: 2px solid var(--surface-canvas);
+    border-radius: var(--radius-xs);
+  }
+
+  @media (min-width: 900px) {
+    .journey__marker {
+      left: -2.75rem;
+    }
+  }
+
+  /* Years — the loudest element in each phase. */
+  .journey__years {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
+  }
+
+  .journey__phase-label {
+    display: inline-block;
+    margin-top: var(--space-2xs);
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  .journey__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    line-height: 1.25;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-top: var(--space-xs);
+    margin-bottom: var(--space-xs);
+    text-wrap: balance;
+  }
+
+  .journey__description {
+    font-size: var(--text-body);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-width: 44rem;
+  }
+
+  /* Key developments — a ruled archive list, not pill chips. */
+  .journey__developments {
+    margin-top: var(--space-md);
+    padding-top: var(--space-sm);
+    border-top: var(--hairline) solid var(--border-subtle);
+    max-width: 44rem;
+  }
+
+  .journey__developments-label {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-xs);
+  }
+
+  .journey__developments ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.375rem;
+  }
+
+  @media (min-width: 640px) {
+    .journey__developments ul {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--space-lg);
+    }
+  }
+
+  .journey__developments li {
+    position: relative;
+    padding-inline-start: 1rem;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  /* A short dash rather than a bullet glyph or icon. */
+  .journey__developments li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 0.375rem;
+    height: 1px;
+    background-color: var(--laya-forest-500);
+  }
+
+  /* ------------------------------------------------------------------------
+     IDENTITY SPLIT — text + photograph, used on Who We Are / Where We Work
+     ------------------------------------------------------------------------ */
+
+  .about-split {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .about-split {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      gap: var(--space-3xl);
+    }
+  }
+
+  .about-prose {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-width: var(--measure);
+  }
+
+  .about-prose > * + * {
+    margin-top: var(--space-sm);
+  }
+
+  .about-media {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-media);
+    background-color: var(--laya-stone-100);
+    aspect-ratio: 3 / 2;
+  }
+
+  .about-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .about-media__caption {
+    margin-top: var(--space-xs);
+    font-size: var(--text-caption);
+    line-height: var(--leading-snug);
+    color: var(--text-muted);
+  }
+
+  /* ------------------------------------------------------------------------
+     FACT LEDGER — replaces the icon stat-card grid
+     ------------------------------------------------------------------------
+     A ruled data list: label left, value right. Reads as an archive record.
+     ------------------------------------------------------------------------ */
+
+  .fact-ledger {
+    max-width: 46rem;
+    border-top: var(--hairline) solid var(--border-default);
+  }
+
+  .fact-ledger__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding-block: 0.875rem;
+    border-bottom: var(--hairline) solid var(--border-subtle);
+  }
+
+  .fact-ledger__label {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+  }
+
+  .fact-ledger__value {
+    font-family: var(--font-serif);
+    font-size: var(--text-h4);
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* ------------------------------------------------------------------------
+     PRINCIPLE / POINT LIST — ruled, icon-free
+     ------------------------------------------------------------------------ */
+
+  .about-points {
+    max-width: 42rem;
+    border-top: var(--hairline) solid var(--border-default);
+  }
+
+  .about-points__item {
+    padding-block: var(--space-sm);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+  }
+
+  .about-points__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  .about-points__desc {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  .about-points__list {
+    display: grid;
+    gap: 0.375rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+  }
+
+  .about-points__list li {
+    position: relative;
+    padding-inline-start: 1rem;
+  }
+
+  .about-points__list li::before {
+    content: "";
+    position: absolute;
+    top: 0.7em;
+    left: 0;
+    width: 0.375rem;
+    height: 1px;
+    background-color: var(--laya-forest-500);
+  }
+
+  .about-quote {
+    margin: 0;
+    padding-inline-start: var(--space-md);
+    border-inline-start: 2px solid var(--laya-forest-400);
+  }
+
+  .about-quote p {
+    max-width: 38rem;
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 1.15rem + 1.2vw, 2.25rem);
+    line-height: 1.3;
+    color: var(--text-inverse);
+  }
+
+  .about-quote cite {
+    display: block;
+    margin-top: var(--space-md);
+    font-size: var(--text-sm);
+    font-style: normal;
+    color: var(--text-inverse-secondary);
+  }
+
+  /* ------------------------------------------------------------------------
+     DOCUMENT LEDGER — financial reports, FCRA
+     ------------------------------------------------------------------------ */
+
+  .doc-ledger {
+    border-top: var(--hairline) solid var(--border-default);
+  }
+
+  .doc-ledger__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding-block: var(--space-sm);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .doc-ledger__row:hover {
+    background-color: var(--laya-stone-50);
+  }
+
+  .doc-ledger__year {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
+    min-width: 7rem;
+  }
+
+  .doc-ledger__label {
+    flex: 1;
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+  }
+
+  .doc-ledger__action {
+    display: inline-flex;
+    align-items: center;
+    gap:0.375rem;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text-brand);
+    white-space: nowrap;
+  }
+
+  /* Definition list for registration / bank facts. */
+  .record-list {
+    display: grid;
+    gap: var(--space-md);
+    margin: 0;
+  }
+
+  @media (min-width: 640px) {
+    .record-list--two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--space-2xl);
+    }
+  }
+
+  .record-list__term {
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  .record-list__value {
+    margin: 0.25rem 0 0;
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-snug);
+    color: var(--text-primary);
+  }
+
+  .record-list__value--mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+
+  /* Monospace reg. numbers stay legible at any size */
+  .doc-ledger__ref {
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--text-muted);
+  }
+
+  /* ------------------------------------------------------------------------
+     RECEIPT TABLE — strengthened FCRA quarterly disclosures
+     ------------------------------------------------------------------------ */
+
+  /*
+    FCRA RECEIPTS — grid blowout fix.
+
+    Measured at 360px: the outer `.receipts` grid was 642px wide inside a 360px
+    viewport, and the `.laya-table-scroll` wrapper was 640px with
+    `canScroll: false`. The wrapper was NOT containing the table — it had grown
+    to the table's width, so `overflow-x: auto` had nothing to scroll and the
+    whole block simply overflowed the page. It was invisible only because
+    `body { overflow-x: hidden }` silently clipped it.
+
+    Cause: grid and flex items default to `min-width: auto`, so a child
+    refuses to shrink below its content's intrinsic width. The 40rem table
+    therefore stretched its ancestors instead of scrolling inside them.
+
+    `min-width: 0` lets every level shrink to the container, so the table
+    scrolls inside its wrapper as intended.
+  */
+  .receipts {
+    display: grid;
+    gap: var(--space-lg);
+    min-width: 0;
+  }
+
+  .receipts > * {
+    min-width: 0;
+  }
+
+  .receipts__quarter {
+    /* Table/scroll children must be allowed to shrink below their content. */
+    min-width: 0;
+  }
+
+  .laya-table-scroll {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .receipts__year {
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    color: var(--text-primary);
+    padding-bottom: var(--space-2xs);
+    border-bottom: 2px solid var(--laya-forest-600);
+    margin-bottom: var(--space-sm);
+  }
+
+  .receipts__quarter {
+    border: var(--hairline) solid var(--border-subtle);
+    border-radius: var(--radius-card);
+    background-color: var(--surface-raised);
+    overflow: hidden;
+    margin-bottom: var(--space-sm);
+  }
+
+  .receipts__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: var(--space-sm) var(--space-md);
+    cursor: pointer;
+    list-style: none;
+    background-color: var(--surface-warm);
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .receipts__summary:hover {
+    background-color: var(--laya-stone-100);
+  }
+
+  .receipts__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .receipts__summary-name {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .receipts__summary-count {
+    display: block;
+    margin-top: 0.125rem;
+    font-size: var(--text-caption);
+    color: var(--text-tertiary);
+  }
+
+  .receipts__toggle {
+    flex-shrink: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-brand);
+  }
+
+  /* Min width keeps donor names on one line; the wrapper scrolls on mobile. */
+  .receipts__table {
+    width: 100%;
+    min-width: 40rem;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+  }
+
+  .receipts__table th {
+    text-align: left;
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    padding: var(--space-xs) var(--space-md);
+    background-color: var(--surface-canvas);
+    border-bottom: var(--hairline) solid var(--border-default);
+    white-space: nowrap;
+  }
+
+  .receipts__table td {
+    padding: var(--space-xs) var(--space-md);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+    color: var(--text-secondary);
+    vertical-align: top;
+    line-height: var(--leading-normal);
+  }
+
+  .receipts__table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .receipts__table tbody tr:hover {
+    background-color: var(--laya-stone-50);
+  }
+
+  .receipts__amount {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
+    white-space: nowrap;
+  }
+
+  .receipts__date {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    color: var(--text-tertiary);
+    white-space: nowrap;
+  }
+
+  /* ------------------------------------------------------------------------
+     PEOPLE — Team and Governance
+     ------------------------------------------------------------------------ */
+
+  .people-grid {
+    display: grid;
+    gap: var(--space-lg);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 640px) {
+    .people-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .people-grid--three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .person {
+    padding-top: var(--space-sm);
+    border-top: 2px solid var(--laya-forest-600);
+  }
+
+  /* Monogram: honest where no headshot exists. */
+  .person__monogram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    margin-bottom: var(--space-sm);
+    border-radius: var(--radius-sm);
+    background-color: var(--laya-forest-50);
+    border: var(--hairline) solid var(--laya-forest-200);
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--laya-forest-800);
+  }
+
+  .person__name {
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: var(--leading-snug);
+  }
+
+  .person__role {
+    margin-top: 0.25rem;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  .person__bio {
+    margin-top: var(--space-xs);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-tertiary);
+  }
+
+  /* Governance roster rows — dense, scannable, archival. */
+  .roster {
+    border-top: var(--hairline) solid var(--border-default);
+  }
+
+  .roster__row {
+    display: grid;
+    gap: 0.25rem var(--space-md);
+    padding-block: var(--space-sm);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+  }
+
+  @media (min-width: 768px) {
+    .roster__row {
+      grid-template-columns: minmax(14rem, 0.8fr) minmax(0, 1.2fr);
+      align-items: baseline;
+    }
+  }
+
+  .roster__name {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .roster__role {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  /* Office / board office badge — small, restrained. */
+  .roster__office {
+    display: inline-block;
+    margin-inline-start: 0.5rem;
+    padding: 0.0625rem 0.375rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--laya-forest-800);
+    background-color: var(--laya-forest-100);
+    border-radius: var(--radius-xs);
+  }
+
+  /* ------------------------------------------------------------------------
+     PARTNERS — institutional ledger
+     ------------------------------------------------------------------------ */
+
+  .partner-ledger {
+    border-top: var(--hairline) solid var(--border-default);
+  }
+
+  .partner-ledger__row {
+    display: grid;
+    gap: 0.25rem var(--space-md);
+    padding-block: var(--space-md);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+  }
+
+  @media (min-width: 768px) {
+    .partner-ledger__row {
+      grid-template-columns: minmax(0, 1.6fr) minmax(9rem, 0.7fr) minmax(8rem, 0.6fr);
+      align-items: baseline;
+    }
+  }
+
+  .partner-ledger__name {
+    font-family: var(--font-sans);
+    font-size: var(--text-body-lg);
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: var(--leading-snug);
+  }
+
+  .partner-ledger__location {
+    font-size: var(--text-sm);
+    color: var(--text-tertiary);
+  }
+
+  .partner-ledger__amount {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+    color: var(--text-brand);
+    font-weight: 500;
+  }
+
+  @media (min-width: 768px) {
+    .partner-ledger__amount {
+      text-align: right;
+    }
+  }
+
+  /* ------------------------------------------------------------------------
+     LOCATIONS — field office records
+     ------------------------------------------------------------------------ */
+
+  .location-record {
+    display: grid;
+    gap: var(--space-xs);
+    padding-block: var(--space-md);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+  }
+
+  @media (min-width: 768px) {
+    .location-record {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+      gap: var(--space-lg);
+      align-items: baseline;
+    }
+  }
+
+  .location-record__name {
+    font-family: var(--font-sans);
+    font-size: var(--text-h4);
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .location-record__type {
+    display: inline-block;
+    margin-top: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--laya-forest-800);
+  }
+
+  .location-record__type--hq {
+    color: var(--laya-violet-800);
+  }
+
+  .location-record__address {
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  .location-record__pincode {
+    display: inline-block;
+    margin-top: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    font-variant-numeric: tabular-nums;
+    color: var(--text-tertiary);
+  }
+
+  .district-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin-top: var(--space-sm);
+  }
+
+  .district-tag {
+    padding: 0.1875rem 0.5rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--text-secondary);
+    background-color: var(--laya-stone-100);
+    border: var(--hairline) solid var(--border-subtle);
+    border-radius: var(--radius-xs);
+  }
+
+  /* ------------------------------------------------------------------------
+     MISC — shared bits
+     ------------------------------------------------------------------------ */
+
+  .about-note {
+    margin-top: var(--space-md);
+    padding: var(--space-sm) var(--space-md);
+    border-left: 2px solid var(--laya-forest-500);
+    background-color: var(--laya-forest-50);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+    max-width: 46rem;
+  }
+
+  .about-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-top: var(--space-lg);
+  }
+
+  /* Photo credit / caption plates under images */
+  .media-plate {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-media);
+    background-color: var(--laya-stone-100);
+    aspect-ratio: 16 / 9;
+  }
+
+  .media-plate img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
