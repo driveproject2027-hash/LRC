@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, Moon, Sun } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useTheme } from "@/hooks/use-theme";
 import { NavDropdown } from "@/components/nav/NavDropdown";
 import { MobileNav } from "@/components/nav/MobileNav";
 import { DONATE_ITEM, PRIMARY_NAV, SECONDARY_NAV, type NavItem } from "@/config/navigation";
@@ -36,7 +35,6 @@ const Header = () => {
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const chromeRef = useRef<HTMLElement>(null);
   const { pathname } = useLocation();
-  const { isDark, toggleTheme } = useTheme();
 
   // Overlay -> solid.
   useEffect(() => {
@@ -135,14 +133,6 @@ const Header = () => {
 
           {/* Actions ------------------------------------------------------ */}
           <div className="laya-nav__actions">
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="p-2 text-content-primary hover:text-content-brand transition-colors"
-              aria-label="Toggle dark mode"
-            >
-              {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
-            </button>
             {SECONDARY_NAV.map((item) => (
               <NavLink key={item.path} item={item} pathname={pathname} />
             ))}
