@@ -251,6 +251,7 @@ const Donate = () => {
                       id="pledge-name"
                       type="text"
                       autoComplete="name"
+                      placeholder="E.g., Jane Doe"
                       value={pledge.name}
                       onChange={(e) => setPledge({ ...pledge, name: e.target.value })}
                       aria-invalid={pledgeErrors.name ? true : undefined}
@@ -275,6 +276,7 @@ const Donate = () => {
                       id="pledge-email"
                       type="email"
                       autoComplete="email"
+                      placeholder="yourname@example.com"
                       value={pledge.email}
                       onChange={(e) => setPledge({ ...pledge, email: e.target.value })}
                       aria-invalid={pledgeErrors.email ? true : undefined}
@@ -299,6 +301,7 @@ const Donate = () => {
                       id="pledge-amount"
                       type="number"
                       min={1}
+                      placeholder="e.g. 5000"
                       value={pledge.amount}
                       onChange={(e) => setPledge({ ...pledge, amount: e.target.value })}
                       aria-invalid={pledgeErrors.amount ? true : undefined}
@@ -325,6 +328,7 @@ const Donate = () => {
                     <textarea
                       id="pledge-message"
                       rows={3}
+                      placeholder="Tell us what inspired you to contribute..."
                       value={pledge.message}
                       onChange={(e) => setPledge({ ...pledge, message: e.target.value })}
                       className="form-field__textarea"
