@@ -2,6 +2,7 @@ import { useContactForm } from "@/hooks/use-contact-form";
 import { MapPin, Phone, Mail, Send, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
+import { CONTACT_DETAILS } from "@/content/contact";
 interface ContactModalProps {
   open: boolean;
   onClose: () => void;
@@ -64,7 +65,7 @@ const ContactModal = ({ open, onClose }: ContactModalProps) => {
                   <div>
                     <h3 className="font-heading text-xs font-semibold text-foreground">Address</h3>
                     <p className="text-xs text-muted-foreground font-body leading-relaxed">
-                      Plot No 110, Yendada, Visakhapatnam – 530045, AP, India
+                      {CONTACT_DETAILS.address}
                     </p>
                   </div>
                 </div>
@@ -74,7 +75,7 @@ const ContactModal = ({ open, onClose }: ContactModalProps) => {
                   </div>
                   <div>
                     <h3 className="font-heading text-xs font-semibold text-foreground">Phone</h3>
-                    <p className="text-xs text-muted-foreground font-body">+91-891-2737662</p>
+                    <p className="text-xs text-muted-foreground font-body">{CONTACT_DETAILS.phone}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -83,7 +84,7 @@ const ContactModal = ({ open, onClose }: ContactModalProps) => {
                   </div>
                   <div>
                     <h3 className="font-heading text-xs font-semibold text-foreground">Email</h3>
-                    <p className="text-xs text-muted-foreground font-body">info@laya.org.in</p>
+                    <p className="text-xs text-muted-foreground font-body">{CONTACT_DETAILS.email}</p>
                   </div>
                 </div>
               </div>

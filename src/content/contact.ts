@@ -20,13 +20,13 @@ import { mockImpactMetrics } from "@/services/api";
 export const CONTACT_DETAILS = {
   address:
     "Plot No 110, D-No: 5-175/1, Behind Bay Crown Apartment, Yendada, Visakhapatnam – 530045, Andhra Pradesh, India",
-  phone: "+91-891-2737662",
-  phoneHref: "tel:+918912737662",
+  phone: "+91 99497 31307",
+  phoneHref: "tel:+919949731307",
   email: "info@laya.org.in",
   emailHref: "mailto:info@laya.org.in",
   website: "www.laya.org.in",
   websiteHref: "https://www.laya.org.in",
-  whatsapp: "918912737662",
+  whatsapp: "919949731307",
 } as const;
 
 export const CONTACT_HEADING = {
@@ -56,7 +56,7 @@ export interface SocialLink {
 export const SOCIAL_LINKS: SocialLink[] = [
   { label: "LinkedIn", href: "https://www.linkedin.com/company/layaresourcecenter/posts/?feedView=all" },
   { label: "YouTube", href: "#" },
-  { label: "WhatsApp", href: "https://wa.me/918912737662" },
+  { label: "WhatsApp", href: "https://wa.me/919949731307" },
 ];
 
 /**

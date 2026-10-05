@@ -347,7 +347,7 @@ const Donate = () => {
               <a href="mailto:info@laya.org.in" className="contact-record__link">
                 info@laya.org.in
               </a>{" "}
-              or call +91-891-2737662.
+              or call {CONTACT_DETAILS.phone}.
             </p>
 
             <div className="prog-actions">
