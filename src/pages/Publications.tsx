@@ -121,8 +121,7 @@ const Publications = () => {
                 <div
                   role="group"
                   aria-labelledby="filter-category-label"
-                  className="res-filters__row"
-                  style={{ gap: "0.375rem" }}
+                  className="res-filters__group"
                 >
                   {RESOURCE_CATEGORIES.map((c) => (
                     <button
@@ -146,8 +145,7 @@ const Publications = () => {
                 <div
                   role="group"
                   aria-labelledby="filter-type-label"
-                  className="res-filters__row"
-                  style={{ gap: "0.375rem" }}
+                  className="res-filters__group"
                 >
                   <button
                     type="button"
