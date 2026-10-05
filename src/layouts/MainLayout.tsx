@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import ScrollToTopButton from "@/components/ScrollToTop";
 import { LAYA_SCROLL_ID } from "@/lib/scrollRoot";
 
@@ -18,7 +17,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         <main>{children}</main>
         <Footer />
       </div>
-      <WhatsAppButton />
       <ScrollToTopButton />
     </div>
   );
