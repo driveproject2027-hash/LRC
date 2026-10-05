@@ -7,9 +7,9 @@ import {
 } from "@/services/api";
 import { referenceProgramImages, referencePublications } from "@/assets/referenceAssets";
 import { newGalleryImages } from "@/assets/newGalleryAssets";
-import heroAdivasiImage from "@/assets/hero-adivasi.jpg";
-import heroHabitatImage from "@/assets/hero-habitat.jpg";
-import heroYouthImage from "@/assets/hero-youth.jpg";
+import heroAdivasiImage from "@/assets/hero-adivasi.webp";
+import heroHabitatImage from "@/assets/hero-habitat.webp";
+import heroYouthImage from "@/assets/hero-youth.webp";
 
 /**
  * LAYA — HOMEPAGE CONTENT
