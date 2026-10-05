@@ -98,7 +98,6 @@ const Header = () => {
                 height={68}
               />
             </div>
-            <span className="sm:hidden font-sans font-bold text-[1rem] tracking-[0.14em] uppercase text-content-primary">LAYA</span>
             <span className="laya-header__brand-text">
               <span className="laya-header__brand-name">Laya</span>
               <span className="laya-header__brand-tagline">Resource Center for Adivasis</span>

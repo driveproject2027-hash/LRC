@@ -202,15 +202,9 @@
   /* The wordmark is text, not baked into the raster logo, so it stays crisp
      and can respond to the active/inverse states. */
   .laya-header__brand-text {
-    display: none;
+    display: flex;
     flex-direction: column;
     line-height: 1.1;
-  }
-
-  @media (min-width: 640px) {
-    .laya-header__brand-text {
-      display: flex;
-    }
   }
 
   .laya-header__brand-name {
