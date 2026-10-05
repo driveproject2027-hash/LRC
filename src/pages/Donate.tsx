@@ -244,9 +244,6 @@ const Donate = () => {
               ) : (
                 <form onSubmit={handlePledgeSubmit} noValidate>
                   <div className="form-field">
-                    <label htmlFor="pledge-name" className="form-field__label">
-                      Name
-                    </label>
                     <input
                       id="pledge-name"
                       type="text"
@@ -260,6 +257,9 @@ const Donate = () => {
                         pledgeErrors.name ? "form-field__input--invalid" : ""
                       }`}
                     />
+                    <label htmlFor="pledge-name" className="form-field__label">
+                      Name
+                    </label>
                     {pledgeErrors.name && (
                       <p className="form-field__error" id="pledge-name-error" role="alert">
                         <AlertCircle className="form-field__error-icon" aria-hidden="true" />
@@ -269,9 +269,6 @@ const Donate = () => {
                   </div>
 
                   <div className="form-field">
-                    <label htmlFor="pledge-email" className="form-field__label">
-                      Email
-                    </label>
                     <input
                       id="pledge-email"
                       type="email"
@@ -285,6 +282,9 @@ const Donate = () => {
                         pledgeErrors.email ? "form-field__input--invalid" : ""
                       }`}
                     />
+                    <label htmlFor="pledge-email" className="form-field__label">
+                      Email
+                    </label>
                     {pledgeErrors.email && (
                       <p className="form-field__error" id="pledge-email-error" role="alert">
                         <AlertCircle className="form-field__error-icon" aria-hidden="true" />
@@ -294,9 +294,6 @@ const Donate = () => {
                   </div>
 
                   <div className="form-field">
-                    <label htmlFor="pledge-amount" className="form-field__label">
-                      Intended amount (₹)
-                    </label>
                     <input
                       id="pledge-amount"
                       type="number"
@@ -310,6 +307,9 @@ const Donate = () => {
                         pledgeErrors.amount ? "form-field__input--invalid" : ""
                       }`}
                     />
+                    <label htmlFor="pledge-amount" className="form-field__label">
+                      Intended amount (₹)
+                    </label>
                     {pledgeErrors.amount && (
                       <p className="form-field__error" id="pledge-amount-error" role="alert">
                         <AlertCircle className="form-field__error-icon" aria-hidden="true" />
@@ -322,9 +322,6 @@ const Donate = () => {
                   </div>
 
                   <div className="form-field">
-                    <label htmlFor="pledge-message" className="form-field__label">
-                      Message <span className="form-field__optional">(optional)</span>
-                    </label>
                     <textarea
                       id="pledge-message"
                       rows={3}
@@ -333,6 +330,9 @@ const Donate = () => {
                       onChange={(e) => setPledge({ ...pledge, message: e.target.value })}
                       className="form-field__textarea"
                     />
+                    <label htmlFor="pledge-message" className="form-field__label">
+                      Message <span className="form-field__optional">(optional)</span>
+                    </label>
                   </div>
 
                   <Button type="submit" size="lg">

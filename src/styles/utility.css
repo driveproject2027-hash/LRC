@@ -176,6 +176,7 @@
   }
 
   .form-field {
+    position: relative;
     margin-bottom: var(--space-md);
   }
 
@@ -238,10 +239,16 @@
     text-transform: uppercase;
   }
 
-  /* We hide the actual placeholder text visually, it just needs to exist for the CSS selector */
+  /* We hide the actual placeholder text visually unless focused, so it doesn't overlap the floating label */
   .form-field__input::placeholder,
   .form-field__textarea::placeholder {
     color: transparent;
+  }
+  
+  .form-field__input:focus::placeholder,
+  .form-field__textarea:focus::placeholder {
+    color: var(--text-muted);
+    opacity: 0.5;
   }
 
   /* Glowing blue-to-purple border on focus */
