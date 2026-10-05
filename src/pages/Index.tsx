@@ -74,25 +74,27 @@ const Index = () => {
             HERO
             ================================================================ */}
         <section id="hero-section" className="home-hero">
-          {hero.slides.map((slide, index) => (
-            <figure
-              key={index}
-              className={`home-hero__media transition-opacity duration-1000 ${
-                index === currentSlide ? "opacity-100" : "opacity-0"
-              }`}
-              style={{ zIndex: index === currentSlide ? 0 : -1 }}
-            >
-              <img
-                src={slide.image.src}
-                alt={slide.image.alt}
-                width={1500}
-                height={451}
-                fetchPriority={index === 0 ? "high" : "auto"}
-                decoding="async"
-              />
-              <figcaption className="home-hero__caption">{slide.image.caption}</figcaption>
-            </figure>
-          ))}
+          <div className="home-hero__slider">
+            {hero.slides.map((slide, index) => (
+              <figure
+                key={index}
+                className={`home-hero__media transition-opacity duration-1000 ${
+                  index === currentSlide ? "opacity-100" : "opacity-0"
+                }`}
+                style={{ zIndex: index === currentSlide ? 0 : -1 }}
+              >
+                <img
+                  src={slide.image.src}
+                  alt={slide.image.alt}
+                  width={1500}
+                  height={451}
+                  fetchPriority={index === 0 ? "high" : "auto"}
+                  decoding="async"
+                />
+                <figcaption className="home-hero__caption">{slide.image.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
 
           <div className="container-page home-hero__story relative z-10">
             <div className="home-hero__copy">
