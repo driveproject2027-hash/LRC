@@ -98,6 +98,7 @@ const Header = () => {
                 height={68}
               />
             </div>
+            <span className="sm:hidden font-serif font-bold text-2xl tracking-widest text-[var(--laya-forest-800)]">LAYA</span>
             <span className="laya-header__brand-text">
               <span className="laya-header__brand-name">Laya</span>
               <span className="laya-header__brand-tagline">Resource Center for Adivasis</span>

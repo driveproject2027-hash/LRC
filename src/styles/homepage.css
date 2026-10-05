@@ -21,16 +21,35 @@
 
   .home-hero {
     position: relative;
-    min-height: calc(100svh - 4.5rem); /* subtract header height */
     overflow: hidden;
     background-color: var(--surface-ink);
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (min-width: 768px) {
+    .home-hero {
+      min-height: calc(100svh - 4.5rem); /* subtract header height */
+      display: block;
+    }
   }
 
   .home-hero__media {
-    position: absolute;
-    inset: 0;
+    position: relative;
+    width: 100%;
+    height: 35vh; /* Fixed height for mobile */
+    min-height: 250px;
     margin: 0;
     background-color: var(--laya-stone-100);
+  }
+
+  @media (min-width: 768px) {
+    .home-hero__media {
+      position: absolute;
+      inset: 0;
+      height: auto;
+      min-height: auto;
+    }
   }
 
   /*
@@ -85,16 +104,18 @@
     position: relative;
     z-index: 1;
     display: flex;
-    align-items: center; /* Center vertically instead of pushing to bottom */
-    justify-content: flex-start;
-    min-height: calc(100svh - 4.5rem);
-    padding-block: var(--space-md); /* Reduced from xl */
+    flex-direction: column;
+    justify-content: center;
+    padding: 0;
   }
 
-  @media (max-width: 767px) {
+  @media (min-width: 768px) {
     .home-hero__story {
-      align-items: flex-end; /* Push to bottom on mobile so image is visible above */
-      padding-block: var(--space-sm);
+      align-items: center; /* Center vertically instead of pushing to bottom */
+      justify-content: flex-start;
+      min-height: calc(100svh - 4.5rem);
+      padding-block: var(--space-md); /* Reduced from xl */
+      flex-direction: row;
     }
   }
 
@@ -141,12 +162,12 @@
     1024px ~450px, which leaves the photograph the larger share of the frame.
   */
   .home-hero__copy {
-    width: clamp(100%, 44vw, 38rem); /* Use 100% on mobile so it doesn't overflow */
-    padding: var(--space-md); /* Fixed padding for better mobile fit */
-    background-color: rgba(15, 33, 25, 0.5); /* Slightly darker for readability */
+    width: 100%;
+    padding: var(--space-xl) var(--space-md);
+    background-color: var(--surface-ink); /* Solid dark background for mobile */
     color: var(--text-inverse);
-    border-inline-start: 2px solid rgba(255, 255, 255, 0.2); /* Soft glass border instead of hard violet */
-    border-radius: var(--radius-md);
+    border-radius: 0;
+    border-inline-start: none;
   }
 
   @media (min-width: 768px) {
@@ -154,13 +175,17 @@
       width: clamp(21rem, 44vw, 38rem);
       padding: clamp(1.5rem, 2vw, 2.5rem);
       background-color: rgba(15, 33, 25, 0.35);
+      border-inline-start: 2px solid rgba(255, 255, 255, 0.2); /* Soft glass border instead of hard violet */
+      border-radius: var(--radius-md);
     }
   }
 
   @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-    .home-hero__copy {
-      -webkit-backdrop-filter: blur(16px) saturate(120%);
-      backdrop-filter: blur(16px) saturate(120%);
+    @media (min-width: 768px) {
+      .home-hero__copy {
+        -webkit-backdrop-filter: blur(16px) saturate(120%);
+        backdrop-filter: blur(16px) saturate(120%);
+      }
     }
   }
 
