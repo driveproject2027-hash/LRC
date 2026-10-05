@@ -335,7 +335,7 @@ const Donate = () => {
                     </label>
                   </div>
 
-                  <Button type="submit" size="lg">
+                  <Button type="submit" size="lg" className="w-full whitespace-normal h-auto py-4">
                     Record my intention to give
                   </Button>
                 </form>
