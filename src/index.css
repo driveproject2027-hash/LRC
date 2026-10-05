@@ -1136,17 +1136,19 @@
   }
 
   /* Reveal-on-scroll for editorial content. Opt-in only. */
-  .reveal {
-    opacity: 0;
-    transform: translateY(16px);
-    transition: opacity var(--duration-editorial) var(--ease-out),
-      transform var(--duration-editorial) var(--ease-out);
-    will-change: opacity, transform;
-  }
+  @media (min-width: 768px) {
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity var(--duration-editorial) var(--ease-out),
+        transform var(--duration-editorial) var(--ease-out);
+      will-change: opacity, transform;
+    }
 
-  .reveal.is-visible {
-    opacity: 1;
-    transform: none;
+    .reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
   }
 }
 

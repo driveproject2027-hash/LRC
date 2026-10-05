@@ -91,6 +91,13 @@
     padding-block: var(--space-md); /* Reduced from xl */
   }
 
+  @media (max-width: 767px) {
+    .home-hero__story {
+      align-items: flex-end; /* Push to bottom on mobile so image is visible above */
+      padding-block: var(--space-sm);
+    }
+  }
+
   /*
     HERO COPY PLATE — now translucent, so the photograph reads through it.
 
@@ -134,12 +141,20 @@
     1024px ~450px, which leaves the photograph the larger share of the frame.
   */
   .home-hero__copy {
-    width: clamp(21rem, 44vw, 38rem);
-    padding: clamp(1rem, 1rem + 1vw, 2rem); /* Reduced padding to fit screen */
-    background-color: rgba(15, 33, 25, 0.35); /* Much more transparent */
+    width: clamp(100%, 44vw, 38rem); /* Use 100% on mobile so it doesn't overflow */
+    padding: var(--space-md); /* Fixed padding for better mobile fit */
+    background-color: rgba(15, 33, 25, 0.5); /* Slightly darker for readability */
     color: var(--text-inverse);
     border-inline-start: 2px solid rgba(255, 255, 255, 0.2); /* Soft glass border instead of hard violet */
     border-radius: var(--radius-md);
+  }
+
+  @media (min-width: 768px) {
+    .home-hero__copy {
+      width: clamp(21rem, 44vw, 38rem);
+      padding: clamp(1.5rem, 2vw, 2.5rem);
+      background-color: rgba(15, 33, 25, 0.35);
+    }
   }
 
   @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
@@ -217,7 +232,7 @@
   */
   .home-hero__title {
     font-family: var(--font-serif);
-    font-size: clamp(2rem, 3.5vw, 3.2rem); /* Reduced from --text-display to fit small screens */
+    font-size: clamp(1.75rem, 3.5vw, 3.2rem); /* Reduced base size to fit mobile better */
     line-height: 1.1;
     letter-spacing: var(--tracking-display);
     font-weight: 600;
