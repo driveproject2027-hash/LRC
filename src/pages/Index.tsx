@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Check, ExternalLink } from "lucide-react";
 import MainLayout from "@/layouts/MainLayout";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import { EditorialLink, SectionHeader } from "@/components/home/EditorialLink";
 import { useRevealOnScroll } from "@/hooks/use-reveal-on-scroll";
