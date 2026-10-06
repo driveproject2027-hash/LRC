@@ -7,12 +7,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// Apply Security Headers
-app.use((req, res, next) => {
-  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  next();
-});
+
 
 // Serve the static files from the Vite build directory
 const distPath = path.join(__dirname, 'dist');
