@@ -10,49 +10,45 @@
       rather than indexable articles, and they are reachable from /stories.
     - the 404 catch-all.
     - any route not declared in src/App.tsx.
-
-  If routes are added, add them here too. `src/test/navigation.test.ts`
-  asserts the navigation config covers every route, but it cannot check this
-  file, so keep the two in step manually.
 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Primary -->
  <url>
-    <loc>https://laya.org.in/</loc>
+    <loc>https://springgreen-squid-138681.hostingersite.com/</loc>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
  </url>
 
   <!-- About -->
- <url><loc>https://laya.org.in/about</loc><changefreq>yearly</changefreq><priority>0.8</priority></url>
- <url><loc>https://laya.org.in/about/who-we-are</loc><changefreq>yearly</changefreq><priority>0.8</priority></url>
- <url><loc>https://laya.org.in/about/way-we-work</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
- <url><loc>https://laya.org.in/about/where-we-work</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
- <url><loc>https://laya.org.in/about/governance</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
- <url><loc>https://laya.org.in/about/support-partners</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/about</loc><changefreq>yearly</changefreq><priority>0.8</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/about/who-we-are</loc><changefreq>yearly</changefreq><priority>0.8</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/about/way-we-work</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/about/where-we-work</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/about/governance</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/about/support-partners</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
 
   <!-- Our work -->
- <url><loc>https://laya.org.in/programs</loc><changefreq>yearly</changefreq><priority>0.9</priority></url>
- <url><loc>https://laya.org.in/what-we-do/rla</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
- <url><loc>https://laya.org.in/what-we-do/hbhc</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
- <url><loc>https://laya.org.in/what-we-do/srm</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
- <url><loc>https://laya.org.in/what-we-do/lifelong-learning</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
- <url><loc>https://laya.org.in/what-we-do/climate-crisis-sustainable-development</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/programs</loc><changefreq>yearly</changefreq><priority>0.9</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/what-we-do/rla</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/what-we-do/hbhc</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/what-we-do/srm</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/what-we-do/lifelong-learning</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/what-we-do/climate-crisis-sustainable-development</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
 
   <!-- Impact and stories -->
- <url><loc>https://laya.org.in/impact</loc><changefreq>yearly</changefreq><priority>0.8</priority></url>
- <url><loc>https://laya.org.in/stories</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/impact</loc><changefreq>yearly</changefreq><priority>0.8</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/stories</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 
   <!-- Resources -->
- <url><loc>https://laya.org.in/publications</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
- <url><loc>https://laya.org.in/gallery</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/publications</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/gallery</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 
   <!-- Transparency -->
- <url><loc>https://laya.org.in/about/financial-reports</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
- <url><loc>https://laya.org.in/about/fcra-information</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/about/financial-reports</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/about/fcra-information</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
 
   <!-- People and contact -->
- <url><loc>https://laya.org.in/team</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
- <url><loc>https://laya.org.in/contact</loc><changefreq>yearly</changefreq><priority>0.8</priority></url>
- <url><loc>https://laya.org.in/donate</loc><changefreq>yearly</changefreq><priority>0.9</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/team</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/contact</loc><changefreq>yearly</changefreq><priority>0.8</priority></url>
+ <url><loc>https://springgreen-squid-138681.hostingersite.com/donate</loc><changefreq>yearly</changefreq><priority>0.9</priority></url>
 </urlset>

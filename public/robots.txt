@@ -10,4 +10,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://laya.org.in/sitemap.xml
+Sitemap: https://springgreen-squid-138681.hostingersite.com/sitemap.xml
