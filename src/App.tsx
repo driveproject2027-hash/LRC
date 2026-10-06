@@ -88,6 +88,13 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const AnimatedRoutes = () => {
   const location = useLocation();
 
+  useEffect(() => {
+    console.log("[DIAG] AnimatedRoutes rendered.");
+    console.log("[DIAG] window.location.href:", window.location.href);
+    console.log("[DIAG] window.location.pathname:", window.location.pathname);
+    console.log("[DIAG] React Router location.pathname:", location.pathname);
+  }, [location.pathname]);
+
   // NOTE: Previously a fixed 800ms full-screen loading overlay was shown on
   // every route change, which made the SPA feel slow even on fast networks.
   // Pages are already lazy-loaded with a real Suspense fallback below, so the

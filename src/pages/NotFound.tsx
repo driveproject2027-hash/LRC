@@ -9,6 +9,12 @@ const NotFound = () => {
 
   useEffect(() => {
     console.error("404 Error: User attempted to access non-existent route:", location.pathname);
+    console.log("[DIAG] NotFound rendered.");
+    console.log("[DIAG] window.location.href:", window.location.href);
+    console.log("[DIAG] window.location.pathname:", window.location.pathname);
+    console.log("[DIAG] window.location.search:", window.location.search);
+    console.log("[DIAG] window.location.hash:", window.location.hash);
+    console.log("[DIAG] React Router location.pathname:", location.pathname);
   }, [location.pathname]);
 
   return (
