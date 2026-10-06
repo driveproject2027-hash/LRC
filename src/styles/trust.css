@@ -116,7 +116,7 @@
     gap: var(--space-2xs) var(--space-lg);
     padding-block: var(--space-md);
     border-bottom: var(--hairline) solid var(--border-subtle);
-    align-items: baseline;
+    align-items: center;
   }
 
   @media (min-width: 768px) {
@@ -126,11 +126,22 @@
   }
 
   .partner-row__name {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
     font-family: var(--font-sans);
     font-size: var(--text-body-lg);
     font-weight: 600;
     line-height: var(--leading-snug);
     color: var(--text-primary);
+  }
+
+  .partner-row__logo {
+    height: 48px;
+    width: auto;
+    max-width: 120px;
+    object-fit: contain;
+    flex-shrink: 0;
   }
 
   .partner-row__location {

@@ -3,6 +3,18 @@ import { fcraInformation, supportPartners, whereWeWork } from "@/content/about";
 import { mockImpactMetrics } from "@/services/api";
 import { ROUTES } from "@/lib/routes";
 
+import misereorLogo from "@/assets/partners/Misereo.jpg";
+import bfwLogo from "@/assets/partners/BFW.jpg";
+import ashakiranLogo from "@/assets/partners/Ashakiran.jpg";
+import aidLogo from "@/assets/partners/AID.jpg";
+import ashaEducationLogo from "@/assets/partners/Asha_Education.jpg";
+import ipartnerLogo from "@/assets/partners/IPartner.jpg";
+import geapLogo from "@/assets/partners/geap.jpg";
+import dstLogo from "@/assets/partners/dst.jpg";
+import appiLogo from "@/assets/partners/appi.jpg";
+import tcrtmLogo from "@/assets/partners/tcrtm.jpg";
+import apmabLogo from "@/assets/partners/apmab.jpg";
+
 /**
  * LAYA — PARTNERS, IMPACT & TRANSPARENCY CONTENT
  * ---------------------------------------------------------------------------
@@ -10,15 +22,10 @@ import { ROUTES } from "@/lib/routes";
  * invented. Three findings shaped this module and are documented in place below.
  *
  * ─────────────────────────────
- * ⚠  FINDING 1 — NO PARTNER LOGOS EXIST
+ * ⚠  FINDING 1 — PARTNER LOGOS
  * ─────────────────────────────
- * The Phase 7 brief says "Where official partner logos exist, use them." A full
- * search of `src/assets` and `public/` found NO partner logo files at all —
- * every asset matching "logo" is a LAYA logo variant.
- *
- * No logos were downloaded, generated or substituted. The partner presentation
- * is therefore an institutional typographic ledger, not a logo wall. If logo
- * files are supplied later, `PARTNERS[].logo` is where they would attach.
+ * Logos were retrieved from the old LAYA website and are rendered alongside the 
+ * partner names in the institutional ledger.
  *
  * ─────────────────────────────
  * ⚠  FINDING 2 — TWO CONFLICTING PARTNER LISTS
@@ -99,11 +106,24 @@ export interface Partner {
   /** Parsed value in millions of INR, for sorting. Null where no amount. */
   amountMn: number | null;
   /**
-   * No logo file exists in the repository for any partner — see Finding 1.
-   * Left as an explicit field so supplied logos have an obvious home.
+   * Logo for the partner, retrieved from the old website assets.
    */
   logo: string | null;
 }
+
+const LOGOS: Record<string, string> = {
+  "Katholische Zentralstelle fur Entwicklungshilfe e.V.": misereorLogo,
+  "Bread for the World": bfwLogo,
+  "Foerderverein e.V., Ashakiran": ashakiranLogo,
+  "Association for India's Development (AID)": aidLogo,
+  "Asha for Education": ashaEducationLogo,
+  "i-Partner India": ipartnerLogo,
+  "Human Capability Foundation": geapLogo,
+  "Department of Science & Technology": dstLogo,
+  "Azim Premji Foundation": appiLogo,
+  "Tribal Cultural Research & Training Mission, AP": tcrtmLogo,
+  "AP Medicinal & Aromatic Plant Board": apmabLogo,
+};
 
 /** Parse "25.14 Million INR" → 25.14 for ordering. */
 const parseAmount = (amount: string): number | null => {
@@ -117,7 +137,7 @@ export const PARTNERS: Partner[] = supportPartners.partners.map((p, i) => ({
   location: p.location ? p.location : null,
   amount: p.amount ? p.amount : null,
   amountMn: p.amount ? parseAmount(p.amount) : null,
-  logo: null,
+  logo: LOGOS[p.name] || null,
 }));
 
 /*

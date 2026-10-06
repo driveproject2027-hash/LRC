@@ -902,7 +902,18 @@ export const SupportPartners = () => {
             <div className="partner-list reveal">
               {PARTNERS.map((partner) => (
                 <div key={partner.id} className="partner-row">
-                  <span className="partner-row__name">{partner.name}</span>
+                  <span className="partner-row__name">
+                    {partner.logo && (
+                      <img
+                        src={partner.logo}
+                        alt={`${partner.name} logo`}
+                        className="partner-row__logo"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    )}
+                    <span>{partner.name}</span>
+                  </span>
                   <span className="partner-row__location">
                     {partner.location ?? "\u2014"}
                   </span>
@@ -924,11 +935,6 @@ export const SupportPartners = () => {
               under FCRA information: several partners here are domestic funders whose
               contributions fall outside FCRA reporting, and the published listing is rounded while
               the receipts are exact.
-            </p>
-
-            <p className="trust-note" style={{ marginTop: "var(--space-sm)" }}>
-              Partner logos are not displayed because no verified logo files are held for these
-              organisations. Organisation names and reported figures are shown instead.
             </p>
 
             <div className="trust-actions">
