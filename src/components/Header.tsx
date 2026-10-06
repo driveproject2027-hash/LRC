@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { NavDropdown } from "@/components/nav/NavDropdown";
 import { MobileNav } from "@/components/nav/MobileNav";
 import { DONATE_ITEM, PRIMARY_NAV, SECONDARY_NAV, type NavItem } from "@/config/navigation";
@@ -136,20 +136,13 @@ const Header = () => {
             {SECONDARY_NAV.map((item) => (
               <NavLink key={item.path} item={item} pathname={pathname} />
             ))}
-            <Button
-              asChild
-              /*
-                A clean, minimalist outline button featuring a custom 
-                running blue-to-purple gradient border.
-              */
-              className="btn-running-border text-content-primary hover:text-content-brand transition-colors"
-              variant="outline"
-              size="sm"
+            <Link
+              to={DONATE_ITEM.path}
+              onClick={() => scrollPageToTop()}
+              className={buttonVariants({ variant: "outline", size: "sm", className: "btn-running-border text-content-primary hover:text-content-brand transition-colors" })}
             >
-              <Link to={DONATE_ITEM.path} onClick={() => scrollPageToTop()}>
-                {DONATE_ITEM.label}
-              </Link>
-            </Button>
+              {DONATE_ITEM.label}
+            </Link>
           </div>
 
           {/* Mobile trigger ----------------------------------------------- */}

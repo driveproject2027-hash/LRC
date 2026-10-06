@@ -9,7 +9,7 @@ import {
 } from "@/config/navigation";
 import { isNavItemActive } from "@/hooks/use-nav-active";
 import { scrollPageToTop } from "@/lib/scrollRoot";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 interface MobileNavProps {
   open: boolean;
@@ -213,11 +213,13 @@ export const MobileNav = ({ open, onClose }: MobileNavProps) => {
         </nav>
 
         <div className="laya-drawer__footer">
-          <Button asChild size="lg" className="w-full">
-            <Link to={DONATE_ITEM.path} onClick={handleNavigate}>
-              {DONATE_ITEM.label}
-            </Link>
-          </Button>
+          <Link
+            to={DONATE_ITEM.path}
+            onClick={handleNavigate}
+            className={buttonVariants({ size: "lg", className: "w-full" })}
+          >
+            {DONATE_ITEM.label}
+          </Link>
         </div>
       </div>
     </>

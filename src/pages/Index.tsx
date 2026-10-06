@@ -119,9 +119,13 @@ const Index = () => {
               </div>
 
               <div className="home-hero__actions">
-                <Button asChild size="lg" id="hero-primary-cta">
-                  <Link to={hero.primaryCta.to}>{hero.primaryCta.label}</Link>
-                </Button>
+                <Link
+                  to={hero.primaryCta.to}
+                  id="hero-primary-cta"
+                  className={buttonVariants({ size: "lg" })}
+                >
+                  {hero.primaryCta.label}
+                </Link>
                 <EditorialLink
                   to={hero.secondaryCta.to}
                   className="home-hero__secondary-action"
@@ -502,12 +506,18 @@ const Index = () => {
               <p className="home-prose">{support.body}</p>
 
               <div className="support-actions">
-                <Button asChild size="lg">
-                  <Link to={support.primaryCta.to}>{support.primaryCta.label}</Link>
-                </Button>
-                <Button asChild size="lg" variant="outline">
-                  <Link to={support.secondaryCta.to}>{support.secondaryCta.label}</Link>
-                </Button>
+                <Link
+                  to={support.primaryCta.to}
+                  className={buttonVariants({ size: "lg" })}
+                >
+                  {support.primaryCta.label}
+                </Link>
+                <Link
+                  to={support.secondaryCta.to}
+                  className={buttonVariants({ size: "lg", variant: "outline" })}
+                >
+                  {support.secondaryCta.label}
+                </Link>
               </div>
             </div>
 
