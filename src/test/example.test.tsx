@@ -4,7 +4,8 @@ import ContactModal from "@/components/ContactModal";
 import { useContactForm } from "@/hooks/use-contact-form";
 import { submitContactMessage } from "@/services/api";
 
-vi.mock("@/services/api", () => ({
+vi.mock("@/services/api", async (importOriginal) => ({
+  ...(await importOriginal()),
   submitContactMessage: vi.fn(),
 }));
 

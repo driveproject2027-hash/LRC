@@ -5,6 +5,7 @@ import { AlertCircle, Check, Copy } from "lucide-react";
 import MainLayout from "@/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
 import { EditorialLink } from "@/components/home/EditorialLink";
+import { CONTACT_DETAILS } from "@/content/contact";
 import { useRevealOnScroll } from "@/hooks/use-reveal-on-scroll";
 import { ROUTES } from "@/lib/routes";
 import {
