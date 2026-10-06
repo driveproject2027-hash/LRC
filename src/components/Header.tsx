@@ -15,10 +15,7 @@ const NavLink = ({ item, pathname }: { item: NavItem; pathname: string }) => {
   return (
     <Link
       to={item.path}
-      onClick={() => {
-        console.log("[DIAG] NavLink clicked. Link `to` value:", item.path);
-        scrollPageToTop();
-      }}
+      onClick={() => scrollPageToTop()}
       aria-current={active ? "page" : undefined}
       className={`laya-nav-item__trigger ${active ? "laya-nav-item__trigger--active" : ""}`}
     >

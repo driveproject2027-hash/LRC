@@ -88,13 +88,6 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const AnimatedRoutes = () => {
   const location = useLocation();
 
-  useEffect(() => {
-    console.log("[DIAG] AnimatedRoutes rendered.");
-    console.log("[DIAG] window.location.href:", window.location.href);
-    console.log("[DIAG] window.location.pathname:", window.location.pathname);
-    console.log("[DIAG] React Router location.pathname:", location.pathname);
-  }, [location.pathname]);
-
   // NOTE: Previously a fixed 800ms full-screen loading overlay was shown on
   // every route change, which made the SPA feel slow even on fast networks.
   // Pages are already lazy-loaded with a real Suspense fallback below, so the
@@ -122,7 +115,13 @@ const AnimatedRoutes = () => {
         {/* Redirect old coastal ecosystem pages to the new Climate page where the content now lives */}
         <Route path="/what-we-do/coastal_ecosystem" element={<Navigate to="/what-we-do/climate-crisis-sustainable-development" replace />} />
         <Route path="/what-we-do/coastal_ecosystem.html" element={<Navigate to="/what-we-do/climate-crisis-sustainable-development" replace />} />
+        
+        {/* Hostinger edge caching and legacy URL aliases for Publications */}
         <Route path="/publications" element={<PageTransition><Publications /></PageTransition>} />
+        <Route path="/publications.html" element={<Navigate to="/publications" replace />} />
+        <Route path="/publications/" element={<Navigate to="/publications" replace />} />
+        <Route path="/Publications" element={<Navigate to="/publications" replace />} />
+        
         <Route path="/stories" element={<PageTransition><Stories /></PageTransition>} />
         {/* Field note detail. One route pattern rather than one per slug, so
             adding a note needs no router change. */}
