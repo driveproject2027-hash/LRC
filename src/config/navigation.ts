@@ -30,11 +30,23 @@ import { ROUTES } from "@/lib/routes";
  * active — used where a section's routes do not share a common prefix.
  */
 
+export interface NavSubItem {
+  label: string;
+  path: string;
+  hash?: string;
+  /** Short tag, e.g. 'Division 01' */
+  tag?: string;
+  /** Optional one-line description, shown in the secondary flyout */
+  description?: string;
+}
+
 export interface NavChild {
   label: string;
   path: string;
   /** Optional one-line description, shown in the desktop dropdown. */
   description?: string;
+  /** Optional nested sub-items (e.g. 5 divisions under Climate Crisis) */
+  subItems?: NavSubItem[];
 }
 
 export interface NavItem {
@@ -48,9 +60,12 @@ export interface NavItem {
 /** Primary navigation — order is meaningful; it reads as a narrative. */
 export const PRIMARY_NAV: NavItem[] = [
   {
+    label: "Home",
+    path: ROUTES.home,
+  },
+  {
     label: "About",
     path: ROUTES.about,
-    match: [ROUTES.about],
     children: [
       {
         label: "Who We Are",
@@ -72,6 +87,12 @@ export const PRIMARY_NAV: NavItem[] = [
         path: ROUTES.aboutWayWeWork,
         description: "Management, systems and accountability",
       },
+    ],
+  },
+  {
+    label: "Organisation",
+    path: ROUTES.aboutWhereWeWork,
+    children: [
       {
         label: "Where We Work",
         path: ROUTES.aboutWhereWeWork,
@@ -100,34 +121,56 @@ export const PRIMARY_NAV: NavItem[] = [
     match: [ROUTES.programs, ROUTES.whatWeDo],
     children: [
       {
-        label: "All Programmes",
+        label: "3 Core Pillars Overview",
         path: ROUTES.programs,
-        description: "Overview of LAYA's integrated programme areas",
+        description: "Overview of LAYA's 3 core pillars and initiatives",
       },
       {
-        label: "Rights & Entitlements",
+        label: "Safeguarding Adivasi Rights for Social Justice",
         path: ROUTES.whatWeDoRla,
-        description: "Land rights, self-governance and legal action",
+        description: "Land rights, self-governance and legal accompaniment",
       },
       {
-        label: "Health",
-        path: ROUTES.whatWeDoHbhc,
-        description: "Herbal-based health care with traditional knowledge",
-      },
-      {
-        label: "Livelihoods & Natural Resources",
-        path: ROUTES.whatWeDoSrm,
-        description: "Sustainable farming, water and biodiversity",
-      },
-      {
-        label: "Education & Lifelong Learning",
+        label: "Lifelong Learning",
         path: ROUTES.whatWeDoLifelongLearning,
-        description: "Youth and women leadership pathways",
+        description: "Youth leadership and contextual community learning",
       },
       {
-        label: "Climate & Environment",
+        label: "Climate Crisis & Sustainable Development",
         path: ROUTES.whatWeDoClimate,
-        description: "Climate resilience and sustainable development",
+        description: "Climate resilience, clean energy and just transitions",
+        subItems: [
+          {
+            label: "Sustainable Agriculture and Natural Resource Management",
+            path: ROUTES.whatWeDoSrm,
+            tag: "Division 01",
+            description: "10 Natural Farming Package of Practices, Gulli Ragi, seed centres & gravity irrigation",
+          },
+          {
+            label: "Biodiversity, Landuse and Ecosystem Restoration",
+            path: ROUTES.whatWeDoHbhc,
+            tag: "Division 02",
+            description: "75 Traditional Health Practitioners, 26 Vanantharam medicines & boiled drinking water",
+          },
+          {
+            label: "Climate-Friendly Technologies and Coastal Ecosystems",
+            path: ROUTES.whatWeDoClimateTechCoastal,
+            tag: "Division 03",
+            description: "22,714+ clean cookstoves, ceramic water filters, cool roofing & IMTA seaweed",
+          },
+          {
+            label: "Urban and Peri-Urban Ecosystems",
+            path: ROUTES.whatWeDoUrbanPeriUrban,
+            tag: "Division 04",
+            description: "Citizen-Centric Climate Action Plans in Visakhapatnam & Yeleswaram with Andhra University",
+          },
+          {
+            label: "Partner Engagements",
+            path: ROUTES.whatWeDoPartnerEngagements,
+            tag: "Division 05",
+            description: "RECAP Northeast India (Manipur), UTP Project Fund Administrator & India DONATES",
+          },
+        ],
       },
     ],
   },
@@ -180,10 +223,6 @@ export const PRIMARY_NAV: NavItem[] = [
       },
     ],
   },
-  {
-    label: "Publications",
-    path: ROUTES.publications,
-  },
 ];
 
 /** Secondary items rendered on the right of the desktop nav, before Donate. */
@@ -206,27 +245,30 @@ export const DONATE_ITEM: NavItem = {
  * surfaces it. `src/test/navigation.test.ts` asserts this matches ROUTES.
  */
 export const NAV_ROUTE_COVERAGE: Record<string, string> = {
-  [ROUTES.home]: "Logo (brand home link)",
+  [ROUTES.home]: "Home",
   [ROUTES.about]: "About",
   [ROUTES.aboutWhoWeAre]: "About",
   [ROUTES.aboutWayWeWork]: "About",
-  [ROUTES.aboutWhereWeWork]: "About",
+  [ROUTES.aboutWhereWeWork]: "Organisation",
   [ROUTES.aboutFinancialReports]: "Resources",
   [ROUTES.aboutFcraInformation]: "Resources",
-  [ROUTES.aboutGovernance]: "About",
-  [ROUTES.aboutSupportPartners]: "About",
+  [ROUTES.aboutGovernance]: "Organisation",
+  [ROUTES.aboutSupportPartners]: "Organisation",
   [ROUTES.programs]: "Our Work",
   [ROUTES.whatWeDoRla]: "Our Work",
   [ROUTES.whatWeDoHbhc]: "Our Work",
   [ROUTES.whatWeDoSrm]: "Our Work",
   [ROUTES.whatWeDoLifelongLearning]: "Our Work",
   [ROUTES.whatWeDoClimate]: "Our Work",
-  [ROUTES.publications]: "Publications",
+  [ROUTES.whatWeDoClimateTechCoastal]: "Our Work",
+  [ROUTES.whatWeDoUrbanPeriUrban]: "Our Work",
+  [ROUTES.whatWeDoPartnerEngagements]: "Our Work",
+  [ROUTES.publications]: "Resources",
   [ROUTES.stories]: "Impact",
   [ROUTES.donate]: "Donate CTA",
   [ROUTES.impact]: "Impact",
   [ROUTES.gallery]: "Resources",
-  [ROUTES.team]: "About",
+  [ROUTES.team]: "Organisation",
   [ROUTES.contact]: "Contact",
 };
 
@@ -234,7 +276,10 @@ export const NAV_ROUTE_COVERAGE: Record<string, string> = {
 export const ALL_NAV_PATHS: string[] = [
   ...PRIMARY_NAV.flatMap((i) => [
     i.path,
-    ...(i.children?.map((c) => c.path) ?? []),
+    ...(i.children?.flatMap((c) => [
+      c.path,
+      ...(c.subItems?.map((s) => s.path) ?? []),
+    ]) ?? []),
   ]),
   ...SECONDARY_NAV.map((i) => i.path),
   DONATE_ITEM.path,

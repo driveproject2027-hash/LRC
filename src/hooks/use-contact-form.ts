@@ -24,6 +24,7 @@ export const useContactForm = () => {
   );
 
   const submit = useCallback(async () => {
+    if (isSubmitting) return false;
     setIsSubmitting(true);
     setSubmitError(null);
     try {
@@ -36,7 +37,7 @@ export const useContactForm = () => {
     } finally {
       setIsSubmitting(false);
     }
-  }, [formData]);
+  }, [formData, isSubmitting]);
 
   return { formData, updateField, submit, isSubmitting, submitError };
 };

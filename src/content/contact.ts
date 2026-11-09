@@ -19,10 +19,11 @@ import { mockImpactMetrics } from "@/services/api";
  */
 export const CONTACT_DETAILS = {
   address:
-    "Plot No 110, D-No: 5-175/1, Behind Bay Crown Apartment, Yendada, Visakhapatnam – 530045, Andhra Pradesh, India",
-  phone: "+91 99497 31307",
+    "Plot No 110, D-No: 5-175/1, Behind Bay Crown Apt., Near Sun Senora Beach Campus, Yendada, Visakhapatnam – 530045, Andhra Pradesh, India",
+  phone: "+91-0891-4805244, +91-9949731307",
   phoneHref: "tel:+919949731307",
   email: "info@laya.org.in",
+  secondaryEmail: "layarc@gmail.com",
   emailHref: "mailto:info@laya.org.in",
   website: "www.laya.org.in",
   websiteHref: "https://www.laya.org.in",
@@ -55,7 +56,6 @@ export interface SocialLink {
 
 export const SOCIAL_LINKS: SocialLink[] = [
   { label: "LinkedIn", href: "https://www.linkedin.com/company/layaresourcecenter/posts/?feedView=all" },
-  { label: "YouTube", href: "#" },
   { label: "WhatsApp", href: "https://wa.me/919949731307" },
 ];
 
@@ -85,31 +85,25 @@ export const DONATE_METRICS = mockImpactMetrics.map((m) => ({
   label: m.title,
 }));
 
-/** What contributions support. Each maps to a real programme route. */
+/** What contributions support across the 3 Core Pillars. Each maps to a real programme route. */
 export const DONATION_PURPOSES = [
   {
-    title: "Rights and entitlements",
+    title: "Safeguarding Adivasi Rights for Social Justice",
     description:
-      "Legal advocacy, gram sabha empowerment and Forest Rights Act implementation with Adivasi communities.",
+      "Legal advocacy, Gram Sabha empowerment, land restitution cases, and Forest Rights Act implementation with Adivasi communities.",
     to: ROUTES.whatWeDoRla,
   },
   {
-    title: "Livelihoods and natural resources",
+    title: "Lifelong Learning",
     description:
-      "Sustainable farming, millet revival, watershed management and biodiversity conservation.",
-    to: ROUTES.whatWeDoSrm,
-  },
-  {
-    title: "Herbal-based health care",
-    description:
-      "Community herbal medicine systems, herbal gardens and training for health practitioners.",
-    to: ROUTES.whatWeDoHbhc,
-  },
-  {
-    title: "Lifelong learning",
-    description:
-      "Youth and women's leadership, adult literacy and climate education in Adivasi schools.",
+      "Youth and women's leadership formation, vocational apprenticeships, adult literacy circles, and climate education in Adivasi schools.",
     to: ROUTES.whatWeDoLifelongLearning,
+  },
+  {
+    title: "Climate Crisis & Sustainable Development",
+    description:
+      "Decentralized renewable energy, natural farming, millet optimization, water security, herbal community health, and coastal mariculture.",
+    to: ROUTES.whatWeDoClimate,
   },
 ] as const;
 
@@ -176,15 +170,12 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
   {
     title: "Our Work",
     links: [
-      { label: "All Programmes", to: ROUTES.programs },
-      { label: "Rights & Entitlements", to: ROUTES.whatWeDoRla },
+      { label: "3 Core Pillars Overview", to: ROUTES.programs },
+      { label: "Safeguarding Adivasi Rights for Social Justice", to: ROUTES.whatWeDoRla },
+      { label: "Lifelong Learning", to: ROUTES.whatWeDoLifelongLearning },
+      { label: "Climate Crisis & Sustainable Development", to: ROUTES.whatWeDoClimate },
       { label: "Livelihoods & Natural Resources", to: ROUTES.whatWeDoSrm },
       { label: "Health", to: ROUTES.whatWeDoHbhc },
-      {
-        label: "Education & Lifelong Learning",
-        to: ROUTES.whatWeDoLifelongLearning,
-      },
-      { label: "Climate & Environment", to: ROUTES.whatWeDoClimate },
     ],
   },
   {
@@ -219,7 +210,7 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
 
 export const FOOTER_IDENTITY = {
   name: "LAYA",
-  tagline: "Resource Center for Adivasis",
+  tagline: "Resource Centre",
   description:
     "Working with Adivasi communities of the Eastern Ghats since 1985 — rights, livelihoods, health, learning and climate resilience.",
   /** The organisation's own explanation of its name, already on the About page. */

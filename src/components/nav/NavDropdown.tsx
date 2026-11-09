@@ -1,6 +1,6 @@
-import { useEffect, useId, useRef } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import type { NavItem } from "@/config/navigation";
 import { isNavItemActive } from "@/hooks/use-nav-active";
 import { scrollPageToTop } from "@/lib/scrollRoot";
@@ -53,7 +53,10 @@ export const NavDropdown = ({ item, pathname, alignEnd = false, openId, onOpenCh
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeTimer = useRef<number | undefined>(undefined);
+  const subMenuTimer = useRef<number | undefined>(undefined);
   const menuId = useId();
+
+  const [activeSubMenuIndex, setActiveSubMenuIndex] = useState<number | null>(null);
 
   const isActive = isNavItemActive(pathname, item);
 
@@ -63,8 +66,18 @@ export const NavDropdown = ({ item, pathname, alignEnd = false, openId, onOpenCh
   // Close on route change.
   useEffect(() => {
     onOpenChange(null);
+    setActiveSubMenuIndex(null);
+    window.clearTimeout(subMenuTimer.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
+
+  // Reset submenu if parent dropdown closes
+  useEffect(() => {
+    if (!open) {
+      setActiveSubMenuIndex(null);
+      window.clearTimeout(subMenuTimer.current);
+    }
+  }, [open]);
 
   // Close on Escape (returning focus) and on outside pointer down.
   useEffect(() => {
@@ -74,11 +87,15 @@ export const NavDropdown = ({ item, pathname, alignEnd = false, openId, onOpenCh
       if (e.key === "Escape") {
         e.stopPropagation();
         onOpenChange(null);
+        setActiveSubMenuIndex(null);
         triggerRef.current?.focus();
       }
     };
     const onPointerDown = (e: PointerEvent) => {
-      if (!containerRef.current?.contains(e.target as Node)) onOpenChange(null);
+      if (!containerRef.current?.contains(e.target as Node)) {
+        onOpenChange(null);
+        setActiveSubMenuIndex(null);
+      }
     };
 
     document.addEventListener("keydown", onKeyDown);
@@ -89,8 +106,11 @@ export const NavDropdown = ({ item, pathname, alignEnd = false, openId, onOpenCh
     };
   }, [open, onOpenChange]);
 
-  // Clear any pending close timer on unmount.
-  useEffect(() => () => window.clearTimeout(closeTimer.current), []);
+  // Clear any pending timers on unmount.
+  useEffect(() => () => {
+    window.clearTimeout(closeTimer.current);
+    window.clearTimeout(subMenuTimer.current);
+  }, []);
 
   // Idempotent: hovering an already-open menu must not toggle it closed.
   const openNow = () => {
@@ -140,6 +160,29 @@ export const NavDropdown = ({ item, pathname, alignEnd = false, openId, onOpenCh
           isActive ? "laya-nav-item__trigger--active" : ""
         }`}
         onClick={() => onOpenChange(open ? null : menuId)}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
+            if (!open) {
+              e.preventDefault();
+              onOpenChange(menuId);
+              window.setTimeout(() => {
+                const el = document.getElementById(menuId);
+                const first = el?.querySelector<HTMLAnchorElement>("a");
+                first?.focus();
+              }, 40);
+            }
+          } else if (e.key === "ArrowUp") {
+            if (!open) {
+              e.preventDefault();
+              onOpenChange(menuId);
+              window.setTimeout(() => {
+                const el = document.getElementById(menuId);
+                const links = el?.querySelectorAll<HTMLAnchorElement>("a");
+                if (links && links.length > 0) links[links.length - 1].focus();
+              }, 40);
+            }
+          }
+        }}
       >
         {item.label}
         <ChevronDown className="laya-nav-item__chevron" aria-hidden="true" />
@@ -148,31 +191,178 @@ export const NavDropdown = ({ item, pathname, alignEnd = false, openId, onOpenCh
       {open && (
         <div
           id={menuId}
+          role="menu"
+          aria-label={item.label}
           className={`laya-nav-menu ${alignEnd ? "laya-nav-menu--end" : ""} ${
             item.children && item.children.length > 6 ? "laya-nav-menu--wide" : ""
           }`}
         >
           {item.children?.map((child, index) => {
             const childActive = pathname === child.path;
+            const hasSub = Boolean(child.subItems && child.subItems.length > 0);
+            const isSubOpen = activeSubMenuIndex === index;
+
             return (
-              <div key={`${child.path}-${index}`}>
-                {index > 0 && <div className="laya-nav-menu__divider" />}
+              <div
+                key={`${child.path}-${index}`}
+                role="none"
+                className="laya-nav-menu__item-wrapper"
+                onMouseEnter={() => {
+                  window.clearTimeout(subMenuTimer.current);
+                  if (hasSub) {
+                    setActiveSubMenuIndex(index);
+                  } else {
+                    subMenuTimer.current = window.setTimeout(() => {
+                      setActiveSubMenuIndex(null);
+                    }, 160);
+                  }
+                }}
+                onMouseLeave={() => {
+                  if (hasSub) {
+                    window.clearTimeout(subMenuTimer.current);
+                    subMenuTimer.current = window.setTimeout(() => {
+                      setActiveSubMenuIndex(null);
+                    }, 220);
+                  }
+                }}
+              >
+                {index > 0 && <div className="laya-nav-menu__divider" role="separator" />}
                 <Link
                   to={child.path}
+                  role="menuitem"
                   aria-current={childActive ? "page" : undefined}
+                  aria-haspopup={hasSub ? "true" : undefined}
+                  aria-expanded={hasSub ? isSubOpen : undefined}
                   className={`laya-nav-menu__item ${
                     childActive ? "laya-nav-menu__item--active" : ""
-                  }`}
+                  } ${hasSub && isSubOpen ? "laya-nav-menu__item--sub-open" : ""}`}
                   onClick={() => {
                     scrollPageToTop();
                     onOpenChange(null);
+                    setActiveSubMenuIndex(null);
+                  }}
+                  onKeyDown={(e) => {
+                    const el = document.getElementById(menuId);
+                    const links = el?.querySelectorAll<HTMLAnchorElement>("a");
+                    if (!links || links.length === 0) return;
+
+                    if (e.key === "ArrowRight" && hasSub) {
+                      e.preventDefault();
+                      setActiveSubMenuIndex(index);
+                      window.setTimeout(() => {
+                        const subEl = document.getElementById(`${menuId}-sub-${index}`);
+                        const firstSubLink = subEl?.querySelector<HTMLAnchorElement>("a");
+                        firstSubLink?.focus();
+                      }, 50);
+                    } else if (e.key === "ArrowDown") {
+                      e.preventDefault();
+                      const next = (index + 1) % links.length;
+                      links[next].focus();
+                    } else if (e.key === "ArrowUp") {
+                      e.preventDefault();
+                      const prev = (index - 1 + links.length) % links.length;
+                      links[prev].focus();
+                    } else if (e.key === "Home") {
+                      e.preventDefault();
+                      links[0].focus();
+                    } else if (e.key === "End") {
+                      e.preventDefault();
+                      links[links.length - 1].focus();
+                    } else if (e.key === "Escape") {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      onOpenChange(null);
+                      setActiveSubMenuIndex(null);
+                      triggerRef.current?.focus();
+                    }
                   }}
                 >
-                  <span className="laya-nav-menu__label">{child.label}</span>
+                  <div className="laya-nav-menu__item-row">
+                    <span className="laya-nav-menu__label">{child.label}</span>
+                    {hasSub && (
+                      <span className="laya-nav-menu__badge">
+                        5 Divisions
+                        <ChevronRight className="w-3 h-3" aria-hidden="true" />
+                      </span>
+                    )}
+                  </div>
                   {child.description && (
                     <span className="laya-nav-menu__description">{child.description}</span>
                   )}
                 </Link>
+
+                {/* Secondary Flyout Submenu: displays all 5 divisions on hover */}
+                {hasSub && isSubOpen && (
+                  <div
+                    id={`${menuId}-sub-${index}`}
+                    role="menu"
+                    aria-label={`${child.label} Divisions`}
+                    className="laya-nav-submenu"
+                    onMouseEnter={() => {
+                      window.clearTimeout(subMenuTimer.current);
+                    }}
+                    onMouseLeave={() => {
+                      window.clearTimeout(subMenuTimer.current);
+                      subMenuTimer.current = window.setTimeout(() => {
+                        setActiveSubMenuIndex(null);
+                      }, 220);
+                    }}
+                  >
+                    <div className="laya-nav-submenu__header">
+                      <span className="laya-nav-submenu__eyebrow">
+                        5 Divisions · Annual Report 2025–2026
+                      </span>
+                      <span className="laya-nav-submenu__title">
+                        {child.label}
+                      </span>
+                    </div>
+
+                    <div className="laya-nav-submenu__list">
+                      {child.subItems!.map((sub, sIdx) => {
+                        const targetUrl = sub.hash ? `${sub.path}#${sub.hash}` : sub.path;
+                        return (
+                          <Link
+                            key={`${sub.path}-${sIdx}`}
+                            to={targetUrl}
+                            role="menuitem"
+                            className="laya-nav-submenu__item"
+                            onClick={() => {
+                              scrollPageToTop();
+                              onOpenChange(null);
+                              setActiveSubMenuIndex(null);
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === "ArrowLeft" || e.key === "Escape") {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setActiveSubMenuIndex(null);
+                                const el = document.getElementById(menuId);
+                                const links = el?.querySelectorAll<HTMLAnchorElement>("a");
+                                links?.[index]?.focus();
+                              }
+                            }}
+                          >
+                            <div className="laya-nav-submenu__item-top">
+                              <span className="laya-nav-submenu__item-label">
+                                {sub.label}
+                              </span>
+                              {sub.tag && (
+                                <span className="laya-nav-submenu__item-tag">
+                                  {sub.tag}
+                                </span>
+                              )}
+                            </div>
+                            {sub.description && (
+                              <span className="laya-nav-submenu__item-desc">
+                                {sub.description}
+                              </span>
+                            )}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })}

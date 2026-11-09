@@ -1,0 +1,247 @@
+/* ==========================================================================
+   LAYA — REUSABLE IMAGE DESIGN SYSTEM
+   --------------------------------------------------------------------------
+   Editorial photography presentation standards for the LAYA Resource Centre.
+   Ensures consistent framing, aspect ratios, subtle borders, and captions
+   across heroes, featured content, thumbnails, and article media.
+   ========================================================================== */
+
+@layer components {
+  /* ------------------------------------------------------------------------
+     1. HERO IMAGES (.editorial-hero, .editorial-hero-figure)
+     ------------------------------------------------------------------------
+     - Wide editorial presentation (standard 16:9)
+     - Sits within the normal page container width (max-width: --container-content)
+     - Controlled max-height on desktop so subjects are never cut off
+     - Subtle 1px neutral border framing
+     - Clean, sharp corners (border-radius: 0)
+     - Preserves natural proportions without stretching to viewport edges
+     ------------------------------------------------------------------------ */
+
+  .editorial-hero-band {
+    padding-inline: var(--gutter);
+    padding-block-end: var(--space-2xl);
+    background-color: var(--surface-canvas);
+  }
+
+  .editorial-hero-figure {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0;
+  }
+
+  .editorial-hero-media {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 32rem;
+    margin-inline: auto;
+    background-color: var(--laya-stone-100);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+    box-shadow: 0 1px 2px rgba(22, 21, 15, 0.03);
+  }
+
+  .editorial-hero-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+  }
+
+  @media (max-width: 640px) {
+    .editorial-hero-media {
+      aspect-ratio: 16 / 10;
+      max-height: 22rem;
+    }
+  }
+
+  /* ------------------------------------------------------------------------
+     2. FEATURED CONTENT IMAGES (.editorial-featured-media)
+     ------------------------------------------------------------------------
+     - Consistent 4:3, 16:9, or 3:2 depending on section content
+     - Subtle 1px neutral border
+     - Restrained shadow
+     - Sharp corners
+     - Subject-aware object-fit
+     ------------------------------------------------------------------------ */
+
+  .editorial-figure {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0;
+  }
+
+  .editorial-featured-media {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    background-color: var(--laya-stone-100);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+  }
+
+  .editorial-featured-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+    transition: transform var(--duration-slow) var(--ease-out);
+  }
+
+  .editorial-featured-media:hover img {
+    transform: scale(1.02);
+  }
+
+  /* Aspect ratio utility modifiers */
+  .editorial-aspect-16-9 {
+    aspect-ratio: 16 / 9;
+  }
+
+  .editorial-aspect-4-3 {
+    aspect-ratio: 4 / 3;
+  }
+
+  .editorial-aspect-3-2 {
+    aspect-ratio: 3 / 2;
+  }
+
+  .editorial-aspect-1-1 {
+    aspect-ratio: 1 / 1;
+  }
+
+  .editorial-aspect-21-9 {
+    aspect-ratio: 21 / 9;
+  }
+
+  /* ------------------------------------------------------------------------
+     3. THUMBNAILS & GRID IMAGES (.editorial-thumb-media)
+     ------------------------------------------------------------------------
+     - Consistent dimensions within collections
+     - Aligned edges and predictable height
+     - Subtle 1px border
+     ------------------------------------------------------------------------ */
+
+  .editorial-thumb-media {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--laya-stone-100);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+    flex-shrink: 0;
+  }
+
+  .editorial-thumb-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* ------------------------------------------------------------------------
+     4. ARTICLE & BODY IMAGES (.editorial-body-media)
+     ------------------------------------------------------------------------
+     - Maximum readable width matching prose
+     - Consistent vertical spacing
+     - Subtle border and sharp corners
+     ------------------------------------------------------------------------ */
+
+  .editorial-body-media {
+    position: relative;
+    overflow: hidden;
+    max-width: 48rem;
+    width: 100%;
+    margin-block: var(--space-md);
+    background-color: var(--laya-stone-100);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+  }
+
+  .editorial-body-media img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  /* ------------------------------------------------------------------------
+     5. PUBLICATION COVERS (.editorial-pub-cover)
+     ------------------------------------------------------------------------
+     - Standard 3:4 portrait aspect ratio (matching A4 document scans)
+     - Clean, sharp edges (border-radius: 0)
+     - Hairline neutral border
+     - object-fit: contain to preserve document scan titles without clipping
+     ------------------------------------------------------------------------ */
+
+  .editorial-pub-cover {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    background-color: var(--laya-stone-100);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+  }
+
+  .editorial-pub-cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: top center;
+  }
+
+  /* ------------------------------------------------------------------------
+     6. CAPTIONS & DISCLOSURES (.editorial-caption)
+     ------------------------------------------------------------------------
+     - Small, readable typography (12px / 0.75rem - 0.8125rem)
+     - Muted charcoal/grey tone
+     - Aligned with image edges
+     - Clean separation with disclosure badge
+     ------------------------------------------------------------------------ */
+
+  .editorial-caption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: var(--space-xs);
+    padding-inline: 0.125rem;
+    font-size: var(--text-caption);
+    line-height: var(--leading-snug);
+    color: var(--text-muted);
+  }
+
+  .editorial-caption--bordered {
+    padding-top: var(--space-xs);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .editorial-caption__text {
+    flex: 1;
+    min-width: 12rem;
+    color: var(--text-muted);
+  }
+
+  .editorial-caption__badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.625rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    background-color: var(--laya-stone-100);
+    padding: 0.2rem 0.4375rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+    white-space: nowrap;
+  }
+}

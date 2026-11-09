@@ -40,76 +40,379 @@
     inset-inline: 0;
     top: 0;
     z-index: var(--z-header);
-    background-color: var(--header-overlay-bg);
-    background-image:
-      /* Top sheen — a single bright edge sells the "glass" read. */
-      linear-gradient(180deg, var(--header-glass-sheen) 0%, transparent 46%),
-      /* Blue wash, strongest on the left where the brand lockup sits. */
-      linear-gradient(
-        100deg,
-        var(--header-glass-tint-blue) 0%,
-        var(--header-glass-tint-blue) 26%,
-        transparent 64%
-      ),
-      /* Violet wash, strongest on the right, under the nav and Donate. */
-      linear-gradient(
-        260deg,
-        var(--header-glass-tint-violet) 0%,
-        var(--header-glass-tint-violet) 32%,
-        transparent 72%
-      );
-    border-top: 2px solid var(--laya-violet-600);
-    border-bottom: 1px solid var(--header-overlay-border);
-    /*
-      The blur is now kept in BOTH states. It was previously dropped when
-      scrolled on the grounds that it cost paint for no benefit — true when
-      the scrolled bar was a fully opaque slab, because there was nothing
-      behind it to blur. As glass it is the entire effect, so it stays.
-    */
-    backdrop-filter: blur(var(--header-glass-blur))
-      saturate(var(--header-glass-saturate));
-    -webkit-backdrop-filter: blur(var(--header-glass-blur))
-      saturate(var(--header-glass-saturate));
-    transition:
-      background-color var(--duration-base) var(--ease-out),
-      border-color var(--duration-base) var(--ease-out),
-      box-shadow var(--duration-base) var(--ease-out);
+    background-color: transparent;
+    background-image: none;
+    border-top: none;
+    border-bottom: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transition: box-shadow var(--duration-base) var(--ease-out);
   }
 
   .laya-header--solid {
-    background-color: var(--header-solid-bg);
-    background-image:
-      linear-gradient(180deg, var(--header-glass-sheen) 0%, transparent 50%),
-      linear-gradient(
-        100deg,
-        var(--header-glass-tint-blue-strong) 0%,
-        var(--header-glass-tint-blue-strong) 28%,
-        transparent 66%
-      ),
-      linear-gradient(
-        260deg,
-        var(--header-glass-tint-violet-strong) 0%,
-        var(--header-glass-tint-violet-strong) 34%,
-        transparent 74%
-      );
-    border-bottom-color: var(--header-solid-border);
-    box-shadow: var(--header-solid-shadow);
+    background-color: transparent;
+    background-image: none;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   }
 
-  /*
-    Graceful degradation. Without backdrop-filter there is nothing to blur, so
-    a 0.62-alpha bar would let busy hero imagery show straight through the
-    navigation text. Raising the base opacity keeps charcoal legible; the tint
-    layer above it is unaffected.
-  */
-  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .laya-header {
-      background-color: rgba(250, 248, 244, 0.94);
+  /* ------------------------------------------------------------------------
+     TIER 1 MASTHEAD — SUBTLE TRANSLUCENT LOGO-INSPIRED BLUE-TO-PURPLE GLASS
+     ------------------------------------------------------------------------ */
+  .laya-masthead {
+    position: relative;
+    width: 100%;
+    /* Graceful fallback for browsers without backdrop-filter */
+    background-color: #faf9fd;
+    background-image: linear-gradient(
+      115deg,
+      rgba(224, 242, 254, 0.94) 0%,
+      rgba(240, 244, 255, 0.90) 35%,
+      rgba(245, 243, 255, 0.90) 70%,
+      rgba(237, 233, 254, 0.94) 100%
+    );
+    border-bottom: 1px solid rgba(118, 100, 181, 0.14);
+    transition: background-color var(--duration-base) var(--ease-out),
+                background-image var(--duration-base) var(--ease-out);
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    .laya-masthead {
+      background-color: rgba(255, 255, 255, 0.82);
+      background-image: linear-gradient(
+        115deg,
+        rgba(89, 188, 232, 0.13) 0%,
+        rgba(118, 100, 181, 0.05) 45%,
+        rgba(118, 100, 181, 0.12) 100%
+      );
+      backdrop-filter: blur(12px) saturate(140%);
+      -webkit-backdrop-filter: blur(12px) saturate(140%);
     }
 
-    .laya-header--solid {
-      background-color: rgba(250, 248, 244, 0.97);
+    .laya-header--solid .laya-masthead {
+      background-color: rgba(255, 255, 255, 0.90);
+      background-image: linear-gradient(
+        115deg,
+        rgba(89, 188, 232, 0.16) 0%,
+        rgba(118, 100, 181, 0.07) 45%,
+        rgba(118, 100, 181, 0.14) 100%
+      );
     }
+  }
+
+  /* ------------------------------------------------------------------------
+     CSE INDIA LAYOUT — CHARCOAL HORIZONTAL NAVIGATION BAR
+     ------------------------------------------------------------------------ */
+  .laya-black-navbar {
+    background-color: var(--color-charcoal);
+    color: #ffffff;
+    width: 100%;
+    border-top: 1px solid #363440;
+  }
+
+  .laya-black-navbar .laya-nav-item {
+    position: relative;
+    padding-block: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  .laya-black-navbar .laya-nav-item__trigger {
+    color: #ffffff !important;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.6875rem 0.875rem;
+    border-radius: 0;
+    background-color: transparent;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 0;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .laya-black-navbar .laya-nav-item__trigger:hover,
+  .laya-black-navbar .laya-nav-item__trigger[aria-expanded="true"] {
+    color: #ffffff !important;
+    background-color: #363440;
+  }
+
+  .laya-black-navbar .laya-nav-item__trigger--active {
+    color: #ffffff !important;
+    background-color: #1a191e;
+    position: relative;
+  }
+
+  .laya-black-navbar .laya-nav-item__trigger--active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background-color: var(--color-logo-blue);
+    border-radius: 0;
+  }
+
+  .laya-black-navbar .laya-nav-item__chevron {
+    width: 0.8rem;
+    height: 0.8rem;
+    color: #ffffff;
+    opacity: 0.85;
+    transition: transform 0.15s ease;
+  }
+
+  .laya-black-navbar .laya-nav-item__trigger[aria-expanded="true"] .laya-nav-item__chevron {
+    transform: rotate(180deg);
+  }
+
+  /* Dropdown menu panel under the charcoal navbar */
+  .laya-black-navbar .laya-nav-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 100;
+    width: var(--menu-width, 19rem);
+    background-color: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-top: 2px solid var(--color-muted-purple);
+    border-radius: 0;
+    box-shadow: 0 12px 28px -6px rgba(36, 35, 42, 0.14), 0 4px 10px -2px rgba(36, 35, 42, 0.06);
+    padding: 0.375rem 0;
+    animation: layaMenuIn 0.15s ease-out both;
+  }
+
+  .laya-black-navbar .laya-nav-menu--end {
+    left: auto;
+    right: 0;
+  }
+
+  .laya-black-navbar .laya-nav-menu--wide {
+    width: var(--menu-width-wide, 25rem);
+  }
+
+  .laya-black-navbar .laya-nav-menu__item {
+    display: block;
+    padding: 0.625rem 0.875rem;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+  }
+
+  .laya-black-navbar .laya-nav-menu__item:hover {
+    background-color: var(--laya-stone-50);
+  }
+
+  .laya-black-navbar .laya-nav-menu__item--active {
+    background-color: var(--color-pale-lavender);
+  }
+
+  .laya-black-navbar .laya-nav-menu__label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-charcoal);
+  }
+
+  .laya-black-navbar .laya-nav-menu__item--active .laya-nav-menu__label {
+    color: #6b57a5;
+  }
+
+  .laya-black-navbar .laya-nav-menu__description {
+    display: block;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: #656372;
+    margin-top: 0.125rem;
+  }
+
+  .laya-black-navbar .laya-nav-menu__divider {
+    height: 1px;
+    background-color: #e7e4e9;
+    margin: 0.25rem 0;
+  }
+
+  /* ------------------------------------------------------------------------
+     SECONDARY FLYOUT SUBMENU (5 DIVISIONS ON HOVER)
+     ------------------------------------------------------------------------ */
+  .laya-black-navbar .laya-nav-menu__item-wrapper {
+    position: static;
+  }
+
+  .laya-black-navbar .laya-nav-menu__item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .laya-black-navbar .laya-nav-menu__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #6b57a5;
+    background-color: #f3eff9;
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    flex-shrink: 0;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .laya-black-navbar .laya-nav-menu__item:hover .laya-nav-menu__badge,
+  .laya-black-navbar .laya-nav-menu__item--sub-open .laya-nav-menu__badge {
+    background-color: #6b57a5;
+    color: #ffffff;
+  }
+
+  .laya-black-navbar .laya-nav-submenu {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    margin-left: 1px;
+    z-index: 120;
+    width: var(--submenu-width, 24rem);
+    background-color: #ffffff;
+    border: 1px solid var(--border-subtle);
+    border-top: 2px solid var(--color-muted-purple);
+    border-radius: 0;
+    box-shadow: 0 16px 36px -6px rgba(36, 35, 42, 0.2), 0 6px 14px -2px rgba(36, 35, 42, 0.08);
+    padding: 0;
+    max-height: calc(100vh - 130px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    animation: layaMenuIn 0.16s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .laya-black-navbar .laya-nav-submenu::-webkit-scrollbar {
+    width: 5px;
+  }
+  .laya-black-navbar .laya-nav-submenu::-webkit-scrollbar-thumb {
+    background-color: #d1c8e1;
+    border-radius: 3px;
+  }
+
+  /* Transparent hover bridge across boundary gap */
+  .laya-black-navbar .laya-nav-submenu::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -14px;
+    width: 16px;
+    background: transparent;
+  }
+
+  .laya-black-navbar .laya-nav-menu--end .laya-nav-submenu {
+    left: auto;
+    right: 100%;
+    margin-left: 0;
+    margin-right: 1px;
+  }
+
+  .laya-black-navbar .laya-nav-menu--end .laya-nav-submenu::before {
+    left: auto;
+    right: -14px;
+  }
+
+  .laya-black-navbar .laya-nav-submenu__header {
+    padding: 0.5625rem 0.875rem;
+    border-bottom: 1px solid #e7e4e9;
+    background-color: #faf9fc;
+  }
+
+  .laya-black-navbar .laya-nav-submenu__eyebrow {
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #6b57a5;
+    display: block;
+  }
+
+  .laya-black-navbar .laya-nav-submenu__title {
+    font-size: 0.78125rem;
+    font-weight: 600;
+    color: var(--color-charcoal);
+    display: block;
+    margin-top: 0.125rem;
+  }
+
+  .laya-black-navbar .laya-nav-submenu__list {
+    padding: 0.25rem 0;
+  }
+
+  .laya-black-navbar .laya-nav-submenu__item {
+    display: block;
+    padding: 0.45rem 0.875rem;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+    border-bottom: 1px solid #f4f2f6;
+  }
+
+  .laya-black-navbar .laya-nav-submenu__item:last-child {
+    border-bottom: 0;
+  }
+
+  .laya-black-navbar .laya-nav-submenu__item:hover {
+    background-color: var(--laya-stone-50);
+  }
+
+  .laya-black-navbar .laya-nav-submenu__item--active {
+    background-color: var(--color-pale-lavender);
+  }
+
+  .laya-black-navbar .laya-nav-submenu__item-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .laya-black-navbar .laya-nav-submenu__item-label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-charcoal);
+    line-height: 1.28;
+  }
+
+  .laya-black-navbar .laya-nav-submenu__item:hover .laya-nav-submenu__item-label {
+    color: #554388;
+  }
+
+  .laya-black-navbar .laya-nav-submenu__item-tag {
+    font-size: 0.5625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #554388;
+    background-color: #efeaf6;
+    padding: 0.125rem 0.35rem;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .laya-black-navbar .laya-nav-submenu__item-desc {
+    display: block;
+    font-size: 0.71875rem;
+    line-height: 1.32;
+    color: #656372;
+    margin-top: 0.125rem;
+  }
+
+  .laya-black-navbar .laya-nav-menu__item--sub-open {
+    background-color: #f7f5fa;
+  }
+
+  .laya-black-navbar .laya-nav-menu__item--sub-open .laya-nav-menu__label {
+    color: #6b57a5;
   }
 
   /*
@@ -366,7 +669,7 @@
     bottom: 0;
     height: 2px;
     background-color: var(--nav-indicator);
-    border-radius: 1px;
+    border-radius: 0;
   }
 
   .laya-nav-item__chevron {
@@ -507,29 +810,45 @@
     position: fixed;
     inset: 0;
     z-index: var(--z-mobile-drawer);
-    background-color: transparent;
+    background-color: rgba(17, 24, 39, 0.45);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    animation: layaScrimIn var(--duration-fast) var(--ease-out) both;
+  }
+
+  @keyframes layaScrimIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 
   .laya-drawer {
     position: fixed;
-    inset: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
     z-index: calc(var(--z-mobile-drawer) + 1);
     display: flex;
     flex-direction: column;
     width: 100%;
+    max-width: 24rem;
     height: 100%;
-    background-color: var(--surface-canvas);
-    animation: layaDrawerIn var(--duration-slow) var(--ease-out) both;
+    background-color: #ffffff;
+    box-shadow: -8px 0 24px rgba(0, 0, 0, 0.15);
+    animation: layaDrawerSlideIn var(--duration-base) cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
-  @keyframes layaDrawerIn {
+  @keyframes layaDrawerSlideIn {
     from {
       opacity: 0;
-      transform: translateY(-20px);
+      transform: translateX(100%);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateX(0);
     }
   }
 
@@ -539,8 +858,10 @@
     justify-content: space-between;
     gap: var(--space-sm);
     flex-shrink: 0;
-    padding: var(--space-sm) var(--space-md);
+    padding: 0.75rem 1rem;
+    padding-top: max(0.75rem, env(safe-area-inset-top));
     border-bottom: 1px solid var(--border-subtle);
+    background-color: #faf9fd;
   }
 
   .laya-drawer__close {
@@ -555,11 +876,13 @@
     background-color: transparent;
     color: var(--text-primary);
     cursor: pointer;
-    transition: background-color var(--duration-fast) var(--ease-out);
+    transition: background-color var(--duration-fast) var(--ease-out),
+                border-color var(--duration-fast) var(--ease-out);
   }
 
   .laya-drawer__close:hover {
     background-color: var(--nav-hover-bg);
+    border-color: var(--border-default);
   }
 
   /* Scrollable region. `overscroll-behavior: contain` stops the page behind
@@ -570,14 +893,15 @@
     overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
-    padding: var(--space-2xs) 0;
+    padding: 0;
   }
 
   .laya-drawer__footer {
     flex-shrink: 0;
-    padding: var(--space-md);
+    padding: 0.75rem 1rem;
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
     border-top: 1px solid var(--border-subtle);
-    background-color: var(--surface-warm);
+    background-color: #faf9fd;
   }
 
   /* --- Drawer rows ------------------------------------------------------- */
@@ -589,40 +913,40 @@
     justify-content: space-between;
     gap: var(--space-sm);
     width: 100%;
-    min-height: 4.5rem;
-    padding: var(--space-md) var(--space-xl);
-    font-family: var(--font-serif);
-    font-size: clamp(2rem, 6vw, 3.5rem);
-    font-weight: 500;
-    line-height: 1.1;
+    min-height: 3rem;
+    padding: 0.75rem 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.3;
     color: var(--text-primary);
     text-align: left;
     background-color: transparent;
     border: 0;
+    border-bottom: 1px solid var(--border-subtle);
     cursor: pointer;
-    transition: color var(--duration-fast) var(--ease-out);
+    transition: background-color var(--duration-fast) var(--ease-out),
+                color var(--duration-fast) var(--ease-out);
   }
 
   .laya-drawer__link:hover,
   .laya-drawer__trigger:hover {
-    color: var(--laya-violet-600);
+    background-color: var(--nav-hover-bg);
+    color: var(--color-muted-purple);
   }
 
   .laya-drawer__link--active,
   .laya-drawer__trigger--active {
-    color: var(--laya-violet-600);
+    color: var(--color-muted-purple);
+    background-color: rgba(118, 100, 181, 0.06);
   }
 
   .laya-drawer__chevron {
-    width: 1rem;
-    height: 1rem;
+    width: 0.875rem;
+    height: 0.875rem;
     flex-shrink: 0;
-    opacity: 0.5;
+    opacity: 0.7;
     transition: transform var(--duration-fast) var(--ease-out);
-  }
-
-  .laya-drawer__trigger[aria-expanded="true"] .laya-drawer__chevron {
-    transform: rotate(180deg);
   }
 
   .laya-drawer__section {
@@ -630,29 +954,46 @@
   }
 
   .laya-drawer__children {
-    padding-block: var(--space-3xs);
-    background-color: var(--surface-warm);
-    border-block: 1px solid var(--border-subtle);
+    padding-block: 0.25rem;
+    background-color: #faf9fc;
+    border-bottom: 1px solid var(--border-subtle);
   }
 
   .laya-drawer__child {
     display: block;
-    min-height: 3rem;
-    padding: 0.5rem var(--space-xl) 0.5rem calc(var(--space-xl) + 2rem);
+    min-height: 2.75rem;
+    padding: 0.625rem 1rem 0.625rem 1.75rem;
     font-family: var(--font-sans);
-    font-size: var(--text-lg);
-    line-height: var(--leading-snug);
+    font-size: 0.8125rem;
+    line-height: 1.4;
     color: var(--text-secondary);
-    transition: color var(--duration-fast) var(--ease-out);
+    border-left: 3px solid transparent;
+    transition: background-color var(--duration-fast) var(--ease-out),
+                color var(--duration-fast) var(--ease-out),
+                border-color var(--duration-fast) var(--ease-out);
   }
 
   .laya-drawer__child:hover {
+    background-color: var(--nav-hover-bg);
     color: var(--text-primary);
   }
 
   .laya-drawer__child--active {
-    color: var(--nav-indicator);
+    color: var(--color-muted-purple);
     font-weight: 600;
+    border-left-color: var(--color-muted-purple);
+    background-color: rgba(118, 100, 181, 0.08);
+  }
+
+  /* Accessibility focus indicators */
+  .laya-nav-item__trigger:focus-visible,
+  .laya-menu-button:focus-visible,
+  .laya-drawer__close:focus-visible,
+  .laya-drawer__trigger:focus-visible,
+  .laya-drawer__link:focus-visible,
+  .laya-drawer__child:focus-visible {
+    outline: 2px solid var(--color-muted-purple);
+    outline-offset: 2px;
   }
 
   /* ------------------------------------------------------------------------
@@ -703,6 +1044,16 @@
   .laya-scroll-top:hover {
     color: var(--laya-forest-700);
     border-color: var(--laya-forest-400);
+  }
+
+  @media (max-width: 767px) {
+    .laya-scroll-top {
+      bottom: 4.5rem;
+      right: 0.75rem;
+      width: 2rem;
+      height: 2rem;
+      z-index: 30;
+    }
   }
 
   /* ------------------------------------------------------------------------

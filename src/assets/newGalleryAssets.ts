@@ -65,3 +65,18 @@ export const newGalleryImages = [
     title: "Community meeting",
   },
 ] as const;
+
+export {
+  imgTrainingEntitlements,
+  imgSriPaddy,
+  imgVaccination,
+  imgBaburao1,
+  imgBaburao2,
+  imgCommunityHealth,
+  imgImg6830,
+  imgWa122914,
+  imgWa122915,
+  imgWa122928,
+  imgWa122944,
+  imgWa123018,
+};

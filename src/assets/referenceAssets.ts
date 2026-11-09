@@ -30,3 +30,19 @@ export const referencePublications = {
   hbhcPublication,
   covidBanner,
 };
+
+export {
+  logo,
+  rights,
+  health,
+  srm,
+  climate,
+  youth,
+  gallery16,
+  gallery22,
+  gallery23,
+  gallery25,
+  chronicle,
+  hbhcPublication,
+  covidBanner,
+};

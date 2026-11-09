@@ -1,8 +1,15 @@
 import { Helmet } from "react-helmet-async";
 import MainLayout from "@/layouts/MainLayout";
 import { referenceHero, referenceProgramImages } from "@/assets/referenceAssets";
+import { illustrationAssets } from "@/assets/illustrationAssets";
+
+import { useWebsiteContent } from "@/context/ContentContext";
+import { whoWeAre as defaultWhoWeAre } from "@/content/about";
 
 const About = () => {
+  const { content } = useWebsiteContent();
+  const whoWeAre = content.about?.whoWeAre || defaultWhoWeAre;
+
   return (
     <>
       <Helmet>
@@ -23,10 +30,13 @@ const About = () => {
       <MainLayout>
         <header className="about-header">
           <div className="about-header__inner">
-            <p className="about-header__eyebrow type-eyebrow">About LAYA</p>
-            <h1 className="about-header__title">A resource centre for Adivasis</h1>
+            <p className="about-header__eyebrow type-eyebrow text-[#755EB9] font-sans tracking-wider">
+              <span className="font-normal">ABOUT </span>
+              <span className="font-bold">LAYA</span>
+            </p>
+            <h1 className="about-header__title">{whoWeAre.title || "A resource centre for Adivasis"}</h1>
             <p className="about-header__subtitle">
-              A Resource Center for Adivasis since 1985 — 39+ years of service and solidarity.
+              {whoWeAre.subtitle || "A Resource Center for Adivasis since 1985 — 39+ years of service and solidarity."}
             </p>
             <div className="about-header__meta">
               <span className="type-meta">Founded in Visakhapatnam · 1985</span>
@@ -39,22 +49,33 @@ const About = () => {
           <div className="container-page about-split">
             <div>
               <p className="type-eyebrow">Who we are</p>
-              <h2 className="about-heading__title">Work rooted in accompaniment</h2>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-sans tracking-tight uppercase text-[#755EB9] mb-4">
+                <span className="font-normal">ABOUT </span>
+                <span className="font-bold">LAYA</span>
+              </h2>
               <div className="about-prose">
                 <p>
-                  We are a Resource Center for Adivasis. Adivasi communities are increasingly marginalized
-                  in spite of inhabiting resource rich areas and are constantly threatened by commercial
-                  interests interfering with their habitats.
+                  {whoWeAre.description ||
+                    "We are a Resource Center for Adivasis. Adivasi communities are increasingly marginalized in spite of inhabiting resource rich areas and are constantly threatened by commercial interests interfering with their habitats."}
                 </p>
                 <p>
-                  For over 39 years, we have stood alongside these indigenous communities, fighting for their
-                  rights, preserving their culture, and building sustainable futures rooted in traditional wisdom.
+                  {whoWeAre.intro ||
+                    "For over 39 years, we have stood alongside these indigenous communities, fighting for their rights, preserving their culture, and building sustainable futures rooted in traditional wisdom."}
                 </p>
               </div>
             </div>
-            <figure className="about-media">
-              <img src={referenceHero} alt="Eastern Ghats landscape" width={1920} height={1080} />
-              <figcaption className="about-media__caption">The Eastern Ghats · LAYA field context</figcaption>
+            <figure className="editorial-figure">
+              <div className="about-media">
+                <img
+                  src={referenceHero}
+                  alt="Adivasi community members in an accompaniment gathering in the Eastern Ghats"
+                  width={1920}
+                  height={1080}
+                />
+              </div>
+              <figcaption className="editorial-caption">
+                <span>Adivasi community gathering · Eastern Ghats field documentation</span>
+              </figcaption>
             </figure>
           </div>
         </section>
@@ -122,9 +143,16 @@ const About = () => {
 
         <section className="about-band about-band--sunken">
           <div className="container-page about-split">
-            <figure className="about-media">
-              <img src={referenceProgramImages[3]} alt="LAYA community work" loading="lazy" width={1500} height={451} />
-              <figcaption className="about-media__caption">LAYA community work · field documentation</figcaption>
+            <figure className="editorial-figure">
+              <div className="about-media">
+                <img src={illustrationAssets.forestStewardship.src} alt={illustrationAssets.forestStewardship.alt} loading="lazy" width={1500} height={1000} />
+              </div>
+              <figcaption className="editorial-caption">
+                <span>{illustrationAssets.forestStewardship.caption}</span>
+                <span className="editorial-caption__badge">
+                  Illustrative image
+                </span>
+              </figcaption>
             </figure>
             <div>
               <p className="type-eyebrow">The LAYA story</p>

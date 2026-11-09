@@ -24,6 +24,34 @@ export const scrollPageToTop = (smooth = false) => {
   }
 };
 
+export const scrollToElement = (targetId: string, smooth = true) => {
+  const id = targetId.replace(/^#/, "");
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  const root = getScrollRoot();
+  const chromeHeight = parseInt(
+    getComputedStyle(document.documentElement).getPropertyValue("--laya-chrome-height") || "120",
+    10
+  );
+
+  if (root) {
+    const rootRect = root.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    const targetScrollTop = root.scrollTop + (elRect.top - rootRect.top) - 16;
+    root.scrollTo({
+      top: Math.max(0, targetScrollTop),
+      behavior: smooth ? "smooth" : "auto",
+    });
+  } else {
+    const elTop = el.getBoundingClientRect().top + window.scrollY - (chromeHeight + 16);
+    window.scrollTo({
+      top: Math.max(0, elTop),
+      behavior: smooth ? "smooth" : "auto",
+    });
+  }
+};
+
 export const onScrollRoot = (handler: () => void) => {
   const root = getScrollRoot();
   const opts = { passive: true } as const;

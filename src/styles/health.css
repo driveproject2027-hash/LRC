@@ -1,0 +1,651 @@
+/* ==========================================================================
+   LAYA — HEALTH SECTION (Herbal Based Health Care / HBHC)
+   --------------------------------------------------------------------------
+   Bespoke editorial layout for LAYA's Community Health & Traditional Medicine
+   programme (/what-we-do/hbhc).
+   
+   Structure:
+     1. Hero (Balanced 2-column editorial layout)
+     2. Health at a Glance (Verified institutional fact ledger)
+     3. Our Approach (4 core thematic pillars + botanical visual plate)
+     4. Community Health in Action (Documentary alternating photo-text rows)
+     5. Stories from the Field (Compact image-led field notes & case studies)
+     6. Related Resources (Verified publications with dates & PDF links)
+     7. Call to Action (Restrained institutional engagement)
+   ========================================================================== */
+
+@layer components {
+  /* ------------------------------------------------------------------------
+     1. HERO SECTION
+     ------------------------------------------------------------------------ */
+  .health-hero {
+    padding-block-start: 2.25rem;
+    padding-block-end: var(--space-2xl);
+    padding-inline: var(--gutter);
+    background-color: var(--surface-canvas);
+    border-bottom: var(--hairline) solid var(--border-subtle);
+  }
+
+  .health-hero__grid {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  @media (min-width: 992px) {
+    .health-hero__grid {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr);
+      gap: var(--space-3xl);
+    }
+  }
+
+  .health-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .health-hero__eyebrow::before {
+    content: "";
+    width: 1.5rem;
+    height: 1px;
+    background-color: var(--laya-logo-blue);
+  }
+
+  .health-hero__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-display);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+    font-weight: 600;
+    color: var(--text-primary);
+    text-wrap: balance;
+  }
+
+  .health-hero__lead {
+    margin-top: var(--space-sm);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-width: 44rem;
+  }
+
+  .health-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+  }
+
+  .health-hero__media-wrap {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .health-hero__media {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background-color: var(--laya-stone-100);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+  }
+
+  .health-hero__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+  }
+
+  /* ------------------------------------------------------------------------
+     2. HEALTH AT A GLANCE
+     ------------------------------------------------------------------------ */
+  .health-band {
+    padding-block: var(--section-y);
+    padding-inline: var(--gutter);
+    background-color: var(--surface-canvas);
+  }
+
+  .health-band--warm {
+    background-color: var(--surface-warm);
+    border-block: var(--hairline) solid var(--border-subtle);
+  }
+
+  .health-band--sunken {
+    background-color: var(--surface-sunken);
+    border-block: var(--hairline) solid var(--border-subtle);
+  }
+
+  .health-band--lavender {
+    background-color: var(--surface-lavender-pale);
+    border-block: var(--hairline) solid var(--border-subtle);
+  }
+
+  .health-heading {
+    max-width: 48rem;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .health-heading--centered {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .health-heading__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: var(--tracking-display);
+    color: var(--text-primary);
+    text-wrap: balance;
+    margin-top: var(--space-2xs);
+    margin-bottom: var(--space-xs);
+  }
+
+  .health-heading__intro {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-width: var(--measure);
+  }
+
+  .health-heading--centered .health-heading__intro {
+    margin-inline: auto;
+  }
+
+  .health-glance-grid {
+    display: grid;
+    gap: var(--space-lg);
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  }
+
+  @media (min-width: 768px) {
+    .health-glance-grid {
+      grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+      gap: var(--space-xl);
+    }
+  }
+
+  .health-glance-item {
+    padding-top: var(--space-sm);
+    border-top: 2px solid var(--laya-logo-blue);
+  }
+
+  .health-glance-item__value {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.5rem);
+    font-weight: 600;
+    line-height: 1;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .health-glance-item__label {
+    display: block;
+    margin-top: 0.375rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-brand);
+  }
+
+  .health-glance-item__desc {
+    margin-top: 0.25rem;
+    font-size: var(--text-xs);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  /* ------------------------------------------------------------------------
+     3. OUR APPROACH
+     ------------------------------------------------------------------------ */
+  .health-approach-layout {
+    display: grid;
+    gap: var(--space-2xl);
+  }
+
+  @media (min-width: 1024px) {
+    .health-approach-layout {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+      gap: var(--space-3xl);
+      align-items: start;
+    }
+  }
+
+  .health-pillars-grid {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 640px) {
+    .health-pillars-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .health-pillar {
+    display: flex;
+    flex-direction: column;
+    padding-top: var(--space-sm);
+    border-top: 2px solid var(--border-brand);
+  }
+
+  .health-pillar__num {
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .health-pillar__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    line-height: var(--leading-snug);
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+  }
+
+  .health-pillar__desc {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  /* ------------------------------------------------------------------------
+     4. COMMUNITY HEALTH IN ACTION (Alternating Rows)
+     ------------------------------------------------------------------------ */
+  .health-action-rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xl);
+  }
+
+  .health-action-row {
+    display: grid;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .health-action-row {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      gap: var(--space-3xl);
+    }
+
+    .health-action-row--reverse .health-action-row__media-wrap {
+      order: 2;
+    }
+
+    .health-action-row--reverse .health-action-row__content {
+      order: 1;
+    }
+  }
+
+  .health-action-row__media-wrap {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .health-action-row__media {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background-color: var(--laya-stone-100);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+  }
+
+  .health-action-row__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform var(--duration-slow) var(--ease-out);
+  }
+
+  .health-action-row__media:hover img {
+    transform: scale(1.02);
+  }
+
+  .health-action-row__tag {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-brand);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .health-action-row__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h3);
+    font-weight: 600;
+    line-height: var(--leading-snug);
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+  }
+
+  .health-action-row__body {
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .health-action-row__bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .health-action-row__bullet {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: var(--text-xs);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+  }
+
+  .health-action-row__bullet::before {
+    content: "·";
+    font-weight: bold;
+    color: var(--laya-logo-blue);
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+
+  /* ------------------------------------------------------------------------
+     5. STORIES FROM THE FIELD
+     ------------------------------------------------------------------------ */
+  .health-stories-grid {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 640px) {
+    .health-stories-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .health-stories-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .health-story-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--surface-canvas);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+    transition: transform var(--duration-fast) var(--ease-out),
+                box-shadow var(--duration-fast) var(--ease-out);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .health-story-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(36, 35, 42, 0.05);
+  }
+
+  .health-story-card__media {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background-color: var(--laya-stone-100);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .health-story-card__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .health-story-card__content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: var(--space-md);
+  }
+
+  .health-story-card__tag {
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-brand);
+    margin-bottom: var(--space-2xs);
+  }
+
+  .health-story-card__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-body-lg);
+    font-weight: 600;
+    line-height: var(--leading-snug);
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+  }
+
+  .health-story-card__desc {
+    font-size: var(--text-xs);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-sm);
+    flex: 1;
+  }
+
+  .health-story-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--text-brand);
+  }
+
+  /* ------------------------------------------------------------------------
+     6. RELATED RESOURCES
+     ------------------------------------------------------------------------ */
+  .health-resources-grid {
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  @media (min-width: 768px) {
+    .health-resources-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .health-resource-card {
+    display: flex;
+    gap: var(--space-md);
+    background-color: var(--surface-canvas);
+    border: 1px solid var(--border-subtle);
+    padding: var(--space-md);
+    align-items: flex-start;
+  }
+
+  .health-resource-card__cover {
+    width: 5.5rem;
+    height: 7.5rem;
+    flex-shrink: 0;
+    background-color: var(--laya-stone-100);
+    border: 1px solid var(--border-subtle);
+    overflow: hidden;
+  }
+
+  .health-resource-card__cover img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .health-resource-card__content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .health-resource-card__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: var(--space-2xs);
+  }
+
+  .health-resource-card__date {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--text-tertiary);
+  }
+
+  .health-resource-card__badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--laya-violet-800);
+    background-color: var(--surface-lavender-pale);
+    padding: 0.15rem 0.375rem;
+    border: 1px solid var(--border-subtle);
+  }
+
+  .health-resource-card__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-body-lg);
+    font-weight: 600;
+    line-height: var(--leading-snug);
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+  }
+
+  .health-resource-card__desc {
+    font-size: var(--text-xs);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .health-resource-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-top: auto;
+  }
+
+  /* ------------------------------------------------------------------------
+     7. CALL TO ACTION
+     ------------------------------------------------------------------------ */
+  .health-cta-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 48rem;
+    margin-inline: auto;
+    padding: var(--space-xl) var(--space-md);
+  }
+
+  @media (min-width: 768px) {
+    .health-cta-box {
+      padding: var(--space-2xl) var(--space-xl);
+    }
+  }
+
+  .health-cta-box__eyebrow {
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-brand);
+    margin-bottom: var(--space-xs);
+  }
+
+  .health-cta-box__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-h2);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: var(--tracking-display);
+    color: var(--text-primary);
+    margin-bottom: var(--space-sm);
+    text-wrap: balance;
+  }
+
+  .health-cta-box__desc {
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    max-width: 40rem;
+    margin-bottom: var(--space-lg);
+  }
+
+  .health-cta-box__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  /* ------------------------------------------------------------------------
+     MOBILE COMPACT SPACING (<= 767px)
+     ------------------------------------------------------------------------ */
+  @media (max-width: 767px) {
+    .health-hero {
+      padding-block-start: 1.25rem;
+      padding-block-end: 1rem;
+    }
+    .health-heading {
+      margin-bottom: 1.25rem;
+    }
+    .health-cta-box {
+      padding: 1.25rem 1rem;
+    }
+    .health-cta-box__desc {
+      margin-bottom: 1rem;
+    }
+  }
+}

@@ -16,50 +16,25 @@ import {
   DONATION_PURPOSES,
 } from "@/content/contact";
 
+import { useWebsiteContent } from "@/context/ContentContext";
+import EditableText from "@/components/admin/EditableText";
+
 type BankTab = "domestic" | "foreign";
 
-/**
- * DONATE  →  /donate
- * ---------------------------------------------------------------------------
- * Trustworthy and restrained. No countdown timers, no progress thermometers,
- * no "only 3 hours left", no emotional pressure language. The page states what
- * LAYA does, how money can be given, and what the legal position is.
- *
- * HONEST MECHANISM
- *   There is no payment gateway in this project. The page therefore says so
- *   plainly — contributions are made by bank transfer — rather than implying an
- *   online payment flow that does not exist. The pledge form records intent so
- *   the team can follow up.
- *
- * METRICS
- *   Only the four organisation-wide figures from `mockImpactMetrics` are shown.
- *   A previous "10K+ Families Impacted" stat appeared nowhere else and
- *   conflicted with a programme-level figure; it has been removed.
- *
- * FINANCIAL INFORMATION
- *   Domestic and foreign (FCRA) account details, 80G status and the FCRA
- *   registration number are all existing published information, reproduced
- *   verbatim. Nothing financial has been invented or rounded.
- */
 const Donate = () => {
-  /*
-    Required by every `.reveal` element on this page.
-
-    `.reveal` sets `opacity: 0` until `is-visible` is added by the
-    IntersectionObserver inside this hook. Without the hook the observer never
-    runs, so the metrics row, the donation purposes list and the bank details
-    panel all stayed permanently invisible — measured at opacity 0 while still
-    present in the DOM.
-  */
   useRevealOnScroll();
+  const { content } = useWebsiteContent();
 
   const [bankTab, setBankTab] = useState<BankTab>("domestic");
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [pledge, setPledge] = useState({ name: "", email: "", amount: "", message: "" });
   const [pledgeErrors, setPledgeErrors] = useState<Record<string, string | null>>({});
-  const [pledgeSent, setPledgeSent] = useState(false);
+  const [pledgeNoticeVisible, setPledgeNoticeVisible] = useState(false);
 
-  const details = bankTab === "foreign" ? BANK_FOREIGN : BANK_DOMESTIC;
+  const details =
+    bankTab === "foreign"
+      ? content.contact?.bankForeign || BANK_FOREIGN
+      : content.contact?.bankDomestic || BANK_DOMESTIC;
 
   const copyToClipboard = (text: string, field: string) => {
     navigator.clipboard.writeText(text);
@@ -81,7 +56,7 @@ const Donate = () => {
     };
     setPledgeErrors(errs);
     if (Object.values(errs).some((v) => v !== null)) return;
-    setPledgeSent(true);
+    setPledgeNoticeVisible(true);
   };
 
   return (
@@ -98,13 +73,28 @@ const Donate = () => {
       <MainLayout>
         <header className="ut-header">
           <div className="ut-header__inner">
-            <p className="ut-header__eyebrow type-eyebrow">Support LAYA</p>
-            <h1 className="ut-header__title">Support our work</h1>
-            <p className="ut-header__lead">
-              Contributions support rights work, herbal health care, sustainable livelihoods,
-              lifelong learning and climate resilience with Adivasi communities across the Eastern
-              Ghats.
+            <p className="ut-header__eyebrow type-eyebrow text-[#755EB9] font-sans tracking-wider uppercase mb-2">
+              <span className="font-normal">SUPPORT </span>
+              <span className="font-bold">LAYA</span>
             </p>
+            <EditableText
+              path="donate.header.title"
+              label="Donate Title"
+              value={content.donate?.header?.title || "Support our work"}
+              as="h1"
+              className="ut-header__title"
+            />
+            <EditableText
+              path="donate.header.lead"
+              label="Donate Description"
+              value={
+                content.donate?.header?.lead ||
+                "Contributions support rights work, herbal health care, sustainable livelihoods, lifelong learning and climate resilience with Adivasi communities across the Eastern Ghats."
+              }
+              as="p"
+              multiline={true}
+              className="ut-header__lead"
+            />
           </div>
         </header>
 
@@ -227,19 +217,42 @@ const Donate = () => {
               <p className="type-eyebrow">Record your intention</p>
               <h2 className="ut-heading__title">Tell us about your contribution</h2>
               <p className="ut-heading__intro">
-                This form does not take payment. It records your intention to give so the LAYA
-                team can send payment details and, where applicable, a receipt for 80G purposes.
+                Contributions are transferred directly using the bank account details above.
+                Online pledge persistence is currently pending backend integration; you can prepare your pledge details below to email them directly to the LAYA office.
               </p>
             </header>
 
             <div className="form-panel" style={{ maxWidth: "44rem" }}>
-              {pledgeSent ? (
-                <div className="form-status form-status--success" role="status">
-                  <Check className="form-status__icon" aria-hidden="true" />
-                  <div>
-                    <span className="form-status__title">Thank you, {pledge.name.trim()}.</span>
-                    The LAYA team will contact you at {pledge.email} with payment details and
-                    receipt information.
+              {pledgeNoticeVisible ? (
+                <div className="form-status form-status--info" role="status" style={{ borderLeft: "4px solid #d97706", background: "#fdfbf7", padding: "1.25rem", borderRadius: "0" }}>
+                  <div style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start" }}>
+                    <AlertCircle className="form-status__icon" style={{ color: "#d97706", flexShrink: 0, marginTop: "2px" }} aria-hidden="true" />
+                    <div>
+                      <span className="form-status__title" style={{ display: "block", fontWeight: 600, marginBottom: "0.375rem" }}>
+                        Online pledge recording is pending backend integration
+                      </span>
+                      <p style={{ margin: "0 0 0.75rem 0", fontSize: "0.925rem" }}>
+                        Thank you, <strong>{pledge.name.trim()}</strong>. Because automated database pledge storage is not yet active on this site, your pledge of <strong>₹{Number(pledge.amount).toLocaleString("en-IN")}</strong> was not automatically transmitted.
+                      </p>
+                      <p style={{ margin: "0 0 0.75rem 0", fontSize: "0.925rem" }}>
+                        To ensure your pledge reaches the LAYA finance team directly, please send your details via email or use the official bank transfer details above:
+                      </p>
+                      <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginTop: "0.75rem" }}>
+                        <a
+                          href={`mailto:${CONTACT_DETAILS.email}?subject=Donation%20Pledge%20from%20${encodeURIComponent(pledge.name.trim())}&body=Name:%20${encodeURIComponent(pledge.name.trim())}%0AEmail:%20${encodeURIComponent(pledge.email.trim())}%0AIntended%20Amount:%20Rs.%20${encodeURIComponent(pledge.amount)}%0AMessage:%20${encodeURIComponent(pledge.message || "N/A")}`}
+                          className="inline-flex items-center gap-2 bg-[#6E5BA8] hover:bg-[#5D4B94] text-white text-xs sm:text-sm font-bold uppercase tracking-wider px-4 py-2.5 transition-colors no-underline shadow-none"
+                        >
+                          Email pledge to {CONTACT_DETAILS.email}
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => setPledgeNoticeVisible(false)}
+                          style={{ background: "none", border: "1px solid #ccc", padding: "0.5rem 1rem", fontSize: "0.875rem", borderRadius: "0", cursor: "pointer" }}
+                        >
+                          Edit pledge details
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ) : (
@@ -345,8 +358,8 @@ const Donate = () => {
 
             <p className="statement">
               For questions about donations, write to{" "}
-              <a href="mailto:info@laya.org.in" className="contact-record__link">
-                info@laya.org.in
+              <a href={CONTACT_DETAILS.emailHref} className="contact-record__link">
+                {CONTACT_DETAILS.email}
               </a>{" "}
               or call {CONTACT_DETAILS.phone}.
             </p>

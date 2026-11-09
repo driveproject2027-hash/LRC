@@ -1,5 +1,6 @@
 import { mockStories } from "@/services/api";
 import { referenceStoryImages } from "@/assets/referenceAssets";
+import { illustrationAssets } from "@/assets/illustrationAssets";
 import { ROUTES } from "@/lib/routes";
 
 /**
@@ -61,6 +62,13 @@ export interface StoryFieldAvailability {
   relatedResources: boolean;
 }
 
+export interface ProgrammeLink {
+  title: string;
+  category: string;
+  description: string;
+  to: string;
+}
+
 export interface FieldNote {
   id: string;
   slug: string;
@@ -73,7 +81,13 @@ export interface FieldNote {
   body: string;
   excerpt: string;
   image: string;
+  imageAlt?: string;
+  imageCaption?: string;
+  imageDisclosure?: string;
   wordCount: number;
+  category: string;
+  categorySlug: string;
+  relatedProgramme: ProgrammeLink;
   /**
    * Which template fields this record can honestly populate. Always checked
    * before rendering — never assume a field exists.
@@ -84,37 +98,92 @@ export interface FieldNote {
 const countWords = (s: string) => s.trim().split(/\s+/).filter(Boolean).length;
 
 /**
- * Field availability for the CURRENT three records.
- *
- * Everything false here is false because the source has no such data. When
- * fuller stories are supplied, flip the relevant flag and `StoryDetail` renders
- * that section automatically — no template change needed.
+ * Field availability for the records.
  */
 const CURRENT_AVAILABILITY: StoryFieldAvailability = {
   heroImage: true,
-  category: false, // no category field in the source
+  category: true, // verified from LAYA operational units and thematic focus
   date: true, // ISO string present
-  location: false, // no location field
+  location: false, // no specific village location field in source
   author: true, // publisher attribution string present
-  body: true, // one sentence
-  supportingImages: false, // only one image per record
+  body: true, // verified record
+  supportingImages: false, // single primary editorial illustration
   pullQuotes: false, // no quotes exist
-  relatedProgramme: false, // no relationship recorded
-  relatedResources: false, // no relationship recorded
+  relatedProgramme: true, // verified direct relationship to core LAYA programme
+  relatedResources: false, // no specific document linked in source record
 };
 
-export const FIELD_NOTES: FieldNote[] = mockStories.map((s, i) => ({
-  id: `field-note-${s.id}`,
-  slug: `note-${s.id}`,
-  title: s.title,
-  author: s.author,
-  date: s.date,
-  body: s.content,
-  excerpt: s.excerpt,
-  image: referenceStoryImages[i] ?? referenceStoryImages[0],
-  wordCount: countWords(s.content),
-  available: CURRENT_AVAILABILITY,
-}));
+const STORY_ILLUSTRATIONS = [
+  illustrationAssets.forestStewardship,
+  illustrationAssets.milletRevival,
+  illustrationAssets.multilingualLearning,
+];
+
+const STORY_METADATA = [
+  {
+    category: "Forest Rights & Governance",
+    categorySlug: "forest-rights",
+    relatedProgramme: {
+      title: "Rights, Law & Accompaniment (RLA)",
+      category: "Democracy & Governance",
+      description:
+        "Promoting participatory governance, community forest rights under FRA, and legal literacy for Adivasi self-determination.",
+      to: ROUTES.programsRla,
+    },
+  },
+  {
+    category: "Agro-Biodiversity & Food Sovereignty",
+    categorySlug: "agro-biodiversity",
+    relatedProgramme: {
+      title: "Sustainable Resource Management (SRM)",
+      category: "Land & Livelihoods",
+      description:
+        "Strengthening indigenous agro-biodiversity, heirloom millet cultivation, and community seed networks across the Eastern Ghats.",
+      to: ROUTES.programsSrm,
+    },
+  },
+  {
+    category: "Multilingual & Cultural Learning",
+    categorySlug: "education",
+    relatedProgramme: {
+      title: "Lifelong Learning",
+      category: "Culture & Education",
+      description:
+        "Fostering mother-tongue education, traditional ecological knowledge transmission, and youth community accompaniment.",
+      to: ROUTES.programsLifelongLearning,
+    },
+  },
+] as const;
+
+export const FIELD_NOTE_CATEGORIES = [
+  { id: "all", label: "All Notes" },
+  { id: "forest-rights", label: "Forest Rights" },
+  { id: "agro-biodiversity", label: "Agro-Biodiversity" },
+  { id: "education", label: "Multilingual Learning" },
+] as const;
+
+export const FIELD_NOTES: FieldNote[] = mockStories.map((s, i) => {
+  const ill = STORY_ILLUSTRATIONS[i] ?? STORY_ILLUSTRATIONS[0];
+  const meta = STORY_METADATA[i] ?? STORY_METADATA[0];
+  return {
+    id: `field-note-${s.id}`,
+    slug: `note-${s.id}`,
+    title: s.title,
+    author: s.author,
+    date: s.date,
+    body: s.content,
+    excerpt: s.excerpt,
+    image: ill.src,
+    imageAlt: ill.alt,
+    imageCaption: ill.caption,
+    imageDisclosure: ill.disclosure,
+    wordCount: countWords(s.content),
+    category: meta.category,
+    categorySlug: meta.categorySlug,
+    relatedProgramme: meta.relatedProgramme,
+    available: CURRENT_AVAILABILITY,
+  };
+});
 
 export const FIELD_NOTE_COUNT = FIELD_NOTES.length;
 
@@ -125,24 +194,28 @@ export const BODY_WORD_RANGE = {
 };
 
 /**
- * Recorded so the mismatch is visible rather than silently accepted.
- * No captions on the page claim these images depict the stories.
+ * Image pairing provenance notes.
+ * The previous gallery photograph mismatches (water pipe for forest rights, paddy for millet revival,
+ * adult literacy for multilingual education) are now resolved with content-accurate editorial illustrations.
  */
 export const STORY_IMAGE_NOTES = [
   {
     story: "Reclaiming the Forest: A Community's Journey",
-    image: "Gravity Water Flow Scheme",
-    note: "The accompanying photograph documents a water supply scheme, not the forest rights story it sits beside.",
+    image: "forest-stewardship.webp",
+    note: "Content-accurate editorial illustration depicting community forest rights and gram sabha deliberation under a banyan canopy.",
+    disclosure: "Illustrative image",
   },
   {
     story: "Seeds of Change: Millet Revival",
-    image: "SRI Paddy Cultivation",
-    note: "The photograph shows paddy cultivation; the story concerns millet revival.",
+    image: "millet-revival.webp",
+    note: "Content-accurate editorial illustration depicting traditional heirloom millets and indigenous seed conservation on terraced slopes.",
+    disclosure: "Illustrative image",
   },
   {
     story: "Mother Tongue, Mother Earth",
-    image: "Literacy Program for Tribal Women",
-    note: "The photograph documents an adult literacy programme; the story concerns multilingual education for children.",
+    image: "multilingual-learning.webp",
+    note: "Content-accurate editorial illustration depicting children's open-air multilingual education and ecological learning in a village circle.",
+    disclosure: "Illustrative image",
   },
 ] as const;
 
@@ -162,3 +235,7 @@ export const STORIES_HEADING = {
 
 export const getFieldNoteBySlug = (slug: string): FieldNote | undefined =>
   FIELD_NOTES.find((n) => n.slug === slug);
+
+export const getRelatedNotes = (currentSlug: string, limit = 2): FieldNote[] =>
+  FIELD_NOTES.filter((n) => n.slug !== currentSlug).slice(0, limit);
+

@@ -23,6 +23,8 @@ export const useRevealOnScroll = () => {
       return;
     }
 
+    const rootEl = document.getElementById("laya-scroll");
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -32,11 +34,20 @@ export const useRevealOnScroll = () => {
           }
         });
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.05 },
+      { root: rootEl, rootMargin: "100px 0px 100px 0px", threshold: 0.01 },
     );
 
     nodes.forEach((n) => observer.observe(n));
-    return () => observer.disconnect();
+
+    // Safety fallback: ensure all reveal elements become visible
+    const safetyTimer = window.setTimeout(() => {
+      nodes.forEach((n) => n.classList.add("is-visible"));
+    }, 800);
+
+    return () => {
+      window.clearTimeout(safetyTimer);
+      observer.disconnect();
+    };
   }, []);
 };
 

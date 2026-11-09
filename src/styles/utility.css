@@ -11,10 +11,17 @@
      ------------------------------------------------------------------------ */
 
   .ut-header {
-    padding-block-start: calc(var(--laya-chrome-height) + var(--space-2xl));
+    padding-block-start: 2.25rem;
     padding-block-end: var(--space-lg);
     padding-inline: var(--gutter);
     background-color: var(--surface-canvas);
+  }
+
+  @media (max-width: 767px) {
+    .ut-header {
+      padding-block-start: 1.25rem;
+      padding-block-end: 0.75rem;
+    }
   }
 
   .ut-header__inner {
@@ -33,7 +40,7 @@
     content: "";
     width: 1.5rem;
     height: 1px;
-    background-color: var(--laya-forest-600);
+    background-color: var(--laya-logo-blue);
   }
 
   .ut-header__title {
@@ -251,12 +258,12 @@
     opacity: 0.5;
   }
 
-  /* Glowing blue-to-purple border on focus */
+  /* Crisp high-contrast focus ring */
   .form-field__input:focus-visible,
   .form-field__textarea:focus-visible {
-    border-color: transparent;
+    border-color: var(--border-focus);
     outline: none;
-    box-shadow: 0 0 0 2px var(--surface-canvas), 0 0 0 4px var(--laya-logo-blue), 0 4px 14px 0 rgba(109, 87, 165, 0.4);
+    box-shadow: 0 0 0 2px var(--surface-canvas), 0 0 0 4px var(--laya-logo-blue);
   }
 
   /* Invalid state — a visible border AND a message, never colour alone. */
@@ -340,7 +347,7 @@
 
   .donate-metric {
     padding-top: var(--space-sm);
-    border-top: 2px solid var(--laya-forest-600);
+    border-top: 2px solid var(--border-brand);
   }
 
   .donate-metric__value {
@@ -447,8 +454,8 @@
   }
 
   .copy-btn:hover {
-    color: var(--laya-forest-700);
-    border-color: var(--laya-forest-400);
+    color: var(--text-brand);
+    border-color: var(--border-brand);
   }
 
   .copy-btn__icon {
@@ -460,8 +467,8 @@
   .statement {
     margin-top: var(--space-lg);
     padding: var(--space-sm) var(--space-md);
-    border-left: 2px solid var(--laya-forest-500);
-    background-color: var(--laya-forest-50);
+    border-left: 2px solid var(--border-brand);
+    background-color: var(--surface-lavender-pale);
     font-size: var(--text-sm);
     line-height: var(--leading-relaxed);
     color: var(--text-secondary);
@@ -494,7 +501,7 @@
     display: flex;
     flex-direction: column;
     padding-top: var(--space-md);
-    border-top: 2px solid var(--laya-forest-600);
+    border-top: 2px solid var(--border-brand);
   }
 
   /*
@@ -512,8 +519,8 @@
     margin-bottom: var(--space-md);
     overflow: hidden;
     border-radius: var(--radius-media);
-    background-color: var(--laya-forest-50);
-    border: var(--hairline) solid var(--laya-forest-200);
+    background-color: var(--surface-lavender-pale);
+    border: var(--hairline) solid var(--border-subtle);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -531,7 +538,7 @@
     font-family: var(--font-serif);
     font-size: 2.5rem;
     font-weight: 600;
-    color: var(--laya-forest-800);
+    color: var(--text-brand);
     letter-spacing: 0.02em;
   }
 
@@ -591,7 +598,7 @@
     --text-muted: var(--text-inverse-muted);
     --border-subtle: var(--border-inverse);
     --border-default: var(--border-inverse);
-    padding-block: var(--space-2xl) var(--space-lg);
+    padding-block: var(--space-2xl) var(--space-2xl);
     padding-inline: var(--gutter);
   }
 
@@ -757,7 +764,7 @@
     height: 0.9375rem;
     flex-shrink: 0;
     margin-top: 0.15rem;
-    color: var(--laya-forest-400);
+    color: var(--laya-logo-blue);
   }
 
   /* ---- Bottom bar ------------------------------------------------------ */
@@ -858,5 +865,17 @@
 
   @keyframes border-spin {
     100% { transform: rotate(360deg); }
+  }
+
+  /* ------------------------------------------------------------------------
+     MOBILE COMPACT SPACING (<= 767px)
+     ------------------------------------------------------------------------ */
+  @media (max-width: 767px) {
+    .ut-header {
+      padding-block-end: 1rem;
+    }
+    .ut-heading {
+      margin-bottom: 1.25rem;
+    }
   }
 }

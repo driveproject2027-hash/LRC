@@ -1,4 +1,6 @@
 import { referenceProgramImages } from "@/assets/referenceAssets";
+import { illustrationAssets } from "@/assets/illustrationAssets";
+import { ROUTES } from "@/lib/routes";
 
 /**
  * LAYA — ABOUT SECTION CONTENT
@@ -37,7 +39,10 @@ export const whoWeAre = {
     "LAYA's journey began in 1985 in a remote Adivasi area of East Godavari. Over four decades, we have evolved through multiple phases of learning, legal engagement, unit-based decentralization, and long-term accompaniment with Adivasi communities in the Eastern Ghats.",
   intro:
     "Our involvement with Adivasi communities comprises various phases of engagement, each marked by significant learning, challenges, and growth. From initial grassroots work to establishing resource centers, from legal advocacy to climate action, LAYA has continuously adapted to meet the changing needs of the communities we serve.",
-  image: referenceProgramImages[0],
+  image: illustrationAssets.forestStewardship.src,
+  imageAlt: illustrationAssets.forestStewardship.alt,
+  imageCaption: illustrationAssets.forestStewardship.caption,
+  imageDisclosure: illustrationAssets.forestStewardship.disclosure,
 } as const;
 
 /**
@@ -156,50 +161,65 @@ export const journeyPhases: JourneyPhase[] = [
   },
 ];
 
-/** Six programme areas as listed on Who We Are. */
-export const programAreas = [
+/** Three Core Fields of Work defining LAYA's strategic framework. */
+export const coreFieldsOfWork = [
   {
-    title: "Safeguarding Adivasi Rights",
+    number: "01",
+    title: "Safeguarding Adivasi Rights for Social Justice",
     description:
-      "Working for social justice and rights of Adivasi communities through legal engagement and advocacy.",
+      "Securing ancestral land tenure, asserting community forest rights under the Forest Rights Act (FRA), empowering Gram Sabhas for self-governance, and providing constitutional legal accompaniment through RLA (Resource for Legal Action) across Scheduled Area districts in Andhra Pradesh.",
+    to: ROUTES.whatWeDoRla,
+    badge: "Land & Forest Rights · Legal Action",
   },
   {
-    title: "Herbal Based Health Care",
-    description:
-      "Traditional medicine systems and community health initiatives through the Vanantharam program.",
-  },
-  {
-    title: "Sustainable Resource Management",
-    description:
-      "Forest conservation, water resource management, and sustainable agriculture practices.",
-  },
-  {
+    number: "02",
     title: "Lifelong Learning",
     description:
-      "Education initiatives recognized by UNESCO, focusing on community-based learning systems.",
+      "Equipping young Adivasi women and men through contextual education, adult literacy circles, leadership formation, and the vital revitalization of indigenous language, knowledge systems, and cultural dignity.",
+    to: ROUTES.whatWeDoLifelongLearning,
+    badge: "Youth Leadership · Indigenous Knowledge",
   },
   {
-    title: "Climate & Sustainable Development",
+    number: "03",
+    title: "Climate Crisis & Sustainable Development",
     description:
-      "Climate change initiatives, renewable energy projects, and carbon credit programs.",
-  },
-  {
-    title: "Documentation & Networking",
-    description:
-      "Alternative documentation, INECC secretariat, and consultative status to UN ECOSOC.",
+      "An integrated framework addressing ecological vulnerabilities and building community sovereignty through decentralized renewable energy, participatory climate adaptation, sustainable agriculture, biodiversity conservation, and herbal-based community healthcare.",
+    to: ROUTES.whatWeDoClimate,
+    badge: "Renewable Energy · Ecosystems · Health",
   },
 ] as const;
+
+export const programAreas = coreFieldsOfWork;
 
 export const leadership = {
   title: "Leadership & Vision",
   description:
-    "LAYA's Directors focus on linking local issues to global concerns through active networking and partnerships. The organization is involved in climate change initiatives at both national and international levels.",
+    "LAYA's leadership focuses on linking local issues to global concerns through active networking, community partnerships, and policy engagement. Under the guidance of our Executive Director and Board of Management, the organisation maintains a vital bridge between grassroots tribal realities and national and global climate policy.",
   points: [
-    "Linking local issues to global concerns",
-    "Active networking and partnerships",
-    "Climate change involvement at national and international levels",
-    "Long-term institutional sustainability focus",
+    "Consolidating workstreams into three interconnected strategic pillars",
+    "Linking local community issues to state, national and international policy",
+    "Active grassroots networking with 100+ community-based organisations",
+    "Long-term institutional resilience, financial stewardship, and governance integrity",
   ],
+} as const;
+
+/**
+ * Executive Director Statement & Strategic Transition
+ * Sourced directly from LAYA Annual Report 2025–2026.
+ */
+export const executiveDirectorMessage = {
+  director: "Siddharth DSouza",
+  title: "Executive Director, LAYA",
+  date: "September 2026",
+  heading: "Illuminating Minds, Changing Lives",
+  statement:
+    "The year 2025–26 marked a significant transition for LAYA, where we consolidated five workstreams into three strategic themes. A comprehensive peer review strengthened clarity on thematic architecture, human resources, finances, and ecosystem relationships. Despite challenges and staff transitions, LAYA is now more interconnected, purpose-driven, and resilient, reaffirming its commitment to empower marginalized communities.",
+  perspectiveQuote: {
+    quote: "Give me the strength never to disown the poor or bend my knees before insolent might",
+    author: "Rabindranath Tagore",
+  },
+  teamSummary:
+    "A team of 55 members works across these areas, reaching communities and partners through a range of initiatives across the Eastern Ghats.",
 } as const;
 
 export const futureVision = {
@@ -243,7 +263,10 @@ export const wayWeWork = {
         "Field collaboration: Adivasi representatives and community-based organisations (CBOs)",
         "Small core personnel with wider outreach through CBO and NGO networks",
       ],
-      image: referenceProgramImages[2],
+      image: illustrationAssets.multilingualLearning.src,
+      imageAlt: illustrationAssets.multilingualLearning.alt,
+      imageCaption: illustrationAssets.multilingualLearning.caption,
+      imageDisclosure: illustrationAssets.multilingualLearning.disclosure,
     },
     {
       heading: "Organisational Systems",
@@ -277,7 +300,10 @@ export const wayWeWork = {
   points: [
     "The thrust areas, goals and specific objectives, planned activities for each program and the expected outcomes form the basis of the monitoring and reporting systems.",
   ],
-  image: referenceProgramImages[2],
+  image: illustrationAssets.multilingualLearning.src,
+  imageAlt: illustrationAssets.multilingualLearning.alt,
+  imageCaption: illustrationAssets.multilingualLearning.caption,
+  imageDisclosure: illustrationAssets.multilingualLearning.disclosure,
 } as const;
 
 /* =========================================================================
@@ -288,54 +314,100 @@ export const whereWeWork = {
   title: "Where We Work",
   subtitle: "Field and resource locations across the Eastern Ghats",
   description:
-    "LAYA's field and resource work is centered in Andhra Pradesh, with a long-term regional presence across tribal agency areas and district-level partnerships with Adivasi communities.",
+    "Adivasi regions with wider engagement across coastal, urban and peri-urban communities of northern Andhra Pradesh and through networks and partnerships at state, national and international levels.",
+  headquarters: {
+    name: "LAYA Resource Centre",
+    address: "Plot No 110, D-No: 5-175/1, Behind Bay Crown Apt., Near Sun Senora Beach Campus, Yendada, Visakhapatnam - 530045, AP, India",
+    phone: "+91-0891-4805244, +91-9949731307",
+    email: "layarc@gmail.com",
+    website: "www.laya.org.in",
+  },
   locations: [
     {
       name: "LAYA Resource Centre",
       type: "Headquarters",
       district: "Visakhapatnam",
-      address: "Plot No 110, D-No 5-175/1, Behind Bay Crown Apartment, Yendada",
+      address: "Plot No 110, D-No: 5-175/1, Behind Bay Crown Apt., Near Sun Senora Beach Campus, Yendada, Visakhapatnam",
       pincode: "530045",
+      phone: "+91-0891-4805244, +91-9949731307",
     },
     {
       name: "LAYA Field Unit — Addateegala",
       type: "Field Office",
-      district: "Alluri Sitharama Raju",
-      address: "Addateegala, East Godavari Agency Area",
+      district: "Alluri Seetarama Raju District",
+      address: "Addateegala, Agency Area (Vanantharam Campus)",
       pincode: "533428",
     },
     {
-      name: "LAYA Paderu Office",
+      name: "LAYA Field Unit — Rampa Chodavaram",
       type: "Field Office",
-      district: "Alluri Sitharama Raju",
-      address: "Kangaruputtu, Paderu",
-      pincode: "531077",
-    },
-    {
-      name: "LAYA Field Unit — Rampachodavaram",
-      type: "Field Office",
-      district: "East Godavari",
-      address: "Rampachodavaram, East Godavari Agency Area",
+      district: "Alluri Seetarama Raju District",
+      address: "Rampa Chodavaram Agency Area",
       pincode: "533288",
     },
     {
-      name: "LAYA Field Unit — Seethampeta",
+      name: "LAYA Field Unit — Paderu",
       type: "Field Office",
-      district: "Srikakulam",
-      address: "Seethampeta, Srikakulam Agency Area",
-      pincode: "532443",
+      district: "Alluri Seetarama Raju District",
+      address: "Kangaruputtu, Paderu Agency Area",
+      pincode: "531077",
+    },
+    {
+      name: "LAYA Field Unit — Veeraghattam",
+      type: "Field Office",
+      district: "Parvathipuram Manyam District",
+      address: "Veeraghattam Agency Area",
+      pincode: "532460",
     },
   ],
   coverage: {
-    title: "Eastern Ghats Region",
+    title: "Eastern Ghats Region & Beyond",
     description:
-      "Our work spans the tribal belt of the Eastern Ghats — from Visakhapatnam agency areas to East Godavari, Srikakulam, and adjoining regions — accompanying Adivasi communities through rights, livelihoods, health, and climate action.",
-    districts: ["Visakhapatnam", "East Godavari", "Alluri Sitharama Raju", "Srikakulam"],
+      "Our work spans the tribal belt of northern Andhra Pradesh — Alluri Seetarama Raju, Parvathipuram Manyam, Visakhapatnam, and adjoining coastal and peri-urban areas — accompanying Adivasi communities through rights, livelihoods, health, and climate action.",
+    districts: ["Alluri Seetarama Raju", "Parvathipuram Manyam", "Visakhapatnam", "East Godavari", "Srikakulam"],
   },
   points: [
     "Field presence is linked with district-level partnerships and community institutions across the Eastern Ghats.",
   ],
-  image: referenceProgramImages[0],
+  image: illustrationAssets.easternGhatsLandscape.src,
+  imageAlt: illustrationAssets.easternGhatsLandscape.alt,
+  imageCaption: illustrationAssets.easternGhatsLandscape.caption,
+  imageDisclosure: illustrationAssets.easternGhatsLandscape.disclosure,
+} as const;
+
+/**
+ * Annual Program Expenditure (2025–2026)
+ * Sourced directly from LAYA Annual Report 2025–2026.
+ */
+export const programExpenditure = {
+  title: "Program Expenditure (2025–2026)",
+  subtitle: "Strategic resource allocation across the 3 Core Pillars",
+  totalExpenditure: "~ 3.4 CRORES",
+  reportingPeriod: "Financial Year 2025–2026",
+  source: "LAYA Annual Report 2025–2026",
+  pillars: [
+    {
+      name: "Climate Crisis & Sustainable Development",
+      percentage: "60.7%",
+      percentNumber: 60.7,
+      color: "#1e3a5f",
+      description: "Decentralized renewable energy, sustainable agriculture, soil nutrient management, herbal healthcare, clean cookstoves, gravity water systems, and coastal aquaculture.",
+    },
+    {
+      name: "Lifelong Learning",
+      percentage: "33.4%",
+      percentNumber: 33.4,
+      color: "#7664B5",
+      description: "Youth and panchayat orientations, vocational & livelihood skills, school education, adult literacy, tuition centres, and CBO capacity building.",
+    },
+    {
+      name: "Safeguarding Adivasi Rights for Social Justice",
+      percentage: "5.9%",
+      percentNumber: 5.9,
+      color: "#55B1EB",
+      description: "Legal accompaniment, land restitution cases, constitutional values fellowship, CFR titles under FRA, and PESA policy advocacy.",
+    },
+  ],
 } as const;
 
 /* =========================================================================
@@ -526,9 +598,9 @@ export const governance = {
     { name: "Mr. Sanjay Khatua", role: "Director, DHARA, Bhubaneswar" },
     { name: "Dr. Lata Narayan", role: "Rtd Professor, Centre for Lifelong Learning, Tata Institute of Social Sciences, Mumbai" },
     { name: "Ms. Mani Mistry Elavia", role: "Free Lancer, Facilitator, Child Empowerment, Mumbai" },
-    { name: "Dr Ritesh P Khunyakari", role: "Associate Professor, Tata Institute of Social Sciences (TISS), Hyderabad" },
+    { name: "Dr. Ritesh P Khunyakari", role: "Associate Professor, Tata Institute of Social Sciences (TISS), Hyderabad" },
     { name: "Ms. Rama Nandanavanam", role: "Senior Director, Operations, Sikshana Foundation(Bangalore), Hyderabad" },
-    { name: "Dr. B. Devi Prasad", role: "Retd. Professor, Centre for Equity for Women Children and Families, School of Social Work, Tata Institute of Social Sciences, Mumbai" },
+    { name: "Prof B Devi Prasad", role: "Retd. Professor, Centre for Equity for Women Children and Families, School of Social Work, Tata Institute of Social Sciences, Mumbai" },
     { name: "Mr. Walter Mendoza", role: "Development Consultant, Pune" },
     { name: "Dr. D.V.R. Murthy", role: "Professor, Department of Journalism and Mass Communication, Andhra University, Visakhapatnam" },
     { name: "Ms. Maveen Soares Pereira", role: "Manager, Cotton Organisation: IDH" },
@@ -537,14 +609,47 @@ export const governance = {
     { name: "Ms Pallavi Chaman", role: "Director, Finance, Climate Collective Foundation" },
     { name: "Ms Brinda Pancholi", role: "Freelancer, Bangalore" },
   ],
-  /** Board of Management — names and offices verbatim. */
+  /** Board of Management — 7 elected members per Annual Report 2025–2026. */
   boardOfManagement: [
-    { name: "Ms. Nandini Narula", role: "President" },
-    { name: "Prof B Devi Prasad", role: "Secretary" },
-    { name: "Mr. Sanjay Khatua", role: "Treasurer" },
-    { name: "Ms. Mani Mistry Elavia", role: "Member" },
-    { name: "Dr. Ritesh P Khunyakari", role: "Member" },
-    { name: "Ms. Rama Nandanavanam", role: "Member" },
+    {
+      name: "Ms. Nandini Narula",
+      role: "President",
+      designation: "Development Consultant, New Delhi",
+    },
+    {
+      name: "Prof B Devi Prasad",
+      role: "Secretary",
+      designation:
+        "Retd. Professor, Centre for Equity for Women Children and Families, School of Social Work, Tata Institute of Social Sciences, Mumbai",
+    },
+    {
+      name: "Mr. Sanjay Khatua",
+      role: "Treasurer",
+      designation: "Director, DHARA, Bhubaneswar",
+    },
+    {
+      name: "Ms. Mani Mistry Elavia",
+      role: "Member",
+      designation: "Free Lancer, Facilitator, Child Empowerment, Mumbai",
+    },
+    {
+      name: "Dr. Lata Narayan",
+      role: "Member",
+      designation:
+        "Rtd Professor, Centre for Lifelong Learning, Tata Institute of Social Sciences, Mumbai",
+    },
+    {
+      name: "Dr. Ritesh P Khunyakari",
+      role: "Member",
+      designation:
+        "Associate Professor, Tata Institute of Social Sciences (TISS), Hyderabad",
+    },
+    {
+      name: "Ms. Rama Nandanavanam",
+      role: "Member",
+      designation:
+        "Senior Director, Operations, Sikshana Foundation(Bangalore), Hyderabad",
+    },
   ],
 } as const;
 

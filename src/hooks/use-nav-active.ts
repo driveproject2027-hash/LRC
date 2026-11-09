@@ -19,8 +19,22 @@ export const isNavItemActive = (pathname: string, item: NavItem): boolean => {
   // Home must be exact.
   if (item.path === "/") return pathname === "/";
 
+  // Exact path match
   if (pathname === item.path) return true;
 
+  // Direct child route match (exact child path, or subpath of child if child is not the section root)
+  if (
+    item.children?.some(
+      (child) =>
+        pathname === child.path ||
+        (child.path !== item.path && pathname.startsWith(`${child.path}/`)) ||
+        child.subItems?.some((sub) => pathname === sub.path),
+    )
+  ) {
+    return true;
+  }
+
+  // Explicit prefix match for extra namespaces (e.g. /what-we-do/* for Our Work)
   if (
     item.match?.some(
       (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
@@ -29,7 +43,12 @@ export const isNavItemActive = (pathname: string, item: NavItem): boolean => {
     return true;
   }
 
-  return pathname.startsWith(`${item.path}/`);
+  // If item does NOT have children, fall back to subpath prefix check
+  if (!item.children || item.children.length === 0) {
+    return pathname.startsWith(`${item.path}/`);
+  }
+
+  return false;
 };
 
 /** Convenience hook returning a predicate bound to the current location. */

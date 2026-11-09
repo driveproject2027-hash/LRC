@@ -48,7 +48,9 @@ const ContactModal = ({ open, onClose }: ContactModalProps) => {
                 <p className="text-sm text-primary-foreground/70 font-body">We'd love to hear from you</p>
               </div>
               <button
+                type="button"
                 onClick={onClose}
+                aria-label="Close dialog"
                 className="w-8 h-8 rounded-full bg-primary-foreground/10 hover:bg-primary-foreground/20 flex items-center justify-center transition-colors"
               >
                 <X className="h-4 w-4 text-primary-foreground" />

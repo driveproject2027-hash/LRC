@@ -4,17 +4,20 @@ import { useEffect, useRef, useState } from "react";
  * Animated counter that counts up from 0 to target when element scrolls into view.
  * Supports numbers with suffixes like "39+", "1,500+", "500,000+", "₹1.23 Cr".
  */
-export function useCountUp(
+export function useCountUp<T extends HTMLElement = HTMLElement>(
   target: string,
   duration: number = 2000,
-): { ref: React.RefObject<HTMLElement | null>; display: string } {
-  const ref = useRef<HTMLElement | null>(null);
+): { ref: React.RefObject<T | null>; display: string } {
+  const ref = useRef<T | null>(null);
   const [display, setDisplay] = useState("0");
   const hasAnimated = useRef(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el || hasAnimated.current) return;
+
+    let animId: number | null = null;
+    let isCancelled = false;
 
     // Parse the target: extract numeric part and any prefix/suffix
     const match = target.match(/^([^\d]*?)([\d,]+(?:\.\d+)?)(.*)$/);
@@ -54,6 +57,7 @@ export function useCountUp(
 
             const startTime = performance.now();
             const animate = (now: number) => {
+              if (isCancelled) return;
               const elapsed = now - startTime;
               const progress = Math.min(elapsed / duration, 1);
               // Ease-out cubic for a satisfying deceleration
@@ -63,11 +67,11 @@ export function useCountUp(
               setDisplay(`${prefix}${formatNum(current)}${suffix}`);
 
               if (progress < 1) {
-                requestAnimationFrame(animate);
+                animId = requestAnimationFrame(animate);
               }
             };
 
-            requestAnimationFrame(animate);
+            animId = requestAnimationFrame(animate);
           }
         });
       },
@@ -75,7 +79,13 @@ export function useCountUp(
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      isCancelled = true;
+      if (animId !== null) {
+        cancelAnimationFrame(animId);
+      }
+      observer.disconnect();
+    };
   }, [target, duration]);
 
   return { ref, display };

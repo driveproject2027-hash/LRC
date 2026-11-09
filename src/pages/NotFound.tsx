@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import MainLayout from "@/layouts/MainLayout";
 import PageHero from "@/components/PageHero";
+import { ROUTES } from "@/lib/routes";
 
 const NotFound = () => {
   const location = useLocation();
@@ -24,7 +25,7 @@ const NotFound = () => {
           centered
         >
           <Link
-            to="/"
+            to={ROUTES.home}
             className="inline-block mt-8 px-8 py-3 rounded bg-white text-[var(--laya-purple)] font-semibold hover:bg-white/90 transition-colors"
           >
             Return to Home

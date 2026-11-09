@@ -19,24 +19,55 @@ import {
   fcraInformation,
   financialReports,
   governance,
+  programExpenditure,
   supportPartners,
   wayWeWork,
   whereWeWork,
 } from "@/content/about";
+import { WhereWeWorkMap } from "@/components/map/WhereWeWorkMap";
+import { useWebsiteContent } from "@/context/ContentContext";
+import EditableText from "@/components/admin/EditableText";
 
 const SectionHeading = ({
   eyebrow,
   title,
   intro,
+  fieldPrefix,
+  introPath,
 }: {
   eyebrow: string;
   title: string;
   intro?: string;
+  fieldPrefix?: string;
+  introPath?: string;
 }) => (
  <header className="about-heading">
     <p className="type-eyebrow">{eyebrow}</p>
-    <h2 className="about-heading__title">{title}</h2>
-    {intro && <p className="about-heading__intro">{intro}</p>}
+    {fieldPrefix ? (
+      <EditableText
+        path={`${fieldPrefix}.title`}
+        label="Section Title"
+        value={title}
+        as="h2"
+        className="about-heading__title"
+      />
+    ) : (
+      <h2 className="about-heading__title">{title}</h2>
+    )}
+    {intro && (
+      (fieldPrefix || introPath) ? (
+        <EditableText
+          path={introPath || `${fieldPrefix}.intro`}
+          label="Section Intro"
+          value={intro}
+          as="p"
+          multiline={true}
+          className="about-heading__intro"
+        />
+      ) : (
+        <p className="about-heading__intro">{intro}</p>
+      )
+    )}
  </header>
 );
 
@@ -45,21 +76,45 @@ const PageHeader = ({
   title,
   subtitle,
   meta,
+  fieldPrefix,
 }: {
   eyebrow: string;
   title: string;
   subtitle: string;
   meta?: Array<{ label: string; value: string }>;
+  fieldPrefix?: string;
 }) => (
  <header className="about-header">
     <div className="about-header__inner">
       <p className="about-header__eyebrow type-eyebrow">{eyebrow}</p>
-      <h1 className="about-header__title">{title}</h1>
-      <p className="about-header__subtitle">{subtitle}</p>
+      {fieldPrefix ? (
+        <>
+          <EditableText
+            path={`${fieldPrefix}.title`}
+            label="Page Title"
+            value={title}
+            as="h1"
+            className="about-header__title"
+          />
+          <EditableText
+            path={`${fieldPrefix}.subtitle`}
+            label="Page Subtitle"
+            value={subtitle}
+            as="p"
+            multiline={true}
+            className="about-header__subtitle"
+          />
+        </>
+      ) : (
+        <>
+          <h1 className="about-header__title">{title}</h1>
+          <p className="about-header__subtitle">{subtitle}</p>
+        </>
+      )}
       {meta && meta.length > 0 && (
         <dl className="about-header__meta">
-          {meta.map((m) => (
-            <div key={m.label}>
+          {meta.map((m, idx) => (
+            <div key={`${m.label}-${idx}`}>
               <dt className="type-label">{m.label}</dt>
               <dd className="type-meta" style={{ margin: 0 }}>
                 {m.value}
@@ -78,19 +133,25 @@ const PageHeader = ({
 export const WayWeWork = () => {
   useRevealOnScroll();
   const { pathname } = useLocation();
+  const { content } = useWebsiteContent();
+
+  const currentWay = content.about?.wayWeWork
+    ? { ...wayWeWork, ...content.about.wayWeWork }
+    : wayWeWork;
 
   return (
     <>
       <Helmet>
         <title>How We Work | LAYA</title>
-        <meta name="description" content={wayWeWork.description} />
+        <meta name="description" content={currentWay.description} />
         <link rel="canonical" href="https://laya.org.in/about/way-we-work" />
       </Helmet>
       <MainLayout>
         <PageHeader
+          fieldPrefix="about.wayWeWork"
           eyebrow={ABOUT_HERO_LABELS[pathname]}
-          title={wayWeWork.title}
-          subtitle={wayWeWork.subtitle}
+          title={currentWay.title}
+          subtitle={currentWay.subtitle}
         />
 
         <section className="about-band about-band--warm">
@@ -98,7 +159,8 @@ export const WayWeWork = () => {
             <SectionHeading
               eyebrow="Overview"
               title="Management, systems and monitoring"
-              intro={wayWeWork.description}
+              intro={currentWay.description}
+              introPath="about.wayWeWork.description"
             />
           </div>
         </section>
@@ -129,10 +191,20 @@ export const WayWeWork = () => {
                     )}
                   </div>
                   {section.image && (
-                    <figure>
+                    <figure className="editorial-figure">
                       <div className="about-media">
-                        <img src={section.image} alt="" loading="lazy" decoding="async" />
+                        <img src={section.image} alt={section.imageAlt || ""} loading="lazy" decoding="async" />
                       </div>
+                      {section.imageCaption && (
+                        <figcaption className="editorial-caption">
+                          <span>{section.imageCaption}</span>
+                          {section.imageDisclosure && (
+                            <span className="editorial-caption__badge">
+                              {section.imageDisclosure}
+                            </span>
+                          )}
+                        </figcaption>
+                      )}
                     </figure>
                   )}
                 </div>
@@ -162,19 +234,25 @@ export const WayWeWork = () => {
 export const WhereWeWork = () => {
   useRevealOnScroll();
   const { pathname } = useLocation();
+  const { content } = useWebsiteContent();
+
+  const currentWhere = content.about?.whereWeWork
+    ? { ...whereWeWork, ...content.about.whereWeWork }
+    : whereWeWork;
 
   return (
     <>
       <Helmet>
         <title>Where We Work | LAYA</title>
-        <meta name="description" content={whereWeWork.description} />
+        <meta name="description" content={currentWhere.description} />
         <link rel="canonical" href="https://laya.org.in/about/where-we-work" />
       </Helmet>
       <MainLayout>
         <PageHeader
+          fieldPrefix="about.whereWeWork"
           eyebrow={ABOUT_HERO_LABELS[pathname]}
-          title={whereWeWork.title}
-          subtitle={whereWeWork.subtitle}
+          title={currentWhere.title}
+          subtitle={currentWhere.subtitle}
           meta={[
             { label: "Offices", value: `${whereWeWork.locations.length} locations` },
             { label: "Districts", value: `${whereWeWork.coverage.districts.length} covered` },
@@ -182,43 +260,27 @@ export const WhereWeWork = () => {
           ]}
         />
 
+        {/* Section 1: Interactive Regional Map & Location Hubs */}
         <section className="about-band">
           <div className="container-page">
             <SectionHeading
-              eyebrow="Our locations"
-              title="Resource centre and field units"
-              intro={whereWeWork.description}
+              eyebrow="Geographical footprint"
+              title="Interactive Regional Map & Field Hubs"
+              intro={currentWhere.description}
+              introPath="about.whereWeWork.description"
             />
-            <div className="reveal" style={{ borderTop: "1px solid var(--border-default)" }}>
-              {whereWeWork.locations.map((loc) => (
-                <div key={loc.name} className="location-record">
-                  <div>
-                    <h3 className="location-record__name">{loc.name}</h3>
-                    <span
-                      className={`location-record__type ${
-                        loc.type === "Headquarters" ? "location-record__type--hq" : ""
-                      }`}
-                    >
-                      {loc.type}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="location-record__address">{loc.address}</p>
-                    <span className="location-record__pincode">
-                      {loc.district} · {loc.pincode}
-                    </span>
-                  </div>
-                </div>
-              ))}
+            <div className="reveal mt-6">
+              <WhereWeWorkMap />
             </div>
           </div>
         </section>
 
+        {/* Section 2: Regional Coverage & Eastern Ghats Landscape */}
         <section className="about-band about-band--warm">
           <div className="container-page about-split reveal">
             <div>
               <SectionHeading
-                eyebrow="Coverage"
+                eyebrow="Regional coverage"
                 title={whereWeWork.coverage.title}
                 intro={whereWeWork.coverage.description}
               />
@@ -235,15 +297,23 @@ export const WhereWeWork = () => {
                 ))}
               </div>
             </div>
-            <figure>
+            <figure className="editorial-figure">
               <div className="about-media">
                 <img
                   src={whereWeWork.image}
-                  alt="Adivasi community members in the Eastern Ghats"
+                  alt={whereWeWork.imageAlt ?? "The Eastern Ghats landscape"}
                   loading="lazy"
                   decoding="async"
                 />
               </div>
+              <figcaption className="editorial-caption">
+                <span>{whereWeWork.imageCaption ?? "The Eastern Ghats · LAYA field presence"}</span>
+                {whereWeWork.imageDisclosure && (
+                  <span className="editorial-caption__badge">
+                    {whereWeWork.imageDisclosure}
+                  </span>
+                )}
+              </figcaption>
             </figure>
           </div>
         </section>
@@ -251,6 +321,7 @@ export const WhereWeWork = () => {
         <section className="about-band">
           <div className="container-page">
             <div className="about-actions">
+              <EditorialLink to={ROUTES.impact}>Our impact</EditorialLink>
               <EditorialLink to={ROUTES.programs}>All programmes</EditorialLink>
               <EditorialLink to={ROUTES.contact}>Contact us</EditorialLink>
             </div>
@@ -323,6 +394,50 @@ export const FinancialReports = () => {
             </dl>
           </div>
         </header>
+
+        {/* ---- 2025–2026 Annual Program Expenditure Breakdown ---------- */}
+        <section className="about-band about-band--warm border-b border-[#e7e4e9]">
+          <div className="res-header__inner">
+            <header className="about-heading mb-6">
+              <p className="type-eyebrow">Annual Report 2025–2026 Disclosures</p>
+              <h2 className="about-heading__title">{programExpenditure.title}</h2>
+              <p className="about-heading__intro">
+                Total program expenditure for the year stood at <strong>{programExpenditure.totalExpenditure}</strong>,
+                transparently invested across LAYA's 3 Core Pillars in northern Andhra Pradesh.
+              </p>
+            </header>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+              {programExpenditure.pillars.map((pillar) => (
+                <div
+                  key={pillar.name}
+                  className="bg-white p-5 border border-[#e7e4e9] shadow-sm flex flex-col justify-between"
+                  style={{ borderTop: `4px solid ${pillar.color}` }}
+                >
+                  <div>
+                    <span className="text-2xl sm:text-3xl font-serif font-bold text-neutral-900 block mb-1">
+                      {pillar.percentage}
+                    </span>
+                    <h3 className="text-sm font-semibold text-neutral-800 font-sans mb-2">
+                      {pillar.name}
+                    </h3>
+                    <p className="text-xs text-neutral-600 leading-relaxed font-sans">
+                      {pillar.description}
+                    </p>
+                  </div>
+                  <div className="mt-4 pt-3 border-t border-neutral-100 flex items-center justify-between text-[11px] text-neutral-500 font-mono">
+                    <span>Pillar Share</span>
+                    <span className="font-semibold text-neutral-800">{pillar.percentage}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-xs text-neutral-500 font-sans italic">
+              Source: {programExpenditure.source} · {programExpenditure.reportingPeriod}
+            </p>
+          </div>
+        </section>
 
         {/* ---- Year filter ---------------------------------------------- */}
         <div className="res-filters">
@@ -448,20 +563,37 @@ export const FinancialReports = () => {
 export const FcraInformation = () => {
   useRevealOnScroll();
   const { pathname } = useLocation();
-  const { fcraRegistration, fcraBank, quarterlyReceipts } = fcraInformation;
+  const { content } = useWebsiteContent();
+
+  const liveFcra = content.about?.fcraInformation;
+  const fcraRegistration = {
+    registrationNumber: liveFcra?.registrationNumber || fcraInformation.fcraRegistration.registrationNumber,
+    dateOfRegistration: liveFcra?.dateOfRegistration || fcraInformation.fcraRegistration.dateOfRegistration,
+    renewalDate: liveFcra?.renewalDate || fcraInformation.fcraRegistration.renewalDate,
+  };
+  const fcraBank = {
+    ...fcraInformation.fcraBank,
+    name: liveFcra?.bankName || fcraInformation.fcraBank.name,
+    address: liveFcra?.address || fcraInformation.fcraBank.address,
+    branchCode: liveFcra?.branchCode || fcraInformation.fcraBank.branchCode,
+  };
+  const fcraTitle = liveFcra?.title || fcraInformation.title;
+  const fcraSubtitle = liveFcra?.subtitle || fcraInformation.subtitle;
+  const fcraDesc = liveFcra?.description || fcraInformation.description;
 
   return (
     <>
       <Helmet>
-        <title>FCRA Information | LAYA</title>
-        <meta name="description" content={fcraInformation.description} />
+        <title>{fcraTitle} | LAYA</title>
+        <meta name="description" content={fcraDesc} />
         <link rel="canonical" href="https://laya.org.in/about/fcra-information" />
       </Helmet>
       <MainLayout>
         <PageHeader
+          fieldPrefix="about.fcraInformation"
           eyebrow={ABOUT_HERO_LABELS[pathname]}
-          title={fcraInformation.title}
-          subtitle={fcraInformation.subtitle}
+          title={fcraTitle}
+          subtitle={fcraSubtitle}
           meta={[
             { label: "Registration", value: fcraRegistration.registrationNumber },
             { label: "Registered", value: fcraRegistration.dateOfRegistration },
@@ -474,37 +606,72 @@ export const FcraInformation = () => {
             <SectionHeading
               eyebrow="Registration"
               title="FCRA registration and designated bank account"
-              intro={fcraInformation.description}
+              intro={fcraDesc}
+              introPath="about.fcraInformation.description"
             />
 
             <div className="record-list record-list--two reveal">
               <div>
                 <h3 className="record-list__term">Registration Number</h3>
-                <p className="record-list__value record-list__value--mono">
-                  {fcraRegistration.registrationNumber}
-                </p>
+                <EditableText
+                  path="about.fcraInformation.registrationNumber"
+                  label="Registration Number"
+                  value={fcraRegistration.registrationNumber}
+                  as="p"
+                  className="record-list__value record-list__value--mono"
+                />
               </div>
               <div>
                 <h3 className="record-list__term">Date of Registration</h3>
-                <p className="record-list__value">{fcraRegistration.dateOfRegistration}</p>
+                <EditableText
+                  path="about.fcraInformation.dateOfRegistration"
+                  label="Date of Registration"
+                  value={fcraRegistration.dateOfRegistration}
+                  as="p"
+                  className="record-list__value"
+                />
               </div>
               <div>
                 <h3 className="record-list__term">Renewed for 5 years w.e.f.</h3>
-                <p className="record-list__value">{fcraRegistration.renewalDate}</p>
+                <EditableText
+                  path="about.fcraInformation.renewalDate"
+                  label="Renewal Date"
+                  value={fcraRegistration.renewalDate}
+                  as="p"
+                  className="record-list__value"
+                />
               </div>
               <div>
                 <h3 className="record-list__term">Branch Code</h3>
-                <p className="record-list__value record-list__value--mono">{fcraBank.branchCode}</p>
+                <EditableText
+                  path="about.fcraInformation.branchCode"
+                  label="Branch Code"
+                  value={fcraBank.branchCode}
+                  as="p"
+                  className="record-list__value record-list__value--mono"
+                />
               </div>
               <div>
                 <h3 className="record-list__term">Name of the Bank</h3>
-                <p className="record-list__value">{fcraBank.name}</p>
+                <EditableText
+                  path="about.fcraInformation.bankName"
+                  label="Bank Name"
+                  value={fcraBank.name}
+                  as="p"
+                  className="record-list__value"
+                />
               </div>
               <div>
                 <h3 className="record-list__term">Address</h3>
-                <p className="record-list__value" style={{ fontSize: "var(--text-sm)" }}>
-                  {fcraBank.address}
-                </p>
+                <EditableText
+                  path="about.fcraInformation.address"
+                  label="Bank Address"
+                  value={fcraBank.address}
+                  as="p"
+                  multiline={true}
+                  className="record-list__value"
+                  style={{ fontSize: "var(--text-sm)" }}
+                />
               </div>
             </div>
 
@@ -593,19 +760,15 @@ export const FcraInformation = () => {
 export const Governance = () => {
   useRevealOnScroll();
   const { pathname } = useLocation();
+  const { content } = useWebsiteContent();
 
-  /*
-    Two separate numbers, deliberately kept apart:
+  const liveGov = content.about?.governance;
+  const boardMembers = liveGov?.members?.length
+    ? liveGov.members
+    : governance.boardOfManagement;
+  const govTitle = liveGov?.title || governance.title;
+  const govDescription = liveGov?.description || governance.description;
 
-      statedCount — what LAYA's own description says the General Body comprises.
-                    This is the ORGANISATIONAL FACT and is what the page reports.
-      namedCount  — how many members are actually listed in the source data.
-
-    Widened to `number` so the guard below is a genuine runtime comparison. As
-    literal types TS can prove `14 !== 16` and flags it as an unintentional
-    comparison, which would also silently break the check once the listing is
-    completed.
-  */
   const statedCount: number = governance.statedComposition.generalBodyCount;
   const namedCount: number = governance.generalBody.length;
 
@@ -613,31 +776,15 @@ export const Governance = () => {
     <>
       <Helmet>
         <title>Governance | LAYA</title>
-        <meta name="description" content={governance.description} />
+        <meta name="description" content={govDescription} />
         <link rel="canonical" href="https://laya.org.in/about/governance" />
       </Helmet>
       <MainLayout>
         <PageHeader
-          eyebrow={ABOUT_HERO_LABELS[pathname]}
-          title={governance.title}
+          fieldPrefix="about.governance"
+          eyebrow={liveGov?.eyebrow || ABOUT_HERO_LABELS[pathname]}
+          title={govTitle}
           subtitle={governance.subtitle}
-          /*
-            FACT ROW — uses the ORGANISATION'S STATED figures, never array
-            lengths.
-
-            The source description says "a General Body comprising 16 General
-            Body Members … and a Board of Management (BoM) comprising 7 elected
-            members", while the published listings contain 14 and 6 records.
-            Counting the arrays here would put a number on the page that
-            contradicts the organisation's own sentence directly beneath it.
-
-            Meetings are shown as two separate rows (BoM quarterly, General Body
-            annually) because they are two distinct bodies with different
-            cadences — collapsing them into one "BoM quarterly · GB annually"
-            cell blurred that.
-
-            See the note on `statedComposition` in src/content/about.ts.
-          */
           meta={[
             {
               label: "General Body",
@@ -645,7 +792,7 @@ export const Governance = () => {
             },
             {
               label: "Board of Management",
-              value: `${governance.statedComposition.boardOfManagementCount} elected members`,
+              value: `${boardMembers.length} elected members`,
             },
             { label: "Meetings", value: "BoM quarterly" },
             { label: "General Body", value: "Annually" },
@@ -657,7 +804,8 @@ export const Governance = () => {
             <SectionHeading
               eyebrow="Structure"
               title="How LAYA is governed"
-              intro={governance.description}
+              intro={govDescription}
+              introPath="about.governance.description"
             />
             <div className="about-points reveal">
               {governance.governanceProcesses.map((p) => (
@@ -674,17 +822,21 @@ export const Governance = () => {
             <SectionHeading
               eyebrow="Board of Management"
               title="Elected office bearers"
-              intro="LAYA's Board of Management comprises 7 elected members. The BoM meets four times a year, and one meeting each year includes field exposure and critical reflection on programme activities."
+              intro={`LAYA's Board of Management comprises ${boardMembers.length} elected members. The BoM meets four times a year, and one meeting each year includes field exposure and critical reflection on programme activities.`}
             />
             <div className="roster reveal">
-              {governance.boardOfManagement.map((member) => (
+              {boardMembers.map((member) => (
                 <div key={member.name} className="roster__row">
                   <span className="roster__name">
                     {member.name}
-                    <span className="roster__office">{member.role}</span>
+                    {member.role && <span className="roster__office">{member.role}</span>}
                   </span>
                   <span className="roster__role">
-                    {governance.generalBody.find((g) => g.name === member.name)?.role ?? ""}
+                    {"bio" in member && member.bio
+                      ? member.bio
+                      : "designation" in member && (member as any).designation
+                      ? (member as any).designation
+                      : (governance.generalBody.find((g) => g.name === member.name)?.role ?? "")}
                   </span>
                 </div>
               ))}
@@ -746,38 +898,38 @@ export const Governance = () => {
               <div>
                 <dt className="reg-list__term">FCRA registration number</dt>
                 <dd className="reg-list__value reg-list__value--mono">
-                  {fcraInformation.fcraRegistration.registrationNumber}
+                  {content.about?.fcraInformation?.registrationNumber || fcraInformation.fcraRegistration.registrationNumber}
                 </dd>
               </div>
               <div>
                 <dt className="reg-list__term">Date of registration</dt>
                 <dd className="reg-list__value">
-                  {fcraInformation.fcraRegistration.dateOfRegistration}
+                  {content.about?.fcraInformation?.dateOfRegistration || fcraInformation.fcraRegistration.dateOfRegistration}
                 </dd>
               </div>
               <div>
                 <dt className="reg-list__term">Renewed for 5 years w.e.f.</dt>
                 <dd className="reg-list__value">
-                  {fcraInformation.fcraRegistration.renewalDate}
+                  {content.about?.fcraInformation?.renewalDate || fcraInformation.fcraRegistration.renewalDate}
                 </dd>
               </div>
               <div>
                 <dt className="reg-list__term">Designated bank</dt>
-                <dd className="reg-list__value">{fcraInformation.fcraBank.name}</dd>
+                <dd className="reg-list__value">
+                  {content.about?.fcraInformation?.bankName || fcraInformation.fcraBank.name}
+                </dd>
               </div>
             </dl>
 
             <div className="transparency-grid reveal">
               {TRANSPARENCY_DOCUMENTS.map((doc) => {
                 const inner = (
-                  <>
-                    <div>
-                      <span className="transparency-doc__kind">{doc.kind}</span>
-                      <span className="transparency-doc__title">{doc.title}</span>
-                      <span className="transparency-doc__desc">{doc.description}</span>
-                      {doc.meta && <span className="transparency-doc__meta">{doc.meta}</span>}
-                    </div>
-                  </>
+                  <div className="transparency-doc__body">
+                    <span className="transparency-doc__kind">{doc.kind}</span>
+                    <h3 className="transparency-doc__title">{doc.title}</h3>
+                    <p className="transparency-doc__desc">{doc.description}</p>
+                    {doc.meta && <span className="transparency-doc__meta">{doc.meta}</span>}
+                  </div>
                 );
 
                 const icon = (

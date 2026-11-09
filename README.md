@@ -13,102 +13,150 @@ The LAYA Chronicle is the public-facing website and resource center for **LAYA**
 - [React](https://react.dev/) 18
 - [TypeScript](https://www.typescriptlang.org/)
 - [Vite](https://vitejs.dev/)
-- [React Router](https://reactrouter.com/)
-- [TanStack Query](https://tanstack.com/query)
+- [React Router](https://reactrouter.com/) 7
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Radix UI](https://www.radix-ui.com/)
 - [Framer Motion](https://motion.dev/)
 - [Vitest](https://vitest.dev/) and Testing Library
+- [Playwright](https://playwright.dev/) for real-browser end-to-end testing
+- [Express](https://expressjs.com/) for Node.js production hosting
+
 ## Requirements
-- Node.js 18 or newer
-- [Bun](https://bun.sh/) (recommended; the repository includes `bun.lock`)
+- Node.js 18 or newer (Node.js 20+ LTS recommended)
+- npm 9+ (or Bun)
 
 ## Getting started
-1. Clone the repository and move into the project directory:
+1. Clone the repository and navigate into the project directory:
 
    ```sh
    git clone <repository-url>
-   cd laya-connect-main
+   cd "Experiment LRC"
    ```
 
 2. Install dependencies:
 
    ```sh
-   bun install
+   npm install
    ```
 
-3. Start the development server:
+3. Configure your local environment (optional):
 
    ```sh
-   bun run dev
+   cp .env.example .env
    ```
 
-   Vite serves the app at [http://localhost:8080](http://localhost:8080).
+4. Start the development server:
+
+   ```sh
+   npm run dev
+   ```
+
+   Vite serves the application locally (typically at `http://localhost:8080` or `http://localhost:5173`).
 
 ## Available scripts
+
 | Command | Description |
 | --- | --- |
-| `bun run dev` | Start the Vite development server |
-| `bun run build` | Create a production build |
-| `bun run build:dev` | Create a development-mode build |
-| `bun run preview` | Preview the production build locally |
-| `bun run test` | Run the test suite once |
-| `bun run test:watch` | Run Vitest in watch mode |
-| `bun run lint` | Run ESLint across the project |
+| `npm run dev` | Start the Vite local development server |
+| `npm run build` | Create an optimized production bundle in `dist/` |
+| `npm run build:dev` | Create a development-mode build |
+| `npm run preview` | Preview the production build locally via Vite preview server |
+| `npm test` | Run Vitest unit and integration test suites (81 tests across 12 suites) |
+| `npm run test:watch` | Run Vitest in interactive watch mode |
+| `npm run test:e2e` | Run Playwright real-browser end-to-end smoke tests (Desktop & Mobile) |
+| `npm run lint` | Run ESLint across all source and test files |
+| `npx tsc --noEmit` | Validate TypeScript types across the entire project |
+| `npm audit --omit=dev` | Verify zero vulnerabilities in production dependencies |
+| `npm run start` | Launch the production Node.js Express server (`server.js`) |
 
-Before opening a pull request, run:
-
-```sh
-bun run test
-bun run lint
-bun run build
-```
-
-## Environment variables
-The application works without environment variables by using the local content in `src/services/api.ts`. To configure a WordPress-compatible API for contact submissions, create a `.env` file in the project root:
+Before submitting changes or preparing a release, run the full validation suite:
 
 ```sh
-VITE_WP_API_URL=https://example.com/wp-json
+npx tsc --noEmit
+npm run lint
+npm test
+npm run build
+npm audit --omit=dev
+npm run test:e2e
 ```
 
-Vite exposes only variables prefixed with `VITE_` to browser code. Do not put passwords, private tokens, or other secrets in this file.
+## Environment configuration
+
+The application is fully operational in standalone mode using verified local datasets in `src/content/`.
+
+To connect external services such as the WordPress contact endpoint:
+
+1. Copy `.env.example` to `.env`:
+   ```sh
+   cp .env.example .env
+   ```
+
+2. Environment variables:
+   - `VITE_WP_API_URL`: Configures Axios `baseURL` for contact submissions (`src/services/api.ts`).
+     - **Default (blank):** Submits to relative path `/contact` (ideal when reverse-proxying through Apache/IIS/Express).
+     - **Direct API:** Set to WordPress REST API base path (e.g., `https://cms.laya.org.in/wp-json`).
+   - `PORT`: Sets the listening port for `server.js` when running the Express production server (defaults to 3000).
+
+> **Security Rule:** Vite statically embeds variables prefixed with `VITE_` into client-side JavaScript bundles. **Never store database passwords, private encryption keys, or secret tokens in `.env`.**
+
+## Supported deployment architectures
+
+The LAYA Chronicle supports three production hosting profiles:
+
+### Profile A: Static Windows Server / Plesk (IIS)
+- **Deployment files:** Copy the contents of `dist/` to the IIS web root.
+- **Configuration:** `dist/web.config` is automatically provided from `public/web.config`.
+- **Prerequisite:** Microsoft **IIS URL Rewrite Module 2.0** must be installed and enabled on the server. Without it, IIS returns an HTTP 500.19 error.
+- **Features:** Rewrites all client-side routes to `/index.html`, registers MIME types for modern formats (`.webp`, `.woff2`, `.json`), and applies HTTP security headers (`nosniff`, `SAMEORIGIN`, `strict-origin-when-cross-origin`, CSP, Permissions-Policy).
+
+### Profile B: Static Linux / cPanel (Apache or LiteSpeed)
+- **Deployment files:** Copy the contents of `dist/` to `public_html` or the domain document root.
+- **Configuration:** `dist/.htaccess` is automatically provided from `public/.htaccess`.
+- **Features:** Enables `mod_rewrite` to route virtual SPA paths to `/index.html` and uses `mod_headers` to enforce institutional security headers and Content Security Policy.
+
+### Profile C: Node.js Express Server (Hostinger / Docker / VPS)
+- **Deployment files:** Deploy `dist/`, `server.js`, and `package.json`.
+- **Installation & start:**
+  ```sh
+  npm install --omit=dev
+  npm run start
+  ```
+- **Features:** Hardened Express 5 server with `disable('x-powered-by')`, security headers, dotfile/path-traversal protection (`deny`), safe HTTP method restriction (405 for mutations on SPA routes), 404 handler for missing assets, and a `/health` endpoint for monitoring.
+
+## Outstanding production prerequisites
+
+Before public release to `https://laya.org.in`, the following external milestones must be completed:
+
+1. **Production Domain & DNS:**
+   - Point DNS A/CNAME records to the selected hosting environment.
+   - Provision SSL certificates (HTTPS is required for HSTS and secure contact delivery).
+2. **WordPress Contact API Integration:**
+   - Install and activate the server integration plugin from `docs/wordpress_contact_api_integration.php` on the WordPress CMS.
+   - Configure a reverse proxy on the web server from `/contact` to `/wp-json/contact/v1/send` (or configure CORS for direct browser-to-WordPress calls).
+   - Verify SMTP mail routing (`wp_mail`) on the WordPress server.
+3. **Hosting Target Selection:**
+   - Choose Profile A (IIS), Profile B (Apache), or Profile C (Node.js) and follow the respective deployment steps above.
 
 ## Project structure
 ```text
 src/
 ├── assets/       Images, logos, and gallery content
-├── components/   Shared layout and UI components
-├── hooks/        Reusable React hooks, including the contact form
-├── layouts/      Site-wide page layouts
-├── lib/          Small shared utilities
-├── pages/        Route-level page components
-├── services/     API client, types, and local content
-└── test/         Vitest and Testing Library tests
+├── components/   Shared layout, UI, and navigation components
+├── config/       Centralized navigation routes and menu hierarchies
+├── content/      Verified organizational datasets (About, Contact, Stories, Resources, Impact)
+├── hooks/        Reusable React hooks (contact form, scroll reveal, nav active states)
+├── layouts/      MainLayout with institutional header, footer, and navigation
+├── lib/          Shared routes and utilities
+├── pages/        Route-level page components (About, Programs, Publications, Stories, Gallery, Donate, Contact)
+├── services/     API client and mock data interfaces
+└── test/         Vitest unit and integration test suites
 ```
 
-The `@` import alias points to `src`, so imports can use paths such as `@/components/Header`.
-
-## Main routes
-- `/` — Home
-- `/about` — About LAYA and organizational information
-- `/programs` — Programs overview
-- `/what-we-do/...` — Individual program areas
-- `/impact` — Impact metrics
-- `/stories` — Community stories
-- `/publications` — Publications and resources
-- `/gallery` — Photo gallery
-- `/team` — Team
-- `/donate` — Donation information
-- `/contact` — Contact
-## Content and API notes
-Most page content is currently provided by typed mock data in `src/services/api.ts`, making the site usable during development without a backend. The API module is the intended integration point for replacing local content with a CMS or other service. Contact submissions are sent to `POST /contact` relative to `VITE_WP_API_URL` when that variable is configured.
-
-## Deployment
-Build the site with `bun run build`, then serve the generated `dist/` directory from a static host. Because the app uses client-side routing, configure the host to serve `index.html` as a fallback for application routes.
-
-## Contributing
-1. Create a focused branch for your change.
-2. Keep content, components, and service changes scoped to the relevant area.
-3. Add or update tests when behavior changes.
-4. Run `bun run test`, `bun run lint`, and `bun run build` before submitting a pull request.
-5. Include a concise description of the user-facing impact in the pull request.
+## Contributing and hygiene guidelines
+1. Create a focused branch for your changes.
+2. Maintain documentation and test coverage: add tests for any modified user flows.
+3. Verify all validation gates pass before committing:
+   ```sh
+   npx tsc --noEmit && npm run lint && npm test && npm run build && npm run test:e2e
+   ```
+4. Do not commit `.env`, test results, or generated build output (`dist/`).

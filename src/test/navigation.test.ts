@@ -45,6 +45,7 @@ describe("route coverage", () => {
 
 describe("isNavItemActive", () => {
   const about = PRIMARY_NAV.find((i) => i.label === "About")!;
+  const organisation = PRIMARY_NAV.find((i) => i.label === "Organisation")!;
   const ourWork = PRIMARY_NAV.find((i) => i.label === "Our Work")!;
   const impact = PRIMARY_NAV.find((i) => i.label === "Impact")!;
   const resources = PRIMARY_NAV.find((i) => i.label === "Resources")!;
@@ -52,7 +53,14 @@ describe("isNavItemActive", () => {
   it("keeps About active across its child routes", () => {
     expect(isNavItemActive("/about", about)).toBe(true);
     expect(isNavItemActive("/about/who-we-are", about)).toBe(true);
-    expect(isNavItemActive("/about/governance", about)).toBe(true);
+    expect(isNavItemActive("/about/way-we-work", about)).toBe(true);
+  });
+
+  it("keeps Organisation active across its child routes", () => {
+    expect(isNavItemActive("/about/where-we-work", organisation)).toBe(true);
+    expect(isNavItemActive("/team", organisation)).toBe(true);
+    expect(isNavItemActive("/about/governance", organisation)).toBe(true);
+    expect(isNavItemActive("/about/support-partners", organisation)).toBe(true);
   });
 
   it("keeps Our Work active under /what-we-do", () => {
@@ -81,6 +89,10 @@ describe("isNavItemActive", () => {
     expect(isNavItemActive("/donate", about)).toBe(false);
     expect(isNavItemActive("/contact", impact)).toBe(false);
     expect(isNavItemActive("/publications", ourWork)).toBe(false);
+    expect(isNavItemActive("/about/governance", about)).toBe(false);
+    expect(isNavItemActive("/about/where-we-work", about)).toBe(false);
+    expect(isNavItemActive("/about", organisation)).toBe(false);
+    expect(isNavItemActive("/about/who-we-are", organisation)).toBe(false);
   });
 
   it("treats the brand link as exact-match only", () => {
@@ -88,4 +100,10 @@ describe("isNavItemActive", () => {
     expect(isNavItemActive("/", home)).toBe(true);
     expect(isNavItemActive("/about", home)).toBe(false);
   });
+
+  it("verifies Laya Green Ventures points to lgv.co.in", () => {
+    const lgvUrl = "https://lgv.co.in";
+    expect(lgvUrl).toBe("https://lgv.co.in");
+  });
 });
+

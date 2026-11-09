@@ -26,3 +26,38 @@ dist-ssr
 *.sln
 *.sw?
 public/documents/
+
+# Test results & coverage
+test-results/
+playwright-report/
+coverage/
+
+# Build archives
+*.zip
+*.tar.gz
+
+# Diagnostic audit & build logs
+audit_report.json
+prod_audit.json
+audit_summary.md
+build-log.txt
+
+# Scratch scrapers, screenshots and documentation exports
+*.docx
+*.doc
+*.pdf
+*.csv
+crawl_*.ts
+build_*.ts
+build_*.py
+extract_all_content.ts
+generate_*.py
+generate_*.cjs
+generate_*.ts
+optimize_hero.py
+*_crawl_data.json
+*_screenshots/
+website_content_archive.json
+Website_Extraction_Report.txt
+documents_backup/
+scratch/

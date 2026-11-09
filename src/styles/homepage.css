@@ -184,7 +184,7 @@
       padding: clamp(1.5rem, 2vw, 2.5rem);
       background-color: rgba(15, 33, 25, 0.35);
       border-inline-start: 2px solid rgba(255, 255, 255, 0.2); /* Soft glass border instead of hard violet */
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-none);
     }
   }
 
@@ -198,7 +198,7 @@
   }
 
   .home-hero__copy .type-eyebrow {
-    color: var(--laya-forest-800);
+    color: var(--text-brand);
   }
 
   .home-hero__copy .home-hero__secondary-action,
@@ -208,7 +208,7 @@
 
   .home-hero__copy .home-hero__secondary-action:hover,
   .home-hero__copy .editorial-link:hover {
-    color: var(--laya-forest-800);
+    color: var(--text-brand);
   }
 
   @media (min-width: 768px) {
@@ -340,11 +340,12 @@
 
   .home-figures {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0;
+    grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+    gap: var(--space-xs);
     padding-top: var(--space-md);
     border-top: var(--hairline) solid var(--border-subtle);
-    max-width: 34rem;
+    max-width: 38rem;
+    width: 100%;
   }
 
   .home-figures > div {
@@ -523,7 +524,8 @@
   .home-media {
     position: relative;
     overflow: hidden;
-    border-radius: var(--radius-media);
+    border-radius: 0;
+    border: 1px solid var(--border-subtle);
     background-color: var(--laya-stone-100);
     aspect-ratio: 3 / 2;
   }
@@ -586,6 +588,20 @@
     max-width: 62rem;
   }
 
+  .home-section-header .type-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: var(--space-2xs);
+  }
+
+  .home-section-header .type-eyebrow::before {
+    content: "";
+    width: 1.5rem;
+    height: 1px;
+    background-color: var(--laya-logo-blue);
+  }
+
   .home-section-header__heading {
     font-family: var(--font-serif);
     font-size: var(--text-h2);
@@ -632,6 +648,7 @@
     overflow: hidden;
     background-color: var(--laya-stone-100);
     aspect-ratio: 16 / 10;
+    border-bottom: 1px solid var(--border-subtle);
   }
 
   /*
@@ -645,6 +662,8 @@
       aspect-ratio: auto;
       height: 100%;
       min-height: 17rem;
+      border-bottom: none;
+      border-right: 1px solid var(--border-subtle);
     }
   }
 
@@ -706,13 +725,7 @@
 
   @media (min-width: 640px) {
     .work-rail {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .work-rail {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
     }
   }
 
@@ -730,8 +743,8 @@
 
   .work-tile:hover {
     border-color: var(--border-default);
-    transform: translateY(-6px);
-    box-shadow: 0 12px 32px -8px rgba(109, 87, 165, 0.18);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px -4px rgba(36, 35, 42, 0.08);
   }
 
   /* Stagger children in the work rail */
@@ -748,6 +761,7 @@
     overflow: hidden;
     aspect-ratio: 16 / 9;
     background-color: var(--laya-stone-100);
+    border-bottom: 1px solid var(--border-subtle);
   }
 
   .work-tile__media img {
@@ -800,6 +814,13 @@
       grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
       gap: var(--space-2xl);
     }
+
+    .stories-grid:has(> :only-child),
+    .stories-grid--single {
+      grid-template-columns: minmax(0, 1fr);
+      max-width: 52rem;
+      margin-inline: auto;
+    }
   }
 
   .story-lead {
@@ -815,8 +836,8 @@
 
   .story-lead:hover {
     border-color: var(--border-default);
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px -8px rgba(109, 87, 165, 0.18);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px -4px rgba(36, 35, 42, 0.08);
   }
 
   .story-lead__media {
@@ -824,6 +845,7 @@
     overflow: hidden;
     aspect-ratio: 16 / 10;
     background-color: var(--laya-stone-100);
+    border-bottom: 1px solid var(--border-subtle);
   }
 
   .story-lead__media img {
@@ -879,7 +901,8 @@
 
   .story-item__media {
     overflow: hidden;
-    border-radius: var(--radius-sm);
+    border-radius: 0;
+    border: 1px solid var(--border-subtle);
     aspect-ratio: 1 / 1;
     background-color: var(--laya-stone-100);
   }
@@ -923,7 +946,7 @@
 
   @media (min-width: 640px) {
     .chronicle-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
     }
   }
 
@@ -941,8 +964,8 @@
 
   .document-card:hover {
     border-color: var(--border-default);
-    transform: translateY(-6px);
-    box-shadow: 0 12px 32px -8px rgba(109, 87, 165, 0.18);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px -4px rgba(36, 35, 42, 0.08);
   }
 
   /* Stagger children in the chronicle grid */
@@ -994,6 +1017,40 @@
     padding: var(--space-md);
   }
 
+  .document-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem;
+    margin-bottom: var(--space-2xs);
+  }
+
+  .document-card__type {
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-brand);
+  }
+
+  .document-card__date {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    color: var(--text-tertiary);
+  }
+
+  .document-card__date::before {
+    content: "";
+    width: 3px;
+    height: 3px;
+    border-radius: 9999px;
+    background-color: var(--border-strong);
+  }
+
   .document-card__title {
     font-family: var(--font-sans);
     font-size: var(--text-h4);
@@ -1024,34 +1081,20 @@
   .impact-grid {
     display: grid;
     gap: var(--space-lg);
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
     margin-top: var(--space-2xl);
   }
 
   @media (min-width: 900px) {
     .impact-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
       gap: var(--space-xl);
     }
   }
 
   .impact-metric {
     padding-top: var(--space-md);
-    border-top: 2px solid var(--laya-forest-600);
-  }
-
-  /* Stagger children in the impact grid */
-  .impact-grid > :nth-child(1) { transition-delay: 0ms; }
-  .impact-grid > :nth-child(2) { transition-delay: 120ms; }
-  .impact-grid > :nth-child(3) { transition-delay: 240ms; }
-  .impact-grid > :nth-child(4) { transition-delay: 360ms; }
-
-  .impact-metric:nth-child(2n) {
-    border-top-color: var(--laya-violet-600);
-  }
-
-  .impact-metric:nth-child(3n) {
-    border-top-color: var(--laya-blue-600);
+    border-top: 2px solid var(--border-brand);
   }
 
   .impact-metric__value {
@@ -1094,12 +1137,12 @@
 
   @media (min-width: 900px) {
     .voices-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
     }
   }
 
   .voice {
-    border-top: 2px solid var(--laya-forest-400);
+    border-top: 2px solid var(--border-subtle);
     padding-top: var(--space-md);
   }
 
@@ -1243,7 +1286,7 @@
   }
 
   .editorial-link:hover {
-    color: var(--laya-forest-800);
+    color: var(--laya-violet-800);
   }
 
   .editorial-link__arrow {
@@ -1269,7 +1312,7 @@
      ------------------------------------------------------------------------ */
 
   .home-band--ink .type-eyebrow {
-    color: var(--laya-forest-300);
+    color: var(--laya-violet-300);
   }
 
   .home-band--ink .editorial-link {
@@ -1297,6 +1340,392 @@
     .document-card__cover img,
     .editorial-link__arrow {
       transition: none;
+    }
+  }
+
+  /* ------------------------------------------------------------------------
+     MOBILE SCROLL COMPACTION (STRICTLY FOR MOBILES: max-width: 767px)
+     ------------------------------------------------------------------------
+     Drastically reduces mobile homepage height by ~55% (over 3,500px of scrolling):
+       1. Replaces vertical stacks with horizontal swipeable card carousels
+          for repetitive rails (Our Work, Publications, Voices, Principles).
+       2. Tightens mobile section padding from 4.5rem to 2rem.
+       3. Tightens section headers, body line-heights, and image aspect ratios.
+       4. Strictly scoped to max-width: 767px so desktop & tablet are 100% untouched.
+     ------------------------------------------------------------------------ */
+
+  @media (max-width: 767px) {
+    /* Tighten section vertical padding */
+    .home-band {
+      padding-block: 2rem 1.75rem;
+      padding-inline: 1rem;
+    }
+
+    .impact-band {
+      padding-block: 2rem 1.75rem;
+      padding-inline: 1rem;
+    }
+
+    .support-band {
+      padding-block: 2rem 1.75rem;
+      padding-inline: 1rem;
+    }
+
+    /* Tighten section headers */
+    .home-section-header {
+      margin-bottom: 1.25rem;
+    }
+
+    .home-section-header__heading {
+      font-size: 1.625rem;
+      line-height: 1.22;
+      margin-top: 0.125rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .home-section-header__intro {
+      font-size: 0.9375rem;
+      line-height: 1.5;
+    }
+
+    /* Four Decades section */
+    .home-split {
+      gap: 1.25rem;
+    }
+
+    .home-prose {
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    .home-prose > * + * {
+      margin-top: 0.5rem;
+    }
+
+    .home-section-header__intro {
+      font-size: 0.875rem;
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .home-media {
+      position: relative;
+      aspect-ratio: auto;
+      max-height: none;
+      overflow: hidden;
+    }
+
+    .home-media img {
+      aspect-ratio: 16 / 10;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    .home-media__note {
+      position: static;
+      left: auto;
+      bottom: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0.75rem;
+      background-color: var(--laya-stone-100);
+      border: none;
+      border-top: 1px solid var(--border-subtle);
+      border-radius: 0;
+    }
+
+    .home-media__note-label {
+      font-size: var(--text-label);
+      font-weight: 700;
+    }
+
+    .home-media__note-value {
+      margin-top: 0;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    #four-decades-section .container-page + .container-page {
+      margin-top: 1.25rem !important;
+    }
+
+    /* Four Decades Principles: clean vertical stacked list (eliminates horizontal truncation) */
+    #four-decades-section .work-rail {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      margin-inline: 0;
+      padding-inline: 0;
+      overflow-x: visible;
+      scroll-snap-type: none;
+    }
+
+    #four-decades-section .work-rail > .impact-metric {
+      flex: unset;
+      max-width: none;
+      padding-top: 0.625rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    #four-decades-section .work-rail > .impact-metric:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    #four-decades-section .work-rail .type-h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    #four-decades-section .work-rail .impact-metric__desc {
+      font-size: 0.8125rem;
+      line-height: 1.45;
+    }
+
+    /* Our Work: Feature card compacting */
+    .work-feature {
+      margin-bottom: 1.25rem;
+    }
+
+    .work-feature__media {
+      aspect-ratio: 16 / 9;
+      max-height: 200px;
+    }
+
+    .work-feature__body {
+      padding: 1rem;
+    }
+
+    .work-feature__title {
+      font-size: 1.25rem;
+      margin-top: 0.25rem;
+      margin-bottom: 0.375rem;
+    }
+
+    .work-feature__desc {
+      font-size: 0.875rem;
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .work-feature__metric {
+      margin-top: 0.75rem;
+      padding-top: 0.5rem;
+    }
+
+    /* Our Work: Programme Rail horizontal swipeable carousel */
+    #our-work .work-rail {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 0.75rem;
+      padding-bottom: 0.75rem;
+      margin-inline: -1rem;
+      padding-inline: 1rem;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #our-work .work-rail::-webkit-scrollbar {
+      display: none;
+    }
+
+    #our-work .work-tile {
+      flex: 0 0 80%;
+      max-width: 290px;
+      scroll-snap-align: start;
+    }
+
+    #our-work .work-tile__media {
+      aspect-ratio: 16 / 9;
+    }
+
+    #our-work .work-tile__body {
+      padding: 0.875rem;
+    }
+
+    #our-work .work-tile__desc {
+      font-size: 0.8125rem;
+      line-height: 1.4;
+      margin-bottom: 0.5rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Stories section */
+    .stories-grid {
+      gap: 1.25rem;
+    }
+
+    .story-lead__media {
+      aspect-ratio: 16 / 9;
+      max-height: 200px;
+    }
+
+    .story-lead__body {
+      padding: 1rem;
+    }
+
+    .story-lead__title {
+      font-size: 1.25rem;
+    }
+
+    .story-lead__excerpt {
+      font-size: 0.875rem;
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .story-stack {
+      gap: 0.75rem;
+    }
+
+    .story-item {
+      grid-template-columns: 4.5rem minmax(0, 1fr);
+      gap: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
+
+    .story-item__title {
+      font-size: 0.9375rem;
+      margin-block: 0.125rem 0.25rem;
+    }
+
+    .story-item__excerpt {
+      font-size: 0.8125rem;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* The LAYA Chronicle: Horizontal swipeable publication carousel */
+    #chronicle-section .chronicle-grid {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 0.75rem;
+      padding-bottom: 0.75rem;
+      margin-inline: -1rem;
+      padding-inline: 1rem;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #chronicle-section .chronicle-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    #chronicle-section .document-card {
+      flex: 0 0 75%;
+      max-width: 270px;
+      scroll-snap-align: start;
+    }
+
+    #chronicle-section .document-card__cover {
+      aspect-ratio: 4 / 3;
+      max-height: 160px;
+    }
+
+    #chronicle-section .document-card__cover img {
+      padding: 0.75rem;
+    }
+
+    #chronicle-section .document-card__body {
+      padding: 0.875rem;
+    }
+
+    #chronicle-section .document-card__desc {
+      font-size: 0.8125rem;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Impact Band */
+    .impact-grid {
+      gap: 0.875rem;
+      margin-top: 1rem;
+    }
+
+    .impact-metric {
+      padding-top: 0.5rem;
+    }
+
+    .impact-metric__value {
+      font-size: 1.875rem;
+    }
+
+    .impact-metric__label {
+      font-size: 0.6875rem;
+    }
+
+    .impact-metric__desc {
+      font-size: 0.8125rem;
+      line-height: 1.4;
+      margin-top: 0.25rem;
+    }
+
+    /* Voices Band: Horizontal swipeable testimonial carousel */
+    #voices-section .voices-grid {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 0.875rem;
+      padding-bottom: 0.75rem;
+      margin-inline: -1rem;
+      padding-inline: 1rem;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #voices-section .voices-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    #voices-section .voice {
+      flex: 0 0 82%;
+      max-width: 300px;
+      scroll-snap-align: start;
+      padding-top: 0.75rem;
+    }
+
+    #voices-section .voice__quote {
+      font-size: 0.9375rem;
+      line-height: 1.45;
+    }
+
+    #voices-section .voice__attribution {
+      margin-top: 0.5rem;
+    }
+
+    /* Support Band */
+    .support-actions {
+      margin-top: 1rem;
+      gap: 0.5rem;
+    }
+
+    .support-assurances {
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+      gap: 0.25rem;
     }
   }
 }

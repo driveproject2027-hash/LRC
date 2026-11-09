@@ -4,9 +4,11 @@ import { AlertCircle, CheckCircle2, Send } from "lucide-react";
 import MainLayout from "@/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
 import { useContactForm } from "@/hooks/use-contact-form";
+import { useWebsiteContent } from "@/context/ContentContext";
+import EditableText from "@/components/admin/EditableText";
 import {
-  CONTACT_DETAILS,
-  CONTACT_HEADING,
+  CONTACT_DETAILS as defaultContactDetails,
+  CONTACT_HEADING as defaultContactHeading,
   SOCIAL_LINKS,
 } from "@/content/contact";
 
@@ -38,6 +40,10 @@ import {
  *   are recorded). See docs/phase-9-audit.md.
  */
 const Contact = () => {
+  const { content } = useWebsiteContent();
+  const contactDetails = content.contact?.details || defaultContactDetails;
+  const contactHeading = content.contact?.heading || defaultContactHeading;
+
   const { formData, updateField, submit, isSubmitting, submitError } =
     useContactForm();
   const [submitted, setSubmitted] = useState(false);
@@ -118,11 +124,28 @@ const Contact = () => {
       <MainLayout>
         <header className="ut-header">
           <div className="ut-header__inner">
-            <p className="ut-header__eyebrow type-eyebrow">
-              {CONTACT_HEADING.eyebrow}
-            </p>
-            <h1 className="ut-header__title">{CONTACT_HEADING.title}</h1>
-            <p className="ut-header__lead">{CONTACT_HEADING.lead}</p>
+            <EditableText
+              path="contact.heading.eyebrow"
+              label="Contact Eyebrow"
+              value={contactHeading.eyebrow}
+              as="p"
+              className="ut-header__eyebrow type-eyebrow"
+            />
+            <EditableText
+              path="contact.heading.title"
+              label="Contact Title"
+              value={contactHeading.title}
+              as="h1"
+              className="ut-header__title"
+            />
+            <EditableText
+              path="contact.heading.lead"
+              label="Contact Lead"
+              value={contactHeading.lead}
+              as="p"
+              multiline={true}
+              className="ut-header__lead"
+            />
           </div>
         </header>
 
@@ -138,54 +161,58 @@ const Contact = () => {
                 <div className="contact-record">
                   <dt className="contact-record__label">Address</dt>
                   <dd className="contact-record__value">
-                    {CONTACT_DETAILS.address}
+                    <EditableText
+                      path="contact.address"
+                      label="Office Address"
+                      value={contactDetails.address}
+                      as="span"
+                      multiline={true}
+                    />
                   </dd>
                 </div>
 
                 <div className="contact-record">
                   <dt className="contact-record__label">Telephone</dt>
                   <dd className="contact-record__value">
-                    <a
-                      href={CONTACT_DETAILS.phoneHref}
-                      className="contact-record__link"
-                    >
-                      {CONTACT_DETAILS.phone}
-                    </a>
+                    <EditableText
+                      path="contact.phone"
+                      label="Telephone Number"
+                      value={contactDetails.phone}
+                      as="span"
+                    />
                   </dd>
                 </div>
 
                 <div className="contact-record">
                   <dt className="contact-record__label">Email</dt>
                   <dd className="contact-record__value">
-                    <a
-                      href={CONTACT_DETAILS.emailHref}
-                      className="contact-record__link"
-                    >
-                      {CONTACT_DETAILS.email}
-                    </a>
+                    <EditableText
+                      path="contact.email"
+                      label="Contact Email"
+                      value={contactDetails.email}
+                      as="span"
+                    />
                   </dd>
                 </div>
 
                 <div className="contact-record">
                   <dt className="contact-record__label">Website</dt>
                   <dd className="contact-record__value">
-                    <a
-                      href={CONTACT_DETAILS.websiteHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="contact-record__link"
-                    >
-                      {CONTACT_DETAILS.website}
-                    </a>
+                    <EditableText
+                      path="contact.website"
+                      label="Website URL"
+                      value={contactDetails.website}
+                      as="span"
+                    />
                   </dd>
                 </div>
 
                 {/* Social links render only if verified accounts exist. */}
-                {SOCIAL_LINKS.length > 0 && (
+                {SOCIAL_LINKS.filter((s) => s.href && s.href !== "#").length > 0 && (
                   <div className="contact-record">
                     <dt className="contact-record__label">Social</dt>
                     <dd className="contact-record__value">
-                      {SOCIAL_LINKS.map((s) => (
+                      {SOCIAL_LINKS.filter((s) => s.href && s.href !== "#").map((s) => (
                         <a
                           key={s.href}
                           href={s.href}
@@ -206,7 +233,7 @@ const Contact = () => {
                             </svg>
                           )}
                           {s.label === "WhatsApp" && (
-                            <svg width="24" height="24" viewBox="2 2 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                               <path fill="#25D366" d="M12.013 2.006c-5.498 0-9.972 4.475-9.972 9.973 0 1.764.464 3.486 1.346 5.006L2.001 22l5.142-1.348c1.479.805 3.149 1.233 4.87 1.233 5.498 0 9.973-4.475 9.973-9.973 0-5.498-4.475-9.973-9.973-9.973z"/>
                               <path fill="#FFFFFF" d="M17.483 14.156c-.3-.15-1.776-.877-2.052-.977-.276-.1-.477-.15-.678.15-.201.3-.776.977-.951 1.177-.176.2-.352.226-.652.076-2.046-1.026-3.551-2.42-4.148-3.447-.128-.217.135-.205.405-.745.086-.171.043-.321-.032-.471-.075-.15-.678-1.637-.928-2.24-.243-.585-.49-.505-.678-.515-.176-.009-.377-.01-.578-.01-.2 0-.527.075-.802.375-.276.3-1.054 1.03-1.054 2.511 0 1.482 1.079 2.913 1.229 3.113.151.201 2.122 3.242 5.142 4.543 1.836.79 2.457.734 2.909.658.58-.098 1.776-.726 2.027-1.428.251-.702.251-1.303.176-1.428-.076-.126-.277-.201-.578-.351z"/>
                             </svg>

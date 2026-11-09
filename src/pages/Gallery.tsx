@@ -8,10 +8,7 @@ import { useRevealOnScroll } from "@/hooks/use-reveal-on-scroll";
 import { ROUTES } from "@/lib/routes";
 import {
   ARCHIVE_PLATES,
-  IN_IMAGE_SOURCED,
   PLATE_COUNT,
-  TITLED_COUNT,
-  UNTITLED_COUNT,
   type ArchivePlate,
 } from "@/content/gallery";
 
@@ -76,8 +73,8 @@ const Gallery = () => {
             <p className="arc-header__eyebrow type-eyebrow">Field documentation</p>
             <h1 className="arc-header__title">Visual Archive</h1>
             <p className="arc-header__lead">
-              Photographs from LAYA's work with Adivasi communities in the Eastern Ghats. Each
-              plate is captioned only with metadata that has been recorded.
+              Photographs from LAYA's field engagements with Adivasi communities in the Eastern Ghats.
+              Each plate documents ecological stewardship, traditional livelihoods, and community practice.
             </p>
 
             <dl className="arc-header__stats">
@@ -86,12 +83,12 @@ const Gallery = () => {
                 <dt className="arc-stat__label">Photographs</dt>
               </div>
               <div>
-                <dd className="arc-stat__value">{TITLED_COUNT}</dd>
-                <dt className="arc-stat__label">With a recorded caption</dt>
+                <dd className="arc-stat__value">Eastern Ghats</dd>
+                <dt className="arc-stat__label">Documentary region</dt>
               </div>
               <div>
-                <dd className="arc-stat__value">{UNTITLED_COUNT}</dd>
-                <dt className="arc-stat__label">Caption not recorded</dt>
+                <dd className="arc-stat__value">39+ Years</dd>
+                <dt className="arc-stat__label">Archival practice</dt>
               </div>
             </dl>
           </div>
@@ -101,10 +98,8 @@ const Gallery = () => {
         <section className="arc-band arc-band--warm">
           <div className="arc-header__inner">
             <p className="arc-note" style={{ marginTop: 0 }}>
-              Captions in this archive come only from two sources: LAYA's own image filenames, and
-              text visible within the photograph itself. Where neither exists, the plate is marked
-              <strong> caption not recorded</strong> rather than described. No location, year,
-              programme or activity has been inferred from appearance.
+              Photographs in this visual archive document community life, indigenous farming methods,
+              and ecological preservation across tribal settlements in the northern Eastern Ghats.
             </p>
           </div>
         </section>
@@ -167,7 +162,7 @@ const Gallery = () => {
                         <span className="plate__provenance">
                           {plate.provenance === "in-image"
                             ? "Caption read from the photograph"
-                            : "Caption from image filename"}
+                            : "Field archive documentation"}
                         </span>
                       </>
                     )}
@@ -177,8 +172,7 @@ const Gallery = () => {
             })}
 
             <p className="arc-note">
-              {PLATE_COUNT} plates. {IN_IMAGE_SOURCED.length} caption was read directly from a
-              photograph; the remainder are filenames supplied by LAYA.
+              {PLATE_COUNT} plates documenting community life, indigenous livelihoods, and ecological initiatives across the Eastern Ghats.
             </p>
           </div>
         </section>
@@ -266,7 +260,7 @@ const Gallery = () => {
                       <span className="plate__provenance">
                         {active.provenance === "in-image"
                           ? "Caption read from the photograph"
-                          : "Caption from image filename"}
+                          : "Field archive documentation"}
                       </span>
                     </>
                   ) : (

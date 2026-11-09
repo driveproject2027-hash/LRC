@@ -1,39 +1,46 @@
 import { Helmet } from "react-helmet-async";
+import { Link } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
 import { ProgrammeCard } from "@/components/programme/ProgrammeCard";
 import { EditorialLink } from "@/components/home/EditorialLink";
 import { useRevealOnScroll } from "@/hooks/use-reveal-on-scroll";
 import { ROUTES } from "@/lib/routes";
 import {
+  CORE_PILLARS,
   CROSS_CUTTING_APPROACHES,
   DIRECTORY_STATS,
   PROGRAMMES,
-  PROGRAMME_CATEGORIES,
 } from "@/content/programmes";
+import EditableText from "@/components/admin/EditableText";
+import { useWebsiteContent } from "@/context/ContentContext";
 
 /**
- * OUR WORK / WHAT WE DO — programme directory
+ * OUR WORK / WHAT WE DO — 3 Core Pillars Directory
  * ---------------------------------------------------------------------------
- * Replaces the previous three-column card grid.
+ * LAYA organizes its initiatives across 3 Core Pillars:
+ * 1. SAFEGUARDING ADIVASI RIGHTS FOR SOCIAL JUSTICE
+ * 2. LIFELONG LEARNING
+ * 3. CLIMATE CRISIS & SUSTAINABLE DEVELOPMENT (encompassing Livelihoods & Natural Resources and Health)
  *
- * Programmes are grouped under the thematic categories that genuinely exist,
- * and each group is a run of wide editorial records with the photograph
- * alternating sides — a documentary index rather than a product feature grid.
- *
- * All content comes from `src/content/programmes.ts`, sourced from LAYA's
- * existing programme pages. No programme is invented. See the scope note at the
- * top of that file for which suggested categories could not be built and why.
+ * Each pillar presents wide editorial records with authentic field documentation.
  */
 const Programs = () => {
   useRevealOnScroll();
+  const { content } = useWebsiteContent();
+
+  const eyebrow = content.home?.ourWork?.eyebrow || "What we do";
+  const title = content.home?.ourWork?.heading || content.home?.ourWork?.title || "Our work";
+  const lead =
+    content.home?.ourWork?.lead ||
+    "LAYA organizes its work across three interdependent core pillars: Safeguarding Adivasi Rights for Social Justice, Lifelong Learning, and Climate Crisis & Sustainable Development (integrating sustainable livelihoods, natural resources, and community health across the Eastern Ghats).";
 
   return (
     <>
       <Helmet>
-        <title>Our Work | LAYA</title>
+        <title>Our Work | 3 Core Pillars | LAYA</title>
         <meta
           name="description"
-          content="LAYA's programme areas with Adivasi communities in the Eastern Ghats: rights and entitlements, livelihoods and natural resources, health, education, and climate."
+          content="LAYA's work across 3 Core Pillars with Adivasi communities in the Eastern Ghats: Safeguarding Adivasi Rights for Social Justice, Lifelong Learning, and Climate Crisis & Sustainable Development (including Livelihoods, Natural Resources, and Health)."
         />
         <link rel="canonical" href="https://laya.org.in/programs" />
       </Helmet>
@@ -42,26 +49,41 @@ const Programs = () => {
         {/* ---- Directory header ------------------------------------------ */}
         <header className="prog-header">
           <div className="prog-header__inner">
-            <p className="prog-header__eyebrow type-eyebrow">What we do</p>
-            <h1 className="prog-header__title">Our work</h1>
-            <p className="prog-header__lead">
-              LAYA's work is interdependent: rights secure land, land sustains
-              livelihoods, livelihoods shape health and learning, and all of it
-              is bounded by the climate of the Eastern Ghats.
-            </p>
+            <EditableText
+              path="programs.eyebrow"
+              label="Page Eyebrow"
+              value="What we do"
+              as="p"
+              className="prog-header__eyebrow type-eyebrow"
+            />
+            <EditableText
+              path="programs.title"
+              label="Page Heading"
+              value="Our work"
+              as="h1"
+              className="prog-header__title"
+            />
+            <EditableText
+              path="programs.lead"
+              label="Page Lead"
+              value="LAYA organizes its work across three interdependent core pillars: Safeguarding Adivasi Rights for Social Justice, Lifelong Learning, and Climate Crisis & Sustainable Development (integrating sustainable livelihoods, natural resources, and community health across the Eastern Ghats)."
+              as="p"
+              multiline={true}
+              className="prog-header__lead"
+            />
 
             <dl className="prog-header__stats">
               <div>
                 <dd className="prog-stat__value">
-                  {DIRECTORY_STATS.programmeCount}
+                  {DIRECTORY_STATS.pillarCount}
                 </dd>
-                <dt className="prog-stat__label">Programme areas</dt>
+                <dt className="prog-stat__label">Core Pillars</dt>
               </div>
               <div>
                 <dd className="prog-stat__value">
-                  {DIRECTORY_STATS.categoryCount}
+                  {DIRECTORY_STATS.programmeCount}
                 </dd>
-                <dt className="prog-stat__label">Thematic groups</dt>
+                <dt className="prog-stat__label">Integrated Initiatives</dt>
               </div>
               <div>
                 <dd className="prog-stat__value">1985</dd>
@@ -71,26 +93,145 @@ const Programs = () => {
           </div>
         </header>
 
-        {/* ---- The directory --------------------------------------------- */}
+        {/* ---- The 3 Core Pillars Directory ------------------------------- */}
         <section className="prog-band">
           <div className="container-page">
-            {PROGRAMME_CATEGORIES.map((category, ci) => {
-              const programmes = PROGRAMMES.filter(
-                (p) => p.category === category.id,
-              );
-              if (programmes.length === 0) return null;
+            {CORE_PILLARS.map((pillar) => {
+              const pillarProgrammes = pillar.programmeIds
+                .map((id) => PROGRAMMES.find((p) => p.id === id))
+                .filter((p): p is typeof PROGRAMMES[0] => Boolean(p));
+
+              if (pillarProgrammes.length === 0) return null;
 
               return (
-                <section key={category.id} className="prog-category">
+                <section key={pillar.id} className="prog-category">
                   <header className="prog-category__header">
                     <span className="prog-category__index">
-                      {String(ci + 1).padStart(2, "0")}
+                      PILLAR {pillar.number}
                     </span>
-                    <h2 className="prog-category__name">{category.label}</h2>
-                    <p className="prog-category__blurb">{category.blurb}</p>
+                    <h2 className="prog-category__name">{pillar.title}</h2>
+                    <div className="prog-category__blurb">
+                      <p>{pillar.blurb}</p>
+                      {pillar.id === "pillar-climate" && (
+                        <div className="mt-4 pt-4 border-t border-[#dcd7e3]">
+                          <div className="flex items-center justify-between mb-2.5">
+                            <span className="text-[11px] font-bold uppercase tracking-wider text-[#7664B5] font-sans">
+                              5 Divisions (Annual Report 2025–2026)
+                            </span>
+                            <Link
+                              to={ROUTES.whatWeDoClimate}
+                              className="text-[11px] font-semibold text-[#1e3a5f] hover:text-[#7664B5] underline font-sans"
+                            >
+                              Explore Division Details &rarr;
+                            </Link>
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                            <Link
+                              to={ROUTES.whatWeDoSrm}
+                              className="group bg-[#f7f5fa] hover:bg-[#ede8f5] border border-[#e8e4ee] hover:border-[#7664B5] p-2.5 transition-colors flex flex-col justify-between"
+                            >
+                              <div>
+                                <span className="text-[10px] font-bold uppercase tracking-wider text-[#554388] block">
+                                  Division 01
+                                </span>
+                                <h4 className="text-xs font-semibold text-neutral-900 group-hover:text-brand-purple mt-0.5 transition-colors">
+                                  Sustainable Agriculture and Natural Resource Management
+                                </h4>
+                                <p className="text-[11px] text-neutral-600 mt-0.5 leading-snug">
+                                  10 Natural Farming Package of Practices, Gulli Ragi, seed centres &amp; gravity irrigation.
+                                </p>
+                              </div>
+                              <span className="text-[10px] font-semibold text-[#7664B5] mt-2 block">
+                                Dedicated Page &rarr;
+                              </span>
+                            </Link>
+
+                            <Link
+                              to={ROUTES.whatWeDoHbhc}
+                              className="group bg-[#f7f5fa] hover:bg-[#ede8f5] border border-[#e8e4ee] hover:border-[#7664B5] p-2.5 transition-colors flex flex-col justify-between"
+                            >
+                              <div>
+                                <span className="text-[10px] font-bold uppercase tracking-wider text-[#554388] block">
+                                  Division 02
+                                </span>
+                                <h4 className="text-xs font-semibold text-neutral-900 group-hover:text-brand-purple mt-0.5 transition-colors">
+                                  Biodiversity, Landuse and Ecosystem Restoration
+                                </h4>
+                                <p className="text-[11px] text-neutral-600 mt-0.5 leading-snug">
+                                  75 Traditional Health Practitioners, 26 Vanantharam herbal medicines &amp; boiled drinking water.
+                                </p>
+                              </div>
+                              <span className="text-[10px] font-semibold text-[#7664B5] mt-2 block">
+                                Dedicated Page &rarr;
+                              </span>
+                            </Link>
+
+                            <Link
+                              to={ROUTES.whatWeDoClimateTechCoastal}
+                              className="group bg-[#f7f5fa] hover:bg-[#ede8f5] border border-[#e8e4ee] hover:border-[#7664B5] p-2.5 transition-colors flex flex-col justify-between"
+                            >
+                              <div>
+                                <span className="text-[10px] font-bold uppercase tracking-wider text-[#554388] block">
+                                  Division 03
+                                </span>
+                                <h4 className="text-xs font-semibold text-neutral-900 group-hover:text-brand-purple mt-0.5 transition-colors">
+                                  Climate-Friendly Technologies and Coastal Ecosystems
+                                </h4>
+                                <p className="text-[11px] text-neutral-600 mt-0.5 leading-snug">
+                                  22,714+ clean cookstoves, ceramic pot filters, cool roofing &amp; IMTA seaweed/mussel farming.
+                                </p>
+                              </div>
+                              <span className="text-[10px] font-semibold text-[#7664B5] mt-2 block">
+                                Dedicated Page &rarr;
+                              </span>
+                            </Link>
+
+                            <Link
+                              to={ROUTES.whatWeDoUrbanPeriUrban}
+                              className="group bg-[#f7f5fa] hover:bg-[#ede8f5] border border-[#e8e4ee] hover:border-[#7664B5] p-2.5 transition-colors flex flex-col justify-between"
+                            >
+                              <div>
+                                <span className="text-[10px] font-bold uppercase tracking-wider text-[#554388] block">
+                                  Division 04
+                                </span>
+                                <h4 className="text-xs font-semibold text-neutral-900 group-hover:text-brand-purple mt-0.5 transition-colors">
+                                  Urban and Peri-Urban Ecosystems
+                                </h4>
+                                <p className="text-[11px] text-neutral-600 mt-0.5 leading-snug">
+                                  Citizen-Centric Climate Action Plans in Visakhapatnam &amp; Yeleswaram with Andhra University.
+                                </p>
+                              </div>
+                              <span className="text-[10px] font-semibold text-[#7664B5] mt-2 block">
+                                Dedicated Page &rarr;
+                              </span>
+                            </Link>
+
+                            <Link
+                              to={ROUTES.whatWeDoPartnerEngagements}
+                              className="group bg-[#f7f5fa] hover:bg-[#ede8f5] border border-[#e8e4ee] hover:border-[#7664B5] p-2.5 sm:col-span-2 md:col-span-2 transition-colors flex flex-col justify-between"
+                            >
+                              <div>
+                                <span className="text-[10px] font-bold uppercase tracking-wider text-[#554388] block">
+                                  Division 05
+                                </span>
+                                <h4 className="text-xs font-semibold text-neutral-900 group-hover:text-brand-purple mt-0.5 transition-colors">
+                                  Partner Engagements
+                                </h4>
+                                <p className="text-[11px] text-neutral-600 mt-0.5 leading-snug">
+                                  RECAP Northeast India (18 leaders trained in Manipur), UTP Project Fund Administrator &amp; India DONATES.
+                                </p>
+                              </div>
+                              <span className="text-[10px] font-semibold text-[#7664B5] mt-2 block">
+                                Dedicated Page &rarr;
+                              </span>
+                            </Link>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </header>
 
-                  {programmes.map((programme, pi) => (
+                  {pillarProgrammes.map((programme, pi) => (
                     <ProgrammeCard
                       key={programme.id}
                       programme={programme}

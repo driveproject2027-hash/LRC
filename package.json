@@ -11,6 +11,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "prestart": "npm run build",
     "start": "node server.js"
   },
   "dependencies": {
@@ -43,6 +45,7 @@
     "@radix-ui/react-toggle-group": "^1.1.10",
     "@radix-ui/react-tooltip": "^1.2.7",
     "@tanstack/react-query": "^5.83.0",
+    "@types/leaflet": "^1.9.22",
     "axios": "^1.20.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -52,6 +55,7 @@
     "express": "^5.2.1",
     "framer-motion": "^12.38.0",
     "input-otp": "^1.4.2",
+    "leaflet": "^1.9.4",
     "lucide-react": "^0.462.0",
     "next-themes": "^0.3.0",
     "react": "^18.3.1",
@@ -62,7 +66,6 @@
     "react-resizable-panels": "^2.1.9",
     "react-router": "^7.18.4",
     "react-router-dom": "^7.18.4",
-    "recharts": "^2.15.4",
     "sonner": "^1.7.4",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",

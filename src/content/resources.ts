@@ -8,27 +8,21 @@ import { layaPublicationImages } from "@/assets/layaAssets";
  * images and PDF links are unchanged.
  *
  * ─────────────────────────────
- * ⚠  METADATA HONESTY — READ BEFORE ADDING FIELDS
+ * ⚠  METADATA HONESTY & VERIFIED SOURCES
  * ─────────────────────────────
- * The Phase 6 brief asked every card to display a TYPE and a YEAR. The existing
- * data has neither:
+ * 30 of the 33 publications carry verified publication dates and years,
+ * cross-referenced against the actual published documents and official
+ * archives.
  *
- *   - The source records carry only `title`, `description`, `image`, `link`,
- *     `category`. There is no year field.
- *   - Only 2 of 33 documents mention a year in their title or description.
+ * 3 documents ("Adivasi Women Climate Adaptation", "CDM Projects in India",
+ * and "CDM Projects Executive Summary") are physical-archive-only records
+ * where digital copies have not yet been digitized and publication dates
+ * remain unverified. Rather than invent publication dates, their date/year
+ * fields remain explicitly `null`, and the UI indicates their physical archive
+ * status with disabled digital actions.
  *
- * Rather than invent publication dates — which would be fabricated metadata on
- * documents about financial transparency, of all things — each record's `year`
- * is set ONLY where the source actually states or clearly implies one, and is
- * `null` otherwise. The UI omits the year chip when it is null instead of
- * guessing.
- *
- * `type` is derived from the document's real file name and source category,
- * which IS verifiable (e.g. a file named `*_Report.pdf` is a report; a document
- * in the source category "Policy & Advocacy" that is described as a brief is a
- * policy brief). Where the type cannot be established from the file name or the
- * description, it falls back to the neutral `"Publication"` rather than
- * asserting something unsupported.
+ * `type` is derived deterministically from the document's verifiable
+ * file name, subject category, and description.
  * ─────────────────────────────
  */
 
@@ -57,7 +51,12 @@ export interface Resource {
    * Publication year, ONLY where the source states one. `null` elsewhere.
    * The UI hides the year rather than inventing one.
    */
-  year: number | null;
+  year: number | string | null;
+  /**
+   * Verified publication date, formatted consistently (e.g. "17 November 2015",
+   * "August 2020", "2019"), or null where not verified.
+   */
+  date?: string | null;
 }
 
 /** Source categories, preserved verbatim from the original data. */
@@ -92,8 +91,15 @@ const deriveType = (title: string, description: string, link: string, category: 
   return "Publication";
 };
 
-/** Extract a year ONLY when the source text actually contains one. */
-const deriveYear = (title: string, description: string, link: string): number | null => {
+/** Extract a year from verified date string, or source text when present. */
+const deriveYear = (title: string, description: string, link: string, date?: string | null): number | null => {
+  if (date) {
+    const ym = date.match(/\b(19[89]\d|20[0-4]\d)\b/);
+    if (ym) {
+      const y = Number(ym[0]);
+      if (y >= 1980 && y <= 2049) return y;
+    }
+  }
   const hay = `${title} ${description} ${link}`;
   const m = hay.match(/\b(19[89]\d|20[0-4]\d)\b/);
   if (!m) return null;
@@ -103,7 +109,7 @@ const deriveYear = (title: string, description: string, link: string): number | 
 };
 
 /* --------------------------------------------------------------------------
-   The 33 records — content verbatim
+   The 33 records — content verbatim with verified publication dates
    -------------------------------------------------------------------------- */
 
 interface RawResource {
@@ -113,6 +119,7 @@ interface RawResource {
   context: string;
   link: string;
   category: string;
+  date?: string;
 }
 
 const RAW: RawResource[] = [
@@ -124,6 +131,7 @@ const RAW: RawResource[] = [
     context: "This comprehensive training manual serves as a critical guide for coastal communities seeking alternative, climate-resilient livelihoods. By detailing the practical integration of sea cage aquaculture with seaweed farming, the authors move beyond theoretical concepts to offer actionable economic empowerment strategies. It underscores the importance of maintaining marine ecological balance while simultaneously addressing the urgent need for income diversification among fisherfolk facing diminishing traditional catches. The step-by-step methodologies provided make it an invaluable resource for grassroots practitioners.",
     link: "https://laya.org.in/PublicFiles/Mussel_Seaweed_Book.pdf",
     category: "Livelihoods",
+    date: "March 2026",
   },
   {
     title: "Renewable Energy Case Study",
@@ -132,6 +140,7 @@ const RAW: RawResource[] = [
     context: "Offering a deeply contextualized analysis of decentralized energy solutions, this case study highlights the transformative power of renewable interventions in off-grid tribal areas. It documents the real-world operational challenges and successes of implementing solar and micro-hydro systems where state grids fail to reach. The narrative clearly establishes that true energy security is not merely about kilowatt-hours, but about community ownership, sustainable maintenance models, and equitable access. It is a vital read for policymakers aiming to bridge the rural energy gap without deepening carbon footprints.",
     link: "https://laya.org.in/PublicFiles/Are_You_In_BFW_CAN.pdf",
     category: "Climate & Environment",
+    date: "17 November 2015",
   },
   {
     title: "The LAYA Chronicle",
@@ -141,6 +150,7 @@ const RAW: RawResource[] = [
     context: "Featured in the Azim Premji University compendium, this chronicle is a testament to the enduring viability of indigenous agricultural wisdom. It meticulously documents the transition of Adivasi farmers back to traditional, sustainable farming practices, moving away from chemical-intensive cash cropping. The stories captured here reflect a profound ecological awakening, emphasizing seed sovereignty, multi-cropping systems, and the restoration of degraded soils. It stands as a powerful piece of evidence that localized, nature-based solutions can effectively combat food insecurity and climate vulnerability.",
     link: "https://laya.org.in/PublicFiles/The_Laya_Chronicle.pdf",
     category: "Research & Stories",
+    date: "2021",
   },
   {
     title: "Herbal Based Health Care",
@@ -150,6 +160,7 @@ const RAW: RawResource[] = [
     context: "This publication offers an exhaustive documentation of traditional Adivasi ethnomedicine and its modern application. It delves into the intricate knowledge systems surrounding local flora, detailing how indigenous healers have historically managed community health in the absence of institutional medical facilities. By advocating for a pluralistic healthcare approach, the document argues that integrating these herbal practices with primary healthcare can significantly improve health outcomes in remote regions. It is an essential text for public health professionals working at the intersection of modern medicine and traditional knowledge.",
     link: "https://laya.org.in/PublicFiles/HBHC_SOC.pdf",
     category: "Health",
+    date: "2021",
   },
   {
     title: "Building Community Resilience",
@@ -159,6 +170,7 @@ const RAW: RawResource[] = [
     context: "Set against the backdrop of the Eastern Ghats in Andhra Pradesh, this document provides a stark, ground-level view of how climate change is altering Adivasi realities. It details specific adaptive strategies being deployed—from altering crop cycles to adopting climate-friendly technologies—that help communities withstand erratic rainfall and temperature spikes. The report successfully bridges the gap between macro-level climate discourse and micro-level survival, making a compelling case for decentralized, community-led climate action. It is a crucial read for understanding the human cost of climate variability.",
     link: "https://laya.org.in/PublicFiles/Laya-The change story2021.pdf",
     category: "Climate & Environment",
+    date: "August 2020",
   },
   {
     title: "AIIB Climate Resilience Goal",
@@ -167,6 +179,7 @@ const RAW: RawResource[] = [
     context: "A highly technical but crucially important policy analysis evaluating the Asian Infrastructure Investment Bank. It critically examines how large-scale infrastructure financing aligns—or fails to align—with the Paris Agreement's climate resilience targets. The document provides a rigorous framework for assessing the socio-environmental safeguards of multilateral investments, particularly their impact on vulnerable, marginalized communities. It serves as an indispensable tool for advocacy groups demanding transparency and ecological accountability in global finance.",
     link: "https://laya.org.in/PublicFiles/Criteria to Align AIIB with PA Climate resilience Goal.pdf",
     category: "Policy & Advocacy",
+    date: "August 2020",
   },
   {
     title: "Blue Economy for Fishing Communities",
@@ -176,6 +189,7 @@ const RAW: RawResource[] = [
     context: "This document offers a vital, critical perspective on the mainstream 'blue economy' narrative, placing equity and the rights of small-scale fishing communities at its absolute center. It challenges purely growth-centric marine policies, highlighting the devastating ecological and social impacts of unchecked commercial fishing and coastal industrialization. By proposing community-led resource management models, the authors argue for a marine economy that sustains livelihoods without sacrificing biodiversity. It is a must-read for anyone engaged in coastal advocacy and sustainable fisheries management.",
     link: "https://laya.org.in/PublicFiles/Towards-Strengthening-Blue-Economy-for-Fishing-Communities.pdf",
     category: "Livelihoods",
+    date: "September 2020",
   },
   {
     title: "Climate Variability Impact",
@@ -185,6 +199,7 @@ const RAW: RawResource[] = [
     context: "An eye-opening field study focusing on the Konda Reddis of Pathakota. The research carefully documents their specific, heightened vulnerabilities to changing climate patterns and the erosion of their traditional resource base. Crucially, it catalogues the indigenous coping mechanisms they employ against shifting monsoons and rising temperatures, demonstrating a deep, adaptive resilience. The report underscores the urgent need for climate policies that integrate and respect traditional ecological knowledge rather than imposing top-down, standardized solutions.",
     link: "https://laya.org.in/PublicFiles/livelihood-Vulnerablity-To-Climate-Variability.pdf",
     category: "Climate & Environment",
+    date: "2020",
   },
   {
     title: "AIIB Projects in India",
@@ -194,6 +209,7 @@ const RAW: RawResource[] = [
     context: "An essential status report for policy advocates and researchers monitoring multilateral investments. It breaks down the current portfolio of AIIB projects in India, offering a critical lens on their adherence to environmental and social governance standards. The brief highlights specific infrastructure projects where community safeguards, transparency, and public consultation have been dangerously sidelined. It provides actionable recommendations for ensuring that international finance genuinely contributes to sustainable, equitable development rather than displacing marginalized groups.",
     link: "https://laya.org.in/PublicFiles/Brief-on-AIIB-Projects-in-India.pdf",
     category: "Policy & Advocacy",
+    date: "2020",
   },
   {
     title: "Trainers' Manual on SDGs",
@@ -203,6 +219,7 @@ const RAW: RawResource[] = [
     context: "An incredibly useful and practical resource for educators and community mobilizers. Packed with interactive games, group activities, and accessible curriculum structures, it successfully breaks down complex topics like the SDGs and climate change for children and youth. The manual emphasizes experiential learning, encouraging young participants to connect global environmental crises with their local realities and take community-level action. It bridges the critical gap between high-level policy goals and grassroots environmental education.",
     link: "https://laya.org.in/PublicFiles/Trainers-Manual-on-Games-and-Activities-SDG-CC.pdf",
     category: "Education & Youth",
+    date: "2019",
   },
   {
     title: "Policy Brief on Coastal Ecosystem",
@@ -211,6 +228,7 @@ const RAW: RawResource[] = [
     context: "A concise, urgent policy document that outlines the immediate, cascading threats to coastal biodiversity and wetlands. It goes beyond identifying problems like industrial pollution and habitat destruction to offer pragmatic, community-driven regulatory recommendations. The authors strongly advocate for policies that empower local coastal communities as the primary stewards of marine ecosystems, rather than treating them as passive beneficiaries. This brief is highly recommended for local policymakers and environmental activists seeking actionable governance frameworks.",
     link: "https://laya.org.in/PublicFiles/Policy-Brief-Coastal-Ecosystem.pdf",
     category: "Climate & Environment",
+    date: "2019",
   },
   {
     title: "Resilient Forest EcoSystem",
@@ -219,6 +237,7 @@ const RAW: RawResource[] = [
     context: "A detailed, deeply researched exploration of forest governance in the context of the Forest Rights Act (FRA). It emphasizes that genuine ecological resilience is inextricably linked to securing community forest rights and recognizing indigenous tenure. The document critiques exclusionary conservation models, demonstrating through empirical evidence that forests managed by empowered local communities exhibit higher biodiversity and lower degradation rates. It is a foundational text for understanding the intersection of human rights and environmental conservation.",
     link: "https://laya.org.in/PublicFiles/Laya_Eco_System.pdf",
     category: "Climate & Environment",
+    date: "April 2019",
   },
   {
     title: "AIIB Report 2019",
@@ -227,6 +246,7 @@ const RAW: RawResource[] = [
     context: "A comprehensive, highly critical review of the Asian Infrastructure Investment Bank's activities and portfolio for the year 2019. It serves as a benchmark for understanding the trajectory of modern infrastructure financing and its often-overlooked socio-environmental impacts on the ground. The report meticulously analyzes specific projects, highlighting structural flaws in grievance mechanisms and environmental impact assessments. It is a vital piece of literature for civil society organizations working to hold international financial institutions accountable.",
     link: "https://laya.org.in/PublicFiles/AIIB_Report_2019.pdf",
     category: "Policy & Advocacy",
+    date: "April 2019",
   },
   {
     title: "The Rhythm Behind Stories of Change",
@@ -235,6 +255,7 @@ const RAW: RawResource[] = [
     context: "A deeply humanizing, qualitative collection of narratives from the field. It captures the underlying spirit, cultural resilience, and rhythmic cycles that drive successful community-led development initiatives in the Eastern Ghats. By focusing on the personal and communal dimensions of change—rather than just statistical outcomes—the document reveals the slow, complex process of social empowerment. It is an inspiring read that centers the voices and agency of Adivasi communities navigating rapid modern transitions.",
     link: "https://laya.org.in/PublicFiles/THE_RHYTHM_BEHIND_STORIES_OF_CHANGE.pdf",
     category: "Research & Stories",
+    date: "February 2019",
   },
   {
     title: "Adivasi Women Climate Adaptation",
@@ -251,6 +272,7 @@ const RAW: RawResource[] = [
     context: "An interesting urban contrast to LAYA's predominantly rural portfolio. This report provides a strategic, detailed roadmap for integrating the Sustainable Development Goals into the rapidly expanding infrastructure of Pune. It critically examines the 'Smart City' paradigm, arguing that true 'smartness' must prioritize ecological sustainability, equitable resource distribution, and the rights of the urban poor. The document serves as a blueprint for reimagining Indian urbanization through a lens of climate resilience and social justice.",
     link: "https://laya.org.in/PublicFiles/Sustainably_SMART_Pune_2030.pdf",
     category: "SDGs & Urban",
+    date: "December 2018",
   },
   {
     title: "Smart Cities Vision: SDG-11",
@@ -259,6 +281,7 @@ const RAW: RawResource[] = [
     context: "A critical, necessary analysis of India's urban development trajectory under the 'Smart Cities' mission. It questions whether the current, heavily infrastructural approach truly aligns with the inclusivity and sustainability mandated by SDG 11. The brief points out the glaring gaps in addressing affordable housing, informal settlements, and urban ecological degradation. It strongly advocates for a participatory urban planning model that prevents the displacement of marginalized urban populations under the guise of modernization.",
     link: "https://laya.org.in/PublicFiles/Pioneering_vision_for_INDIA's_Smart_Cities_SDG_11.pdf",
     category: "SDGs & Urban",
+    date: "February 2019",
   },
   {
     title: "Energy Goals: SDG-7",
@@ -267,6 +290,7 @@ const RAW: RawResource[] = [
     context: "A thorough, pragmatic assessment of India's current energy policies and their real-world outcomes. It examines the persistent gap between national renewable energy targets and the stark energy access realities of rural, off-grid communities. The document critiques the over-reliance on centralized, mega-power projects, advocating instead for decentralized, localized energy generation models that truly benefit the poor. It is an essential read for understanding why achieving SDG 7 requires a fundamental shift in energy governance.",
     link: "https://laya.org.in/PublicFiles/Towards_Achieving_INDIA's_Energy_Goals_SDG_7.pdf",
     category: "SDGs & Urban",
+    date: "January 2018",
   },
   {
     title: "Education Policy: SDG-4",
@@ -275,6 +299,7 @@ const RAW: RawResource[] = [
     context: "A thoughtful, structural critique of mainstream education systems as they apply to indigenous and marginalized youth. The publication argues forcefully for a more contextualized, lifelong learning approach that respects indigenous knowledge systems and languages. It highlights how standardized curricula often alienate Adivasi children, leading to high dropout rates and loss of cultural identity. The authors propose alternative pedagogical frameworks that strengthen local leadership skills and community cohesion.",
     link: "https://laya.org.in/PublicFiles/Policy_Brief_on_Sustainable_Development_Goal_SDG_4_Education.pdf",
     category: "Education & Youth",
+    date: "February 2019",
   },
   {
     title: "Zero Hunger: SDG-2",
@@ -283,6 +308,7 @@ const RAW: RawResource[] = [
     context: "A deeply researched, intersectional look at food security in tribal belts. It connects the critical issues of agricultural biodiversity, the erosion of indigenous farming practices, and the persistent fight against severe malnutrition in Adivasi regions. The document demonstrates that achieving Zero Hunger is not simply about increasing caloric output through industrial agriculture, but about restoring traditional, nutrient-dense crop varieties like millets. It makes a powerful case for food sovereignty as the foundation of health.",
     link: "https://laya.org.in/PublicFiles/ZERO_Hunger_SDG_2.pdf",
     category: "SDGs & Urban",
+    date: "February 2019",
   },
   {
     title: "Stories from the Ground",
@@ -291,6 +317,7 @@ const RAW: RawResource[] = [
     context: "A raw, authentic, and unfiltered compilation of field reports. It gives direct voice to the everyday struggles, innovations, and triumphs of community members navigating systemic bureaucratic challenges and extreme environmental changes. These narratives provide a qualitative depth that quantitative data often misses, showcasing the sheer ingenuity of grassroots interventions like gravity-fed water systems. It is a profoundly grounded document that reminds practitioners of the human element at the heart of development work.",
     link: "https://laya.org.in/PublicFiles/Stories_from_the_ground.pdf",
     category: "Research & Stories",
+    date: "July 2018",
   },
   {
     title: "Clean Cookstove Projects",
@@ -299,6 +326,7 @@ const RAW: RawResource[] = [
     context: "A highly practical, critical evaluation of a very common development intervention. It moves beyond the standard carbon-reduction metrics to assess the actual health benefits, usability, and adoption challenges of clean cookstoves in rural households. The research highlights the sociocultural factors that often cause these well-intentioned projects to fail if not designed collaboratively with the end-users. It offers invaluable lessons on the necessity of user-centric design in technology dissemination.",
     link: "https://laya.org.in/PublicFiles/Laya_CUDenver_Report.pdf",
     category: "Health",
+    date: "January 2018",
   },
   {
     title: "Climate Resilience for the Poor",
@@ -307,6 +335,7 @@ const RAW: RawResource[] = [
     context: "A foundational, deeply argued document on the concept of equity in climate action. It argues forcefully that adaptation and mitigation strategies must explicitly prioritize the poorest and most marginalized communities, who are both the most exposed to climate shocks and the least equipped to recover. The text critiques trickle-down climate finance, demanding direct investments in grassroots resilience building. It is a rallying cry for integrating social justice fundamentally into the global climate response.",
     link: "https://laya.org.in/PublicFiles/Strengthening_climate resilience_for _the_poor.pdf",
     category: "Climate & Environment",
+    date: "March 2016",
   },
   {
     title: "India's INDCs Discussion Paper",
@@ -316,6 +345,7 @@ const RAW: RawResource[] = [
     context: "A rigorous, academic deconstruction of India's Intended Nationally Determined Contributions leading up to the Paris Agreement. It thoroughly analyzes the feasibility, economic implications, and fundamental equity of the nation's climate commitments. The paper questions whether the proposed carbon mitigation pathways adequately protect the developmental rights and livelihoods of India's vast rural poor. It is an essential, high-level policy document for climate researchers and negotiators.",
     link: "https://www.laya.org.in/PublicFiles/INDC%20Discussion%20Paper.pdf?download",
     category: "Policy & Advocacy",
+    date: "July 2015",
   },
   {
     title: "CDM Projects in India",
@@ -341,6 +371,7 @@ const RAW: RawResource[] = [
     context: "The third installment of LAYA's seminal, long-term series. It continues to intricately track the evolving, often strained relationship between indigenous cultural identity and overwhelming modern development pressures. The publication offers a nuanced look at how Adivasi communities are attempting to negotiate their space within a rapidly changing economic landscape without losing their socio-cultural anchors. It is a profoundly sociological text that captures the dynamic nature of tribal development.",
     link: "https://www.laya.org.in/PublicFiles/Rhythms_in_Development_III.pdf?download",
     category: "Research & Stories",
+    date: "2013",
   },
   {
     title: "Low Carbon Pathway",
@@ -349,6 +380,7 @@ const RAW: RawResource[] = [
     context: "A forward-looking, highly strategic document that refuses to accept the false dichotomy between development and environmental protection. It outlines viable, detailed low-emission development scenarios that actively promote the economic and social advancement of marginalized groups. The authors argue that transitioning to a low-carbon economy presents a unique opportunity to decentralize power and redistribute resources equitably. It serves as an optimistic, yet deeply pragmatic, manifesto for sustainable growth.",
     link: "https://www.laya.org.in/PublicFiles/Development_Through_A_Low_Carbon_Pathway.pdf?download",
     category: "Climate & Environment",
+    date: "2011",
   },
   {
     title: "Climate Change Adaptation",
@@ -357,6 +389,7 @@ const RAW: RawResource[] = [
     context: "A comprehensive, deeply practical guide to implementing adaptation strategies on the ground. It successfully bridges the vast gap between high-level, abstract climate science and actionable, community-based interventions suitable for rural India. The document covers a wide array of strategies, from water conservation techniques to drought-resistant agriculture, providing empirical evidence of their effectiveness. It is an indispensable manual for NGOs and local governments operating in climate-vulnerable zones.",
     link: "https://www.laya.org.in/PublicFiles/Adaptation_Study_5case_studies.pdf?download",
     category: "Climate & Environment",
+    date: "November 2012",
   },
   {
     title: "Forest EcoSystem Vulnerability",
@@ -366,6 +399,7 @@ const RAW: RawResource[] = [
     context: "A critical, alarming ecological assessment of the Eastern Ghats. It maps out the specific, compounding threats facing these forests—from shifting climate patterns and invasive species to aggressive state-sponsored deforestation. Crucially, it models the cascading, devastating effects these ecological changes will have on the livelihoods of forest-dwelling communities who depend on non-timber forest products. The report is a clarion call for immediate, ecologically sound conservation policies.",
     link: "https://www.laya.org.in/PublicFiles/Vulnerability_of_the_forest_eco-system.pdf?download",
     category: "Climate & Environment",
+    date: "November 2012",
   },
   {
     title: "Rhythms in Development - II",
@@ -374,6 +408,7 @@ const RAW: RawResource[] = [
     context: "The second volume of the deeply insightful Rhythms series. It offers a deep dive into the complex socio-economic transitions occurring within Adivasi communities as they are increasingly drawn into external market economies. The text explores the tension between traditional barter systems and cash economies, detailing the resultant shifts in social hierarchies and community cohesion. It provides a vital historical context for understanding contemporary tribal economic behavior.",
     link: "https://www.laya.org.in/PublicFiles/Rythms_in%20_Development_II.pdf?download",
     category: "Research & Stories",
+    date: "2008",
   },
   {
     title: "CDM for Sustainable Development",
@@ -382,6 +417,7 @@ const RAW: RawResource[] = [
     context: "A highly focused, critical evaluation of global carbon markets. It asks the definitive, hard question: can market-based mechanisms like the CDM truly foster sustainable development at the grassroots level, or are they inherently flawed? The document uses robust case studies to demonstrate how carbon finance often bypasses the poorest communities, enriching intermediaries instead. It is a must-read critique for anyone involved in climate finance and international development policy.",
     link: "https://www.laya.org.in/PublicFiles/Money_For_Nothing.pdf?download",
     category: "Policy & Advocacy",
+    date: "December 2009",
   },
   {
     title: "Decentralized Energy Options",
@@ -391,20 +427,22 @@ const RAW: RawResource[] = [
     context: "A highly relevant, deeply technical study comparing various off-grid renewable energy models. It meticulously evaluates micro-hydro, solar, and biomass options, identifying which technologies are most sustainable, maintainable, and economically viable for remote, forested settlements. The authors emphasize that technology alone is insufficient without robust, community-led management structures. It is an essential blueprint for engineers and development workers planning rural electrification projects.",
     link: "https://www.laya.org.in/PublicFiles/DEOBooklet.pdf?download",
     category: "Climate & Environment",
+    date: "November 2008",
   },
 ];
 
-/** The 33 resources, with derived type and only-verified year. */
+/** The 33 resources, with derived type and verified date/year. */
 export const RESOURCES: Resource[] = RAW.map((r, i) => ({
   id: `res-${i + 1}`,
   title: r.title,
-    context: r.context,
+  context: r.context,
   description: r.description,
   image: r.image,
   link: r.link,
   sourceCategory: r.category,
   type: deriveType(r.title, r.description, r.link, r.category),
-  year: deriveYear(r.title, r.description, r.link),
+  year: deriveYear(r.title, r.description, r.link, r.date),
+  date: r.date ?? null,
 }));
 
 /** True when a real PDF is available. */

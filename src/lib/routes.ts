@@ -32,6 +32,9 @@ export const ROUTES = {
   whatWeDoSrm: "/what-we-do/srm",
   whatWeDoLifelongLearning: "/what-we-do/lifelong-learning",
   whatWeDoClimate: "/what-we-do/climate-crisis-sustainable-development",
+  whatWeDoClimateTechCoastal: "/what-we-do/climate-friendly-technologies-coastal-ecosystems",
+  whatWeDoUrbanPeriUrban: "/what-we-do/urban-peri-urban-ecosystems",
+  whatWeDoPartnerEngagements: "/what-we-do/partner-engagements",
 
   // Content
   publications: "/publications",
@@ -43,6 +46,9 @@ export const ROUTES = {
   // Conversion
   donate: "/donate",
   contact: "/contact",
+
+  // Admin CMS
+  admin: "/admin",
 } as const;
 
 export type RouteKey = keyof typeof ROUTES;
@@ -50,7 +56,7 @@ export type RouteKey = keyof typeof ROUTES;
 /**
  * Every concrete, navigable route path.
  * Excludes `whatWeDo`, which is a prefix namespace rather than a page.
- * `src/App.tsx` renders `Programs` at /programs and the five
+ * `src/App.tsx` renders `Programs` at /programs and the dedicated
  * `WhatWeDoCategory` routes individually.
  */
 export const ALL_ROUTE_PATHS: string[] = [
@@ -69,6 +75,9 @@ export const ALL_ROUTE_PATHS: string[] = [
   ROUTES.whatWeDoSrm,
   ROUTES.whatWeDoLifelongLearning,
   ROUTES.whatWeDoClimate,
+  ROUTES.whatWeDoClimateTechCoastal,
+  ROUTES.whatWeDoUrbanPeriUrban,
+  ROUTES.whatWeDoPartnerEngagements,
   ROUTES.publications,
   ROUTES.stories,
   ROUTES.impact,

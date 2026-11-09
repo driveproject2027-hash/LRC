@@ -18,10 +18,17 @@
      ------------------------------------------------------------------------ */
 
   .prog-header {
-    padding-block-start: calc(var(--laya-chrome-height) + var(--space-2xl));
+    padding-block-start: 2.25rem;
     padding-block-end: var(--space-xl);
     padding-inline: var(--gutter);
     background-color: var(--surface-canvas);
+  }
+
+  @media (max-width: 767px) {
+    .prog-header {
+      padding-block-start: 1.25rem;
+      padding-block-end: 0.75rem;
+    }
   }
 
   .prog-header__inner {
@@ -40,7 +47,7 @@
     content: "";
     width: 1.5rem;
     height: 1px;
-    background-color: var(--laya-forest-600);
+    background-color: var(--laya-logo-blue);
   }
 
   .prog-header__title {
@@ -231,7 +238,8 @@
   .prog-card__media {
     position: relative;
     overflow: hidden;
-    border-radius: var(--radius-media);
+    border-radius: 0;
+    border: 1px solid var(--border-subtle);
     background-color: var(--laya-stone-100);
     /* 16:9 on a 3.32:1 source keeps roughly 55% of the width — the most a
        portrait-ish frame can show without cutting the subject. */
@@ -382,17 +390,13 @@
     position: relative;
     overflow: hidden;
     background-color: var(--laya-stone-100);
-    /* Wide banner hero — matches the 3.32:1 source closely so little is lost. */
     width: 100%;
     aspect-ratio: 16 / 9;
-    max-height: 34rem;
+    max-height: 32rem;
     margin-inline: auto;
-  }
-
-  @media (min-width: 1024px) {
-    .prog-detail__hero {
-      aspect-ratio: 21 / 9;
-    }
+    border: 1px solid var(--border-subtle);
+    border-radius: 0;
+    box-shadow: 0 1px 2px rgba(22, 21, 15, 0.03);
   }
 
   .prog-detail__hero img {
@@ -400,17 +404,15 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 45%;
+    object-position: center 40%;
   }
 
   .prog-detail__hero-caption {
     margin-top: var(--space-xs);
-    padding-inline: var(--gutter);
     font-size: var(--text-caption);
     line-height: var(--leading-snug);
     color: var(--text-muted);
-    max-width: var(--container-content);
-    margin-inline: auto;
+    width: 100%;
   }
 
   /* Alternating image/text section */
@@ -483,7 +485,8 @@
   .prog-section__media {
     position: relative;
     overflow: hidden;
-    border-radius: var(--radius-media);
+    border-radius: 0;
+    border: 1px solid var(--border-subtle);
     background-color: var(--laya-stone-100);
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -640,6 +643,36 @@
   @media (prefers-reduced-motion: reduce) {
     .prog-card__media img {
       transition: none;
+    }
+  }
+
+  /* ------------------------------------------------------------------------
+     MOBILE COMPACT SPACING (<= 767px)
+     ------------------------------------------------------------------------ */
+  @media (max-width: 767px) {
+    .prog-header {
+      padding-block-end: 1rem;
+    }
+    .prog-heading {
+      margin-bottom: 1.25rem;
+    }
+    .prog-category {
+      padding-block: 1.25rem;
+    }
+    .prog-category__header {
+      gap: 0.25rem;
+      margin-bottom: 0.875rem;
+    }
+    .prog-card {
+      gap: 0.875rem;
+      padding-block: 0.875rem;
+    }
+    .prog-context {
+      padding-block: 0.875rem;
+      gap: 0.625rem;
+    }
+    .prog-actions {
+      margin-top: 1rem;
     }
   }
 }

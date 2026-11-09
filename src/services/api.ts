@@ -1,5 +1,6 @@
 import axios from "axios";
 import { referenceProgramImages, referenceStoryImages } from "@/assets/referenceAssets";
+import { illustrationAssets } from "@/assets/illustrationAssets";
 
 // WordPress REST API base URL can be configured by the deployment environment.
 const WP_API_BASE = import.meta.env.VITE_WP_API_URL || "";
@@ -88,7 +89,7 @@ export const mockPrograms: Program[] = [
     id: 1,
     title: "Safeguarding Adivasi Rights for Social Justice",
     description: "Human rights are basic rights for human existence and refer more specifically to the socio-economic and cultural rights of the Adivasi communities. LAYA works to strengthen land rights, self-governance through Community Forest Rights under FRA, gram sabha empowerment, and PESA implementation across the Eastern Ghats.",
-    image: referenceProgramImages[0],
+    image: illustrationAssets.forestStewardship.src,
     category: "Rights",
     impactMetrics: [{ label: "Villages Covered", value: "500+" }],
   },
@@ -96,7 +97,7 @@ export const mockPrograms: Program[] = [
     id: 2,
     title: "Herbal Based Health Care",
     description: "LAYA legitimizes the practice of herbal based medicine to complement prevailing mainstream health care systems. We integrate traditional Adivasi healing knowledge with modern public health approaches to address malnutrition and strengthen community health practices in tribal areas.",
-    image: referenceProgramImages[1],
+    image: illustrationAssets.herbalGardens.src,
     category: "Health",
     impactMetrics: [{ label: "Communities Served", value: "300+" }],
   },
@@ -104,7 +105,7 @@ export const mockPrograms: Program[] = [
     id: 3,
     title: "Sustainable Resource Management",
     description: "LAYA through its NRM Unit enables communities to improve agriculture productivity by watershed management and value added technologies. We promote sustainable agriculture, millet revival, non-timber forest produce, and traditional food systems for Adivasi food sovereignty.",
-    image: referenceProgramImages[2],
+    image: illustrationAssets.milletRevival.src,
     category: "Environment",
     impactMetrics: [{ label: "Hectares Protected", value: "50,000+" }],
   },
@@ -112,7 +113,7 @@ export const mockPrograms: Program[] = [
     id: 4,
     title: "Lifelong Learning",
     description: "LAYA capacitates young men and women towards a life-long learning process and development of skills enabling them to play a leadership role in the region. We support multilingual education, mother-tongue instruction, and preservation of Adivasi cultural heritage and indigenous knowledge systems.",
-    image: referenceProgramImages[3],
+    image: illustrationAssets.multilingualLearning.src,
     category: "Education",
     impactMetrics: [{ label: "Youth Trained", value: "10,000+" }],
   },
@@ -120,7 +121,7 @@ export const mockPrograms: Program[] = [
     id: 5,
     title: "Climate Crisis and Sustainable Development",
     description: "LAYA works with Adivasi communities to harness natural resources to facilitate energy that can be produced, owned, controlled, managed and utilized by local Adivasi communities. We pioneer decentralized renewable energy solutions and climate-resilient development models.",
-    image: referenceProgramImages[4],
+    image: illustrationAssets.coastalSeaweed.src,
     category: "Climate",
     impactMetrics: [{ label: "Green Projects", value: "50+" }],
   },
@@ -133,7 +134,7 @@ export const mockStories: Story[] = [
     author: "LAYA Field Team",
     content: "In the heart of the Eastern Ghats, a small village of 50 families fought for their forest rights through collective action and legal advocacy supported by LAYA's rights-based programs.",
     excerpt: "How a small Adivasi village in the Eastern Ghats reclaimed their ancestral forest rights through collective action and legal advocacy.",
-    image: referenceStoryImages[0],
+    image: illustrationAssets.forestStewardship.src,
     date: "2024-03-15",
   },
   {
@@ -142,7 +143,7 @@ export const mockStories: Story[] = [
     author: "LAYA NRM Unit",
     content: "Traditional millet varieties were disappearing from tribal farmlands. LAYA's sustainable resource management program helped revive indigenous farming practices.",
     excerpt: "The revival of traditional millet farming is transforming food security and reconnecting communities with their agricultural heritage.",
-    image: referenceStoryImages[1],
+    image: illustrationAssets.milletRevival.src,
     date: "2024-01-20",
   },
   {
@@ -151,7 +152,7 @@ export const mockStories: Story[] = [
     author: "LAYA Education Team",
     content: "When children learn in their mother tongue, they don't just learn words — they connect with their identity, culture, and community knowledge systems.",
     excerpt: "A multilingual education initiative is preserving indigenous languages while empowering Adivasi children with quality education.",
-    image: referenceStoryImages[2],
+    image: illustrationAssets.multilingualLearning.src,
     date: "2023-11-10",
   },
 ];

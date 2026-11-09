@@ -47,6 +47,8 @@
 @import "./styles/about.css";
 /* Programmes: directory + detail. Before all style rules. */
 @import "./styles/programmes.css";
+/* Health section: bespoke editorial layout. Before all style rules. */
+@import "./styles/health.css";
 /* Resource centre: documents + financial disclosures. Before all style rules. */
 @import "./styles/resources.css";
 /* Partners, impact and transparency. Before all style rules. */
@@ -55,6 +57,8 @@
 @import "./styles/archive.css";
 /* Contact, donate, team directory + footer. Before all style rules. */
 @import "./styles/utility.css";
+/* Reusable image design system: editorial hero, featured, thumbnails, captions */
+@import "./styles/images.css";
 
 /* --------------------------------------------------------------------------
    2. TAILWIND
@@ -75,17 +79,21 @@
   }
 
   html {
-    /* Warm ivory document background — no bright cyan flash on load. */
-    background-color: var(--surface-canvas);
+    /* Luminous tinted ivory base matching header masthead */
+    background-color: var(--surface-canvas-solid);
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
   }
 
   body {
-    background-color: var(--surface-canvas);
-    background-image: 
-      radial-gradient(at 0% 0%, rgba(85, 177, 235, 0.05) 0px, transparent 50%),
-      radial-gradient(at 100% 100%, rgba(109, 87, 165, 0.05) 0px, transparent 50%);
+    background-color: var(--surface-canvas-solid);
+    background-image: linear-gradient(
+      115deg,
+      rgba(224, 242, 254, 0.45) 0%,
+      rgba(240, 244, 255, 0.35) 30%,
+      rgba(245, 243, 255, 0.35) 70%,
+      rgba(237, 233, 254, 0.45) 100%
+    );
     background-attachment: fixed;
     color: var(--text-primary);
     font-family: var(--font-sans);
@@ -242,8 +250,23 @@
   .res-header,
   .trust-header,
   .arc-header,
-  .ut-header {
-    padding-block-start: calc(var(--laya-chrome-height) + var(--space-md));
+  .ut-header,
+  .health-hero,
+  .prog-hero {
+    padding-block-start: 2.25rem;
+  }
+
+  @media (max-width: 767px) {
+    .about-header,
+    .prog-header,
+    .res-header,
+    .trust-header,
+    .arc-header,
+    .ut-header,
+    .health-hero,
+    .prog-hero {
+      padding-block-start: 1.25rem;
+    }
   }
 
   /* --- Editorial serif tier (opt-in, storytelling only) --- */
@@ -565,7 +588,8 @@
   .laya-media {
     position: relative;
     overflow: hidden;
-    border-radius: var(--radius-media);
+    border-radius: 0;
+    border: 1px solid var(--border-subtle);
     background-color: var(--laya-stone-100);
   }
 
@@ -944,7 +968,10 @@
   :root {
     --laya-purple: var(--laya-violet-700);
     --laya-purple-dark: var(--laya-violet-800);
-    --laya-cyan: var(--laya-forest-600);
+    --laya-purple-muted: var(--laya-violet-500);
+    --laya-lavender-pale: var(--laya-violet-100);
+    --laya-lavender-soft: var(--laya-violet-200);
+    --laya-cyan: var(--laya-logo-blue);
     --laya-navy: var(--laya-forest-800);
     --laya-teal: var(--laya-forest-500);
     --laya-bg-left: var(--surface-canvas);
@@ -970,7 +997,7 @@
     overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
-    background-color: var(--surface-canvas);
+    background-color: transparent;
   }
 }
 
@@ -1149,6 +1176,36 @@
       opacity: 1;
       transform: none;
     }
+  }
+
+  /* Coordinated, subtle transition for hero carousel text so text is never invisible */
+  @keyframes heroTextSubtle {
+    0% {
+      opacity: 0.85;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .animate-hero-text {
+    animation: heroTextSubtle 250ms ease-out forwards;
+  }
+
+  /* Coordinated, subtle transition for testimonial text so quote & attribution stay dark and readable */
+  @keyframes testimonialSubtleTransition {
+    0% {
+      opacity: 0.82;
+      transform: translateY(1px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-testimonial-text {
+    animation: testimonialSubtleTransition 180ms ease-out forwards;
   }
 }
 

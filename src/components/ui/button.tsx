@@ -22,16 +22,16 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-gradient-to-r from-logo-blue to-violet-400 text-white shadow-md hover:shadow-lg hover:-translate-y-0.5 hover:from-logo-blue/90 hover:to-violet-400/90",
+        default: "bg-[#7664B5] hover:bg-[#5B4698] text-white shadow-none transition-colors",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-border-default bg-surface-raised text-content-primary hover:bg-stone-100 hover:border-border-strong",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-stone-200",
-        ghost: "text-content-secondary hover:bg-stone-100 hover:text-content-primary",
-        link: "text-content-brand underline-offset-4 hover:underline p-0 h-auto",
+        outline: "border border-[#E7E4E9] bg-white text-[#24232A] hover:text-[#7664B5] hover:bg-[#F0ECF8] transition-colors",
+        secondary: "border border-[#E7E4E9] bg-[#FCFBF8] text-[#24232A] hover:text-[#7664B5] hover:bg-[#F0ECF8] transition-colors",
+        ghost: "text-content-secondary hover:bg-[#F0ECF8] hover:text-[#7664B5] transition-colors",
+        link: "text-[#7664B5] hover:text-[#5B4698] underline-offset-4 hover:underline p-0 h-auto",
         /* Legacy aliases retained so existing pages keep compiling. */
-        hero: "bg-gradient-to-r from-logo-blue to-violet-400 text-white shadow-md hover:shadow-lg hover:-translate-y-0.5 hover:from-logo-blue/90 hover:to-violet-400/90",
-        "hero-outline": "border border-border-inverse text-content-inverse bg-transparent hover:bg-ivory-50/10",
-        nature: "bg-gradient-to-r from-logo-blue to-violet-400 text-white shadow-md hover:shadow-lg hover:-translate-y-0.5 hover:from-logo-blue/90 hover:to-violet-400/90",
+        hero: "bg-[#7664B5] hover:bg-[#5B4698] text-white shadow-none transition-colors",
+        "hero-outline": "border border-[#E7E4E9] bg-white text-[#24232A] hover:text-[#7664B5] hover:bg-[#F0ECF8] transition-colors",
+        nature: "bg-[#7664B5] hover:bg-[#5B4698] text-white shadow-none transition-colors",
       },
       size: {
         default: "h-10 px-6 py-2",

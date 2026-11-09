@@ -7,24 +7,34 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AnimatePresence } from "framer-motion";
 import PageTransition from "@/components/PageTransition";
 import Loader from "@/components/Loader";
-import { scrollPageToTop } from "@/lib/scrollRoot";
+import { scrollPageToTop, scrollToElement } from "@/lib/scrollRoot";
+import { ContentProvider } from "@/context/ContentContext";
 
 const RouteScrollToTop = () => {
   const { pathname, search, hash } = useLocation();
 
   useEffect(() => {
-    const scrollTop = () => scrollPageToTop();
-
-    scrollTop();
-    // Re-run after route transition / lazy load so scroll isn't lost
-    const t1 = window.setTimeout(scrollTop, 0);
-    const t2 = window.setTimeout(scrollTop, 150);
-    const t3 = window.setTimeout(scrollTop, 500);
-    return () => {
-      window.clearTimeout(t1);
-      window.clearTimeout(t2);
-      window.clearTimeout(t3);
-    };
+    if (hash) {
+      const scroll = () => scrollToElement(hash, true);
+      const t1 = window.setTimeout(scroll, 50);
+      const t2 = window.setTimeout(scroll, 200);
+      return () => {
+        window.clearTimeout(t1);
+        window.clearTimeout(t2);
+      };
+    } else {
+      const scrollTop = () => scrollPageToTop();
+      scrollTop();
+      // Re-run after route transition / lazy load so scroll isn't lost
+      const t1 = window.setTimeout(scrollTop, 0);
+      const t2 = window.setTimeout(scrollTop, 150);
+      const t3 = window.setTimeout(scrollTop, 500);
+      return () => {
+        window.clearTimeout(t1);
+        window.clearTimeout(t2);
+        window.clearTimeout(t3);
+      };
+    }
   }, [pathname, search, hash]);
 
   return null;
@@ -83,6 +93,7 @@ const Donate = lazy(() => import("./pages/Donate"));
 const Impact = lazy(() => import("./pages/Impact"));
 const Gallery = lazy(() => import("./pages/Gallery"));
 const Contact = lazy(() => import("./pages/Contact"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const AnimatedRoutes = () => {
@@ -112,9 +123,14 @@ const AnimatedRoutes = () => {
         <Route path="/what-we-do/srm" element={<PageTransition><WhatWeDoCategory /></PageTransition>} />
         <Route path="/what-we-do/lifelong-learning" element={<PageTransition><WhatWeDoCategory /></PageTransition>} />
         <Route path="/what-we-do/climate-crisis-sustainable-development" element={<PageTransition><WhatWeDoCategory /></PageTransition>} />
-        {/* Redirect old coastal ecosystem pages to the new Climate page where the content now lives */}
-        <Route path="/what-we-do/coastal_ecosystem" element={<Navigate to="/what-we-do/climate-crisis-sustainable-development" replace />} />
-        <Route path="/what-we-do/coastal_ecosystem.html" element={<Navigate to="/what-we-do/climate-crisis-sustainable-development" replace />} />
+        <Route path="/what-we-do/climate-friendly-technologies-coastal-ecosystems" element={<PageTransition><WhatWeDoCategory /></PageTransition>} />
+        <Route path="/what-we-do/urban-peri-urban-ecosystems" element={<PageTransition><WhatWeDoCategory /></PageTransition>} />
+        <Route path="/what-we-do/partner-engagements" element={<PageTransition><WhatWeDoCategory /></PageTransition>} />
+        {/* Legacy aliases and short redirects */}
+        <Route path="/what-we-do/coastal_ecosystem" element={<Navigate to="/what-we-do/climate-friendly-technologies-coastal-ecosystems" replace />} />
+        <Route path="/what-we-do/coastal_ecosystem.html" element={<Navigate to="/what-we-do/climate-friendly-technologies-coastal-ecosystems" replace />} />
+        <Route path="/what-we-do/climate-tech-coastal" element={<Navigate to="/what-we-do/climate-friendly-technologies-coastal-ecosystems" replace />} />
+        <Route path="/what-we-do/urban-peri-urban" element={<Navigate to="/what-we-do/urban-peri-urban-ecosystems" replace />} />
         
         {/* Hostinger edge caching and legacy URL aliases for Publications */}
         <Route path="/publications" element={<PageTransition><Publications /></PageTransition>} />
@@ -129,6 +145,17 @@ const AnimatedRoutes = () => {
         <Route path="/gallery" element={<PageTransition><Gallery /></PageTransition>} />
         <Route path="/team" element={<PageTransition><AboutTeam /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+        {/* Admin Dashboard CMS and friendly aliases */}
+        <Route path="/admin" element={<PageTransition><AdminDashboard /></PageTransition>} />
+        <Route path="/admin/*" element={<PageTransition><AdminDashboard /></PageTransition>} />
+        <Route path="/wp-admin" element={<Navigate to="/admin" replace />} />
+        <Route path="/wp-admin/*" element={<Navigate to="/admin" replace />} />
+        <Route path="/cms" element={<Navigate to="/admin" replace />} />
+        <Route path="/dashboard" element={<Navigate to="/admin" replace />} />
+        <Route path="/admin-dashboard" element={<Navigate to="/admin" replace />} />
+        {/* Explore route alias redirect */}
+        <Route path="/explore" element={<Navigate to="/programs" replace />} />
+        <Route path="/explore.html" element={<Navigate to="/programs" replace />} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
         </Routes>
       </AnimatePresence>
@@ -147,24 +174,24 @@ const AnimatedRoutes = () => {
 
   Re-add it if and when a real asynchronous data source is wired up.
 */
+import { DirectEditProvider } from "@/context/DirectEditContext";
+
 const App = () => (
  <HelmetProvider>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        {/*
-          NOTE: <SiteBackground /> was removed here. It had returned `null`
-          since Phase 1, when the rotating yin-yang background was deleted in
-          favour of the ivory canvas — so it was mounting a component that did
-          nothing on every render.
-        */}
-        <RouteScrollToTop />
-        <Suspense fallback={<Loader />}>
-          <AnimatedRoutes />
-        </Suspense>
-      </BrowserRouter>
-    </TooltipProvider>
+    <ContentProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <DirectEditProvider>
+            <RouteScrollToTop />
+            <Suspense fallback={<Loader />}>
+              <AnimatedRoutes />
+            </Suspense>
+          </DirectEditProvider>
+        </BrowserRouter>
+      </TooltipProvider>
+    </ContentProvider>
  </HelmetProvider>
 );
 

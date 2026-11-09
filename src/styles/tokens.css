@@ -15,32 +15,44 @@
 
 :root {
   /* -----------------------------------------------------------------------
+     0. CORE BRAND PALETTE — sampled from actual LAYA logo asset
+     ----------------------------------------------------------------------- */
+  --color-warm-white: #fcfbf8;
+  --color-charcoal: #24232a;
+  --color-muted-purple: #7664b5;
+  --color-pale-lavender: #f0ecf8;
+  --color-soft-cyan: #eaf6fa;
+  --color-neutral-border: #e7e4e9;
+  --color-logo-blue: #55b1eb;
+  --color-purple-deep: #5b4698;
+  --color-purple-hover: #604e9e;
+
+  /* -----------------------------------------------------------------------
      1. PALETTE — raw values, unprefixed meaning
      ----------------------------------------------------------------------- */
 
-  /* Ink — deep charcoal / near-black for editorial text.
-     Warm-tinted (a touch of red) so it sits with ivory rather than fighting it. */
-  --laya-ink-900: #16150f;
-  --laya-ink-800: #211f19;
-  --laya-ink-700: #33312a;
-  --laya-ink-600: #4a4740;
-  --laya-ink-500: #5f5c53;
-  --laya-ink-400: #7d7970;
-  --laya-ink-300: #a09c92;
-  --laya-ink-200: #c4c0b6;
-  --laya-ink-100: #e2dfd7;
+  /* Ink — deep charcoal for editorial text and modern dark surfaces. */
+  --laya-ink-900: var(--color-charcoal);
+  --laya-ink-800: #2e2c34;
+  --laya-ink-700: #3b3943;
+  --laya-ink-600: #4e4c58;
+  --laya-ink-500: #656372;
+  --laya-ink-400: #817f8e;
+  --laya-ink-300: #a5a3b2;
+  --laya-ink-200: #c9c7d4;
+  --laya-ink-100: #e7e6ee;
 
-  /* Canvas — warm off-white / ivory. The primary page surface. */
+  /* Canvas — warm white (#FCFBF8). The primary editorial page surface. */
   --laya-ivory-50: #fdfcfa;
-  --laya-ivory-100: #faf8f4;
-  --laya-ivory-200: #f5f2ec;
+  --laya-ivory-100: var(--color-warm-white);
+  --laya-ivory-200: #f7f5f0;
   --laya-ivory-300: #eae6dd;
 
-  /* Stone — very light warm greys. Secondary surfaces and rules. */
-  --laya-stone-50: #f7f5f1;
-  --laya-stone-100: #f0ede7;
-  --laya-stone-200: #e6e2da;
-  --laya-stone-300: #d6d1c7;
+  /* Stone — very light warm neutral greys. Secondary surfaces and rules. */
+  --laya-stone-50: #f9f8f5;
+  --laya-stone-100: #f3f0ea;
+  --laya-stone-200: var(--color-neutral-border);
+  --laya-stone-300: #d8d4dc;
   --laya-stone-400: #b8b2a6;
 
   /* Forest — deep forest green. Primary brand + action accent. */
@@ -64,37 +76,30 @@
   --laya-moss-300: #b6c2a5;
   --laya-moss-200: #d5ddc9;
 
-  /* LAYA Violet — retained from the logo. ACCENT ONLY. */
-  --laya-violet-800: #4a3a7a;
-  --laya-violet-700: #5b478f;
-  --laya-violet-600: #6d57a5;
-  --laya-violet-500: #826ab8;
-  --laya-violet-400: #9d8ac9;
-  --laya-violet-300: #bcaddb;
-  --laya-violet-200: #d9d0ea;
-  --laya-violet-100: #ece7f5;
+  /* LAYA Violet / Lavender — refined palette based on logo analysis.
+     Logo extracts: cyan #55b1eb, brand purple #7664b5.
+     Deep accessible purple #5b4698 / #604e9e (7.6:1 AAA contrast on white).
+     Pale lavender #f0ecf8, soft lavender #e5dcf3, muted purple #7664b5. */
+  --laya-violet-900: #241a3d;
+  --laya-violet-800: var(--color-purple-hover); /* Hover deep purple for accessible actions */
+  --laya-violet-700: var(--color-purple-deep); /* Deep purple for accessible actions */
+  --laya-violet-600: #6b57a5;
+  --laya-violet-500: var(--color-muted-purple); /* Brand muted violet */
+  --laya-violet-400: #9382c7;
+  --laya-violet-300: #b6a7de;
+  --laya-violet-200: #e5dcf3; /* Soft lavender for subtle tints */
+  --laya-violet-100: var(--color-pale-lavender); /* Pale lavender for subtle backgrounds */
+  --laya-violet-50:  #f8f5fc;
 
-  /* Logo blue — a clear cyan-blue signal, reserved for the LAYA lockup and
-     supporting brand details rather than used as a page background. */
-  --laya-blue-700: #287da9;
-  --laya-blue-600: #3799cf;
-  --laya-blue-500: #4daee5;
-  --laya-blue-300: #a8d9ef;
-  --laya-blue-100: #e6f5fb;
+  /* Logo blue / cyan — clear cyan-blue signal for accents and active marks */
+  --laya-blue-700: #246d96;
+  --laya-blue-600: #3389bc;
+  --laya-blue-500: #43a4df;
+  --laya-blue-400: var(--color-logo-blue);
+  --laya-blue-300: #8fd2f1;
+  --laya-blue-100: var(--color-soft-cyan); /* Soft cyan starting palette */
 
-  /*
-    LOGO BLUE — sampled directly from src/assets/logo.png (the blue lobe of the
-    mark), not estimated: rgb(85, 177, 235). Kept separate from the blue ramp
-    above because it is a brand-extracted value rather than a step on an
-    editorial scale, and it is noticeably lighter than --laya-blue-600.
-
-    The matching foreground is DARK, not white. Measured contrast:
-        white on #55b1eb   2.37:1   FAILS AA
-        ink   on #55b1eb   7.73:1   passes AAA
-    Any control filled with the true logo blue must therefore carry dark text.
-    Pairing it with white would look plausible and be unreadable.
-  */
-  --laya-logo-blue: #55b1eb;
+  --laya-logo-blue: var(--color-logo-blue);
   --laya-logo-blue-foreground: var(--laya-ink-900);
 
   /* Clay — subtle warm earth / rust accent. Used sparingly. */
@@ -117,19 +122,20 @@
   --laya-warning: #a8811f;
   --laya-danger: #9b3324;
 
-  /* NOTE: status colours are intentionally not yet consumed. They exist so the
-     token layer is complete when later phases add form validation, table
-     states and alerts. Removing them now would force a re-declaration later. */
-
   /* -----------------------------------------------------------------------
      2. SEMANTIC SURFACES — what a section actually sits on
      ----------------------------------------------------------------------- */
 
-  --surface-canvas: var(--laya-ivory-100); /* default page */
-  --surface-raised: #ffffff; /* cards on canvas */
-  --surface-sunken: var(--laya-stone-100); /* quiet bands */
-  --surface-tinted: var(--laya-forest-50); /* green-washed band */
-  --surface-warm: var(--laya-stone-50); /* warm grey band */
+  --surface-canvas: transparent; /* Transparent canvas allowing atmospheric blue & purple tints to flow through */
+  --surface-canvas-solid: #faf9fd; /* Luminous ivory solid base */
+  --surface-raised: #ffffff; /* cards and plates on tinted canvas */
+  --surface-sunken: rgba(240, 244, 255, 0.45); /* quiet bands with delicate cool blue tint */
+  --surface-tinted: rgba(242, 248, 244, 0.70); /* green-washed band */
+  --surface-warm: rgba(245, 243, 255, 0.45); /* warm neutral band with delicate lavender tint */
+  --surface-warm-white: #fcfbf8; /* warm white canvas accent */
+  --surface-lavender-pale: rgba(240, 236, 248, 0.55); /* pale lavender background wash */
+  --surface-lavender-soft: #e5dcf3; /* soft lavender border/tint */
+  --surface-cyan-soft: rgba(234, 246, 250, 0.55); /* soft cyan background wash */
   --surface-ink: var(--laya-ink-900); /* dark documentary band */
   --surface-forest: var(--laya-forest-900); /* deep green band */
   --surface-violet: var(--laya-violet-800); /* rare brand band */
@@ -138,43 +144,30 @@
      3. SEMANTIC TEXT — contrast-verified against the surfaces above
      ----------------------------------------------------------------------- */
 
-  /* -----------------------------------------------------------------------
-     TEXT CONTRAST — measured against --surface-canvas (#faf8f4)
-     -----------------------------------------------------------------------
-     These ratios are verified, not estimated. Re-measure with the contrast
-     audit if the palette changes; do not eyeball them.
-
-     CORRECTED IN PHASE 4: `--text-muted` was `--laya-ink-400` (#7d7970),
-     which measures 4.09:1 on ivory. The previous comment claimed 4.7:1, which
-     was wrong, and it is BELOW the 4.5:1 WCAG AA floor for normal-sized text.
-     Every `.type-meta`, `.type-caption` and `.home-figure__label` (12–13px)
-     rendering muted text was failing AA as a result.
-
-     Moved to `--laya-ink-500` (6.30:1). `--laya-ink-400` stays in the palette
-     as a border / divider tone only — it must not carry text.
-     ----------------------------------------------------------------------- */
-
-  --text-primary: var(--laya-ink-900); /* 15.84:1 on ivory */
-  --text-secondary: var(--laya-ink-600); /*  8.74:1 on ivory */
-  --text-tertiary: var(--laya-ink-500); /*  6.30:1 on ivory */
-  --text-muted: var(--laya-ink-500); /*  6.30:1 on ivory — was ink-400 (4.09)*/
-  --text-brand: var(--laya-forest-700); /* 7.4:1  on ivory  */
-  --text-accent: var(--laya-violet-700); /* 6.9:1  on ivory  */
+  --text-primary: var(--laya-ink-900); /* 15.84:1 on warm white */
+  --text-secondary: var(--laya-ink-600); /*  8.74:1 on warm white */
+  --text-tertiary: var(--laya-ink-500); /*  6.30:1 on warm white */
+  --text-muted: var(--laya-ink-500); /*  6.30:1 on warm white */
+  --text-brand: var(--color-purple-deep); /* Accessible deep purple */
+  --text-brand-muted: var(--color-muted-purple); /* Muted purple for links & secondary elements */
+  --text-accent: var(--laya-violet-700); /* 8.37:1 on ivory */
   --text-warm: var(--laya-clay-700); /* 6.1:1  on ivory  */
+  --text-charcoal: var(--color-charcoal); /* 15.33:1 on white — editorial deep charcoal */
 
-  --text-inverse: var(--laya-ivory-100); /* on ink / forest   */
-  --text-inverse-secondary: rgba(250, 248, 244, 0.82);
-  --text-inverse-muted: rgba(250, 248, 244, 0.64);
+  --text-inverse: var(--color-warm-white); /* on ink / forest   */
+  --text-inverse-secondary: rgba(252, 251, 248, 0.82);
+  --text-inverse-muted: rgba(252, 251, 248, 0.64);
 
   /* -----------------------------------------------------------------------
      4. SEMANTIC BORDERS
      ----------------------------------------------------------------------- */
 
-  --border-subtle: rgba(109, 87, 165, 0.16); /* Subtle purple */
-  --border-default: rgba(109, 87, 165, 0.28); /* Slightly stronger purple */
+  --border-subtle: var(--color-neutral-border); /* Neutral border from recommended palette */
+  --border-default: #d8d4dc; /* Slightly stronger neutral border */
   --border-strong: var(--laya-ink-300);
-  --border-brand: var(--laya-forest-300);
-  --border-inverse: rgba(250, 248, 244, 0.22);
+  --border-brand: var(--color-muted-purple);
+  --border-lavender: var(--color-pale-lavender);
+  --border-inverse: rgba(252, 251, 248, 0.2);
 
   /* -----------------------------------------------------------------------
      5. BRAND LOCKUP
@@ -211,26 +204,26 @@
     a light base, NOT saturated colour — a strong blue or violet fill would
     drop charcoal text below AA and would also fight the Donate button.
   */
-  --header-glass-tint-blue: rgba(77, 174, 229, 0.1);
-  --header-glass-tint-violet: rgba(109, 87, 165, 0.12);
+  --header-glass-tint-blue: rgba(85, 177, 235, 0.08);
+  --header-glass-tint-violet: rgba(139, 121, 184, 0.1);
   --header-glass-sheen: rgba(255, 255, 255, 0.55);
 
   /* Scrolled state gets a slightly denser wash of the same two hues, so the
      bar reads as one glass surface that firms up rather than changing
      identity. Kept as separate tokens because the alpha is tuned per state. */
-  --header-glass-tint-blue-strong: rgba(77, 174, 229, 0.16);
-  --header-glass-tint-violet-strong: rgba(109, 87, 165, 0.2);
+  --header-glass-tint-blue-strong: rgba(85, 177, 235, 0.14);
+  --header-glass-tint-violet-strong: rgba(139, 121, 184, 0.16);
 
   /* Overlay state (at the top of a page) — lightest tint, most see-through. */
   --header-overlay-bg: rgba(250, 248, 244, 0.62);
-  --header-overlay-border: rgba(109, 87, 165, 0.16);
+  --header-overlay-border: rgba(139, 121, 184, 0.16);
 
   /* Scrolled state — denser tint so navigation stays the most solid thing on
      screen while content moves beneath it. Still translucent, still glass. */
   --header-solid-bg: rgba(250, 248, 244, 0.78);
-  --header-solid-border: rgba(109, 87, 165, 0.2);
+  --header-solid-border: rgba(139, 121, 184, 0.2);
   --header-solid-shadow: 0 1px 2px rgba(22, 21, 15, 0.04),
-    0 8px 24px -16px rgba(109, 87, 165, 0.4);
+    0 8px 24px -16px rgba(85, 65, 138, 0.3);
 
   --header-glass-blur: 14px;
   --header-glass-saturate: 1.6;
@@ -250,7 +243,7 @@
   --nav-item-padding-y: 0.5rem;
 
   /* Active / hover indicator */
-   --nav-indicator: var(--laya-violet-700);
+  --nav-indicator: var(--color-logo-blue); /* LAYA Cerulean Blue from logo #55B1EB */
   --nav-hover-bg: rgba(22, 21, 15, 0.045);
   --nav-muted: var(--text-secondary);
 
@@ -265,35 +258,35 @@
      "H S% L%" triplets with no hsl() wrapper and no hex.
      ----------------------------------------------------------------------- */
 
-  --background: 40 33% 97%; /* ivory-100   */
-  --foreground: 51 19% 7%; /* ink-900     */
+  --background: 40 33% 98%; /* #FCFBF8 Warm white */
+  --foreground: 255 9% 15%; /* #24232A Charcoal */
 
   --card: 0 0% 100%;
-  --card-foreground: 51 19% 7%;
+  --card-foreground: 255 9% 15%;
 
   --popover: 0 0% 100%;
-  --popover-foreground: 51 19% 7%;
+  --popover-foreground: 255 9% 15%;
 
-  --primary: 152 38% 24%; /* forest-700  */
-  --primary-foreground: 40 33% 97%;
+  --primary: 253 36% 55%; /* #7664B5 Muted purple */
+  --primary-foreground: 0 0% 100%;
 
-  --secondary: 40 20% 95%; /* stone-100   */
-  --secondary-foreground: 51 19% 12%;
+  --secondary: 40 20% 95%; /* stone-100 */
+  --secondary-foreground: 255 9% 15%;
 
-  --muted: 40 20% 95%;
-  --muted-foreground: 50 9% 40%; /* ink-500     */
+  --muted: 260 38% 95%; /* #F0ECF8 Pale lavender */
+  --muted-foreground: 250 8% 45%;
 
-  --accent: 262 27% 49%; /* violet-700  */
-  --accent-foreground: 40 33% 97%;
+  --accent: 253 36% 55%; /* #7664B5 Muted purple */
+  --accent-foreground: 0 0% 100%;
 
-  --destructive: 8 61% 37%; /* danger      */
+  --destructive: 8 61% 37%; /* danger */
   --destructive-foreground: 40 33% 97%;
 
-  --border: 40 19% 88%; /* stone-200   */
-  --input: 40 16% 81%; /* stone-300   */
-  --ring: 152 38% 24%; /* forest-700  */
+  --border: 270 9% 91%; /* #E7E4E9 Neutral border */
+  --input: 270 9% 91%; /* #E7E4E9 Neutral border */
+  --ring: 253 36% 55%; /* #7664B5 Muted purple */
 
-  --radius: 0.5rem; /* modern, softer edges */
+  --radius: 0px; /* Square editorial corners throughout */
 
   --sidebar-background: 153 37% 12%;
   --sidebar-foreground: 40 33% 97%;
@@ -395,13 +388,13 @@
      9. BORDER RADIUS — restrained. Institutional, not bubbly.
      ----------------------------------------------------------------------- */
 
-  --radius-none: 0;
-  --radius-xs: 4px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-card: 16px;
-  --radius-media: 12px;
+  --radius-none: 0px;
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-card: 0px;
+  --radius-media: 0px;
 
   /* -----------------------------------------------------------------------
      10. ELEVATION — three levels only, all soft and warm-tinted
@@ -432,6 +425,26 @@
 
   --hairline: 1px;
 }
+
+/* -------------------------------------------------------------------------
+   MOBILE TOKEN OVERRIDES (<= 767px)
+   Reduces vertical scroll inflation across all page bands, heroes, and gaps
+   strictly on mobile devices without modifying desktop/tablet tokens.
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+  :root {
+    --space-lg: 1.25rem;
+    --space-xl: 1.5rem;
+    --space-2xl: 1.75rem;
+    --space-3xl: 2.25rem;
+    --space-4xl: 3rem;
+    --section-y: clamp(1.75rem, 1.35rem + 1.2vw, 2.25rem);
+    --section-y-tight: clamp(1.125rem, 0.95rem + 0.8vw, 1.5rem);
+    --section-gap: clamp(1.125rem, 0.95rem + 0.8vw, 1.75rem);
+    --gutter: 1rem;
+  }
+}
+
 
 /* ==========================================================================
    DARK SURFACE — opt-in via .surface-ink / .surface-forest, not global theme

@@ -1,4 +1,4 @@
-import { Download, ExternalLink, FileText } from "lucide-react";
+import { AlertCircle, Download, ExternalLink, FileText } from "lucide-react";
 import { hasDocument, type Resource } from "@/content/resources";
 
 interface ResourceCardProps {
@@ -36,6 +36,8 @@ export const ResourceCard = ({
 }: ResourceCardProps) => {
   const available = hasDocument(resource);
 
+  const displayDate = resource.date ?? (resource.year !== null ? String(resource.year) : null);
+
   return (
     <article className={`res-card ${available ? "" : "res-card--unavailable"}`}>
       <div className="res-card__cover">
@@ -44,23 +46,36 @@ export const ResourceCard = ({
           aria-hidden="true"
         >
           <FileText className="h-3 w-3" aria-hidden="true" />
-          {resource.type}
+          {available ? resource.type : `${resource.type} · Not Digitized`}
         </span>
 
         {/* The cover IS the document artwork, so it is shown whole (`contain`)
-            rather than cropped. Decorative — the title follows as text. */}
+            rather than cropped, preserving natural portrait proportions. */}
         <img src={resource.image} alt="" loading="lazy" decoding="async" />
       </div>
 
       <div className="res-card__body">
-        {(showType || resource.year !== null) && (
+        {(showType || resource.sourceCategory || displayDate || !available) && (
           <div className="res-card__meta">
             {showType && (
               <span className="res-card__type">{resource.type}</span>
             )}
-            {/* Year only where the source actually states one. */}
-            {resource.year !== null && (
-              <span className="res-card__year">{resource.year}</span>
+            {/* Concise category label */}
+            {resource.sourceCategory && (
+              <span className="res-card__category">{resource.sourceCategory}</span>
+            )}
+            {/* Verified publication date or year where available */}
+            {displayDate && (
+              <span className="res-card__year res-card__date">{displayDate}</span>
+            )}
+            {!available && (
+              <span
+                className="inline-flex items-center gap-1 text-[0.6875rem] font-medium text-amber-800 bg-amber-100/90 px-2 py-0.5 rounded-none border border-amber-300"
+                role="status"
+              >
+                <AlertCircle className="h-3 w-3 text-amber-700 flex-shrink-0" aria-hidden="true" />
+                Digital copy unavailable
+              </span>
             )}
           </div>
         )}
@@ -75,14 +90,6 @@ export const ResourceCard = ({
           )}
         </h3>
 
-        <p className="res-card__desc">{resource.description}</p>
-
-        {resource.context && (
-          <div className="res-card__context">
-            <p>{resource.context}</p>
-          </div>
-        )}
-
         <div className="res-card__actions">
           {available ? (
             <>
@@ -94,7 +101,8 @@ export const ResourceCard = ({
                 aria-label={`View ${resource.title} (opens PDF in a new tab)`}
               >
                 <ExternalLink className="res-action__icon" aria-hidden="true" />
-                View
+                <span className="hidden sm:inline">View publication</span>
+                <span className="sm:hidden">View</span>
               </a>
               <a
                 href={resource.link}
@@ -103,20 +111,40 @@ export const ResourceCard = ({
                 aria-label={`Download ${resource.title}`}
               >
                 <Download className="res-action__icon" aria-hidden="true" />
-                Download
+                <span className="hidden sm:inline">Download PDF</span>
+                <span className="sm:hidden">PDF</span>
               </a>
             </>
           ) : (
-            <>
-              <span className="res-action" aria-disabled="true">
-                <ExternalLink className="res-action__icon" aria-hidden="true" />
-                View
-              </span>
-              <span className="res-action" aria-disabled="true">
-                <Download className="res-action__icon" aria-hidden="true" />
-                Download
-              </span>
-            </>
+            <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1.5 sm:gap-2.5 py-0.5 sm:py-1">
+              <div
+                className="flex items-center gap-1.5 text-[0.6875rem] sm:text-xs text-amber-900 bg-amber-50/90 border border-amber-200 rounded-none px-2 py-1 font-medium leading-tight"
+                role="status"
+              >
+                <AlertCircle className="h-3.5 w-3.5 text-amber-600 flex-shrink-0" aria-hidden="true" />
+                <span>Physical archive only — digital PDF not yet available</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span
+                  className="res-action"
+                  aria-disabled="true"
+                  title="Digital copy not yet digitized"
+                >
+                  <ExternalLink className="res-action__icon" aria-hidden="true" />
+                  <span className="hidden sm:inline">View publication</span>
+                  <span className="sm:hidden">View</span>
+                </span>
+                <span
+                  className="res-action"
+                  aria-disabled="true"
+                  title="Digital copy not yet digitized"
+                >
+                  <Download className="res-action__icon" aria-hidden="true" />
+                  <span className="hidden sm:inline">Download PDF</span>
+                  <span className="sm:hidden">PDF</span>
+                </span>
+              </div>
+            </div>
           )}
         </div>
       </div>

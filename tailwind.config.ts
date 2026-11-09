@@ -25,7 +25,7 @@ export default {
       center: true,
       padding: "var(--gutter)",
       screens: {
-        "2xl": "var(--container-wide)",
+        "2xl": "90rem",
       },
     },
     extend: {
@@ -109,6 +109,20 @@ export default {
           "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
+        },
+
+        /* ---- Core Brand Palette (sampled from LAYA logo) ---- */
+        brand: {
+          DEFAULT: "var(--color-muted-purple)",
+          purple: "var(--color-muted-purple)",
+          "purple-deep": "var(--color-purple-deep)",
+          "purple-hover": "var(--color-purple-hover)",
+          "pale-lavender": "var(--color-pale-lavender)",
+          cyan: "var(--color-logo-blue)",
+          "soft-cyan": "var(--color-soft-cyan)",
+          charcoal: "var(--color-charcoal)",
+          "warm-white": "var(--color-warm-white)",
+          "neutral-border": "var(--color-neutral-border)",
         },
 
         /* ---- Raw palette ---- */

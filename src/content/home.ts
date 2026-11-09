@@ -6,6 +6,7 @@ import {
   mockTestimonials,
 } from "@/services/api";
 import { referenceProgramImages, referencePublications } from "@/assets/referenceAssets";
+import { illustrationAssets } from "@/assets/illustrationAssets";
 import { newGalleryImages } from "@/assets/newGalleryAssets";
 import heroAdivasiImage from "@/assets/hero-adivasi.webp";
 import heroHabitatImage from "@/assets/hero-habitat.webp";
@@ -63,16 +64,14 @@ export const hero = {
   headline: "Standing with Adivasi Communities",
   supporting:
     "For nearly four decades, LAYA has walked alongside indigenous communities in the Eastern Ghats — advancing rights, livelihoods, health, and lasting self-reliance.",
-  primaryCta: { label: "Explore Our Work", to: ROUTES.programs },
+  primaryCta: { label: "What We Do", to: ROUTES.programs },
   secondaryCta: { label: "Our Story", to: ROUTES.about },
   /**
-   * Organisation-wide figures, taken verbatim from `mockImpactMetrics`.
-   * No rounding, no normalising, no new numbers.
+   * On the live reference website (khaki-louse-426943.hostingersite.com), no reach figures
+   * exist in the hero header under the CTA buttons. Defaulted to empty array so
+   * the hero matches the live website layout. Figures can be added optionally.
    */
-  figures: mockImpactMetrics.slice(0, 3).map((m) => ({
-    value: m.number,
-    label: m.title,
-  })),
+  figures: [] as Array<{ value: string; label: string }>,
   /**
    * HERO PHOTOGRAPH
    * `reference/srm.jpg` is the strongest authentic LAYA field image available:
@@ -84,32 +83,47 @@ export const hero = {
    */
   slides: [
     {
-      headline: "Standing with Adivasi Communities in the Eastern Ghats",
-      supporting: "Four decades of field practice, action-research and policy advocacy to protect natural resource rights and foster sustainable livelihoods.",
+      eyebrow: "Resource Centre for Adivasis · Est. 1985",
+      headline: "Working Alongside Adivasi Communities",
+      supporting:
+        "For nearly four decades, LAYA has walked alongside indigenous communities in the Eastern Ghats — advancing rights, livelihoods, health, and lasting self-reliance.",
+      location: "Eastern Ghats",
       image: {
         src: heroAdivasiImage,
         alt: "An Adivasi transplanting paddy seedlings in a flooded field in the Eastern Ghats",
         caption: "Paddy transplantation, Eastern Ghats",
       },
+      primaryCta: { label: "What We Do", to: ROUTES.programs },
+      secondaryCta: { label: "Our Story", to: ROUTES.about },
     },
     {
+      eyebrow: "Sustainable Agriculture & Land Rights",
       headline: "Nurturing the Land, Sustaining the Future",
-      supporting: "Empowering indigenous farmers with sustainable agriculture practices to preserve the rich biodiversity of their ancestral lands.",
+      supporting:
+        "Empowering indigenous farmers with sustainable agriculture practices to preserve the rich biodiversity of their ancestral lands.",
+      location: "Eastern Ghats",
       image: {
         src: heroHabitatImage,
         alt: "Adivasi farmers engaged in sustainable agriculture",
         caption: "Sustainable agriculture — Eastern Ghats",
       },
+      primaryCta: { label: "Our Programmes", to: ROUTES.whatWeDoSrm },
+      secondaryCta: { label: "View Impact", to: ROUTES.impact },
     },
     {
+      eyebrow: "Leadership & Community Action",
       headline: "Empowering the Next Generation of Leaders",
-      supporting: "Equipping rural youth with the knowledge, skills, and confidence to drive positive change within their communities.",
+      supporting:
+        "Equipping rural youth with the knowledge, skills, and confidence to drive positive change within their communities.",
+      location: "Eastern Ghats",
       image: {
         src: heroYouthImage,
         alt: "Youth participating in a community workshop",
         caption: "Youth empowerment workshop — Eastern Ghats",
       },
-    }
+      primaryCta: { label: "Youth & Learning", to: ROUTES.whatWeDoLifelongLearning },
+      secondaryCta: { label: "Field Notes", to: ROUTES.stories },
+    },
   ],
 } as const;
 
@@ -162,10 +176,10 @@ export const fourDecades = {
  */
 export const ourWork = {
   eyebrow: "What we do",
-  heading: "Integrated work across five programme areas",
+  heading: "Integrated work across three core pillars",
   intro:
-    "LAYA's work is interdependent: rights secure land, land sustains livelihoods, livelihoods shape health and learning, and all of it is bounded by the climate of the Eastern Ghats.",
-  cta: { label: "All programmes", to: ROUTES.programs },
+    "LAYA's work is organized across three interdependent core pillars: Safeguarding Adivasi Rights for Social Justice, Lifelong Learning, and Climate Crisis & Sustainable Development (incorporating Livelihoods, Natural Resources, and Community Health).",
+  cta: { label: "Explore 3 Core Pillars", to: ROUTES.programs },
   programmes: mockPrograms.map((p) => ({
     id: p.id,
     title: p.title,
@@ -193,21 +207,39 @@ export { PROGRAMME_ROUTES } from "@/content/programmes";
  * routes in the router (see `src/App.tsx`), so every story links to the
  * `/stories` index. No route is invented here.
  */
+const HOME_STORY_ILLUSTRATIONS = [
+  illustrationAssets.forestStewardship,
+  illustrationAssets.milletRevival,
+  illustrationAssets.multilingualLearning,
+];
+
+const HOME_STORY_CATEGORIES = [
+  "Forest Rights & Governance",
+  "Agro-Biodiversity & Food Sovereignty",
+  "Multilingual & Cultural Learning",
+] as const;
+
 export const stories = {
   eyebrow: "Stories from the field",
   heading: "Documented from the ground",
   intro: "Field accounts from LAYA's work with Adivasi communities.",
   cta: { label: "All stories", to: ROUTES.stories },
-  items: mockStories.map((s) => ({
-    id: s.id,
-    title: s.title,
-    excerpt: s.excerpt,
-    author: s.author,
-    date: s.date,
-    image: s.image,
-    // No story detail route exists — index is the correct destination.
-    to: ROUTES.stories,
-  })),
+  items: mockStories.map((s, i) => {
+    const ill = HOME_STORY_ILLUSTRATIONS[i] ?? HOME_STORY_ILLUSTRATIONS[0];
+    return {
+      id: s.id,
+      title: s.title,
+      category: HOME_STORY_CATEGORIES[i] ?? "Field Note",
+      excerpt: s.excerpt,
+      author: s.author,
+      date: s.date,
+      image: ill.src,
+      imageAlt: ill.alt,
+      imageCaption: ill.caption,
+      imageDisclosure: ill.disclosure,
+      to: `/stories/note-${s.id}`,
+    };
+  }),
 } as const;
 
 /* -------------------------------------------------------------------------
@@ -230,6 +262,8 @@ export const chronicle = {
       description:
         "LAYA's story of change on sustainable farming, featured in Azim Premji University's compendium.",
       image: referencePublications.chronicle,
+      type: "Case Study",
+      date: "2021",
       to: ROUTES.publications,
     },
     {
@@ -237,6 +271,8 @@ export const chronicle = {
       description:
         "Strengthening local and relevant herbal-based healthcare practices with Adivasi communities.",
       image: referencePublications.hbhcPublication,
+      type: "Publication",
+      date: "2021",
       to: ROUTES.publications,
     },
     {
@@ -244,14 +280,16 @@ export const chronicle = {
       description:
         "How local institutions and rapid grassroots action protected vulnerable families.",
       image: referencePublications.covidBanner,
+      type: "Report",
+      date: "2020",
       to: ROUTES.publications,
     },
   ],
   /** Real category counts from the Publications dataset. */
   facets: [
-    { label: "Publications", value: "34" },
+    { label: "Publications", value: "33" },
     { label: "Research areas", value: "7" },
-    { label: "Earliest report", value: "2019" },
+    { label: "Earliest report", value: "2008" },
   ],
 } as const;
 

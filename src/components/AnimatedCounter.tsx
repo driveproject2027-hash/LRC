@@ -15,11 +15,11 @@ export const AnimatedCounter = ({
   className,
   duration = 2000,
 }: AnimatedCounterProps) => {
-  const { ref, display } = useCountUp(value, duration);
+  const { ref, display } = useCountUp<HTMLSpanElement>(value, duration);
 
   return (
-    <span ref={ref as React.RefObject<HTMLSpanElement>} className={className}>
-      {display}
+    <span ref={ref} className={className} aria-label={value}>
+      <span aria-hidden="true">{display}</span>
     </span>
   );
 };
